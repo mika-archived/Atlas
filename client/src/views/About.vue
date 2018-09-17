@@ -1,5 +1,5 @@
 <template lang="pug">
-  .content
+  .container
     breadcrumb
     section
       h1 About Atlas

@@ -1,8 +1,7 @@
 <template lang="pug">
   #app
     navigation
-    .container
-      router-view
+    router-view
     atlas-footer
 </template>
 
