@@ -30,3 +30,17 @@ body {
   min-height: 100vh;
 }
 </style>
+
+<style lang="scss" scoped>
+#app {
+  .container {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+
+    @media screen and (min-width: 1088px) {
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+}
+</style>
