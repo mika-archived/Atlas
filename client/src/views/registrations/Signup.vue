@@ -2,7 +2,7 @@
   .uk-container
     .uk-flex.uk-flex-center
       section.uk-section.uk-width-large
-        img.uk-align-center(src="../assets/logo.png")
+        img.uk-align-center(src="../../assets/logo.png")
 
         form.uk-form-stacked
           fieldset.uk-fieldset
@@ -39,7 +39,7 @@
                   | アルファベット大文字、小文字、数字、記号を含める必要があります
 
             .uk-margin
-              button.uk-button.uk-button-primary.uk-width-1-1(:disabled="$v.$invalid")
+              button.uk-button.uk-button-primary.uk-width-1-1(@click.prevent="onClick" :disabled="$v.$invalid")
                 | 登録する
 
             .uk-margin
@@ -53,9 +53,13 @@
 </template>
 
 <script lang="ts">
+import Amplify, { Auth } from "aws-amplify";
 import { Component, Vue } from "vue-property-decorator";
 import { validationMixin } from "vuelidate";
 import { email, minLength, required } from "vuelidate/lib/validators";
+
+import awsExports from "../../models/aws-exports";
+Amplify.configure(awsExports);
 
 const alphaNumericalSymbols = (value: string): boolean => {
   // https://qiita.com/mpyw/items/886218e7b418dfed254b
@@ -88,6 +92,28 @@ export default class Signup extends Vue {
 
   public formState(state: any): string {
     return state.$error ? "uk-form-danger" : "uk-form-success";
+  }
+
+  public async onClick(): Promise<void> {
+    try {
+      const result = await Auth.signUp({
+        username: this.username,
+        password: this.password,
+        attributes: {
+          email: this.email
+        }
+      });
+      console.log(result);
+    } catch (err) {
+      // ignored
+    }
+  }
+
+  public async created(): Promise<void> {
+    const session = await Auth.currentSession();
+    if (session) {
+      this.$router.push("/");
+    }
   }
 }
 </script>
