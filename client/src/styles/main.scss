@@ -1,3 +1,5 @@
+@import "./bulma.scss";
+
 body {
   // https://github.com/windyakin/Honoka/
   font-family: -apple-system, "BlinkMacSystemFont", "Helvetica Neue", Helvetica, "Arial", "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -7,6 +9,6 @@ body {
 
 html,
 body {
-  min-width: 100vw;
+  max-width: 100%;
   min-height: 100vh;
 }

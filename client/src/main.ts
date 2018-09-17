@@ -1,10 +1,7 @@
 import Vue from "vue";
 
-// Vue Plugins
-import Vuelidate from "vuelidate";
-
-// UIKit
-import UIkit from "uikit";
+import "tslib";
+import "uikit";
 
 import App from "./App.vue";
 import router from "./router";
@@ -14,8 +11,6 @@ import "./registerServiceWorker";
 
 import "./styles/main.scss";
 
-
-Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
 

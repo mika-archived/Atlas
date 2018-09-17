@@ -1,9 +1,9 @@
 <template lang="pug">
   footer.footer
-    .container
+    .uk-container
       img(src="../assets/logo.png")
-      .columns
-        .column
+      div(uk-grid)
+        div(class="uk-width-1-2@s")
           p
             | Atlas is open source project hosted on 
             a(href="https://github.com" target="_blank") GitHub
@@ -13,7 +13,7 @@
             a(href="https://opensource.org/licenses/mit-license.php" target="_blank") MIT License
             | .
           p Project Aria &copy; 2018
-        .column
+        div(class="uk-width-1-2@s")
           p
             router-link(to="/about") このサービスについて
           p
@@ -26,8 +26,11 @@
 $link-color: #a3a3a3;
 
 p:not(:last-child) {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.5rem;
 
+  & + p {
+    margin-top: 0.5rem;
+  }
   a {
     color: $link-color;
   }

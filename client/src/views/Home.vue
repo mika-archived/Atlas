@@ -1,43 +1,39 @@
 <template lang="pug">
-  #home
-    section.hero.is-medium.is-info.is-bold
-      .hero-body
-        .container
-          h1.title
-            | Atlas
-          h2.subtitle
-            | タグベースのイラスト管理・共有サービス
-    
+  div
+    .uk-height-medium.uk-flex.uk-flex-left.uk-flex-middle.uk-background-cover.uk-light(
+     data-src="https://images.unsplash.com/photo-1490822180406-880c226c150b?fit=crop&w=650&h=433&q=80"
+     data-srcset="https://images.unsplash.com/photo-1490822180406-880c226c150b?fit=crop&w=650&h=433&q=80 650w,https://images.unsplash.com/photo-1490822180406-880c226c150b?fit=crop&w=1300&h=866&q=80 1300w"
+     data-sizes="(min-width: 650px) 650px, 100vw"
+     uk-img
+    )
+      h1.uk-heading-primary Atlas
+  //
     section#featured.container
-      .columns
-        .column.has-text-centered
-          div
-            h2.title.is-4
-              div.far.fa-search.fa-2x
-              | 素早くアクセス
-            p
-              | タグを用いることで、探しているイラストに早く、簡単にアクセスできます。
-        .column.has-text-centered
-          div
-            h2.title.is-4
-              div.fab.fa-osi.fa-2x
-              | オープンソース
-            p
-              | 誰もが制限のない、自分のためだけのサーバーを建てることが出来ます。
-        .column.has-text-centered
-          div
-            h2.title.is-4
-              div.fas.fa-user-secret.fa-2x
-              | 自由なアクセス
-            p
-              | アップロードしたイラストには、アクセス権限を自由に設定することが出来ます。
-        .column.has-text-centered
-          div
-            h2.title.is-4
-              div.fal.fa-usd-circle.fa-2x
-              | 無料
-            p
-              | 誰もが無料で、全ての機能を制限されることなく使うことが出来ます。
+      div.uk-text-center(uk-grid)
+        div(class="uk-width-1-4@l uk-width-1-2@s")
+          h2.title.is-4
+            div.far.fa-search.fa-2x
+            | 素早くアクセス
+          p
+            | タグを用いることで、探しているイラストに早く、簡単にアクセスできます。
+        div(class="uk-width-1-4@l uk-width-1-2@s")
+          h2.title.is-4
+            div.fab.fa-osi.fa-2x
+            | オープンソース
+          p
+            | 誰もが制限のない、自分のためだけのサーバーを建てることが出来ます。
+        div(class="uk-width-1-4@l uk-width-1-2@m")
+          h2.title.is-4
+            div.fas.fa-user-secret.fa-2x
+            | 自由なアクセス
+          p
+            | アップロードしたイラストには、アクセス権限を自由に設定することが出来ます。
+        div(class="uk-width-1-4@l uk-width-1-2@m")
+          h2.title.is-4
+            div.fal.fa-usd-circle.fa-2x
+            | 無料
+          p
+            | 誰もが無料で、全ての機能を制限されることなく使うことが出来ます。
 </template>
 
 
@@ -55,14 +51,15 @@ export default class Home extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-.container-reset {
-  padding-right: initial;
-  padding-left: initial;
+#home {
+  width: 100%;
 }
 
-section:not(:first-child) {
-  padding-top: 40px;
-  padding-bottom: 30px;
+.hero {
+  p {
+    max-width: 100vw;
+    margin: 0;
+  }
 }
 
 section:nth-child(2) {
