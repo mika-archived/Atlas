@@ -10,7 +10,6 @@
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
-    "amazon-cognito-identity-js": "^2.0.26",
     "aws-amplify": "^1.0.11",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.17",
