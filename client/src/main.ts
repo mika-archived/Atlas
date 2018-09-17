@@ -1,6 +1,10 @@
 import Vue from "vue";
 
-import Buefy from "buefy";
+// Vue Plugins
+import Vuelidate from "vuelidate";
+
+// UIKit
+import UIkit from "uikit";
 
 import App from "./App.vue";
 import router from "./router";
@@ -8,7 +12,9 @@ import store from "./store";
 
 import "./registerServiceWorker";
 
-Vue.use(Buefy);
+
+
+Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
 
