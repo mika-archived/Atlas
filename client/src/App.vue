@@ -21,15 +21,6 @@ import Navigation from "@/presentationals/Navigation.vue";
 export default class App extends Vue {}
 </script>
 
-
-<style lang="scss">
-html,
-body {
-  min-width: 100vw;
-  min-height: 100vh;
-}
-</style>
-
 <style lang="scss" scoped>
 #app {
   .container {

@@ -12,6 +12,7 @@ import store from "./store";
 
 import "./registerServiceWorker";
 
+import "./styles/main.scss";
 
 
 Vue.use(Vuelidate);
