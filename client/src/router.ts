@@ -23,14 +23,19 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ "./views/About.vue"),
     },
     {
-      path: "/registrations/signup",
-      name: "registrations-signup",
-      component: () => import(/* webpackChunkName: "signup" */ "./views/registrations/Signup.vue"),
+      path: "/users/signup",
+      name: "users-signup",
+      component: () => import(/* webpackChunkName: "users-signup" */ "./views/users/Signup.vue"),
     },
     {
-      path: "/registrations/confirm",
-      name: "registrations-confirm",
-      component: () => import(/* webpackChunkName: "confirm" */ "./views/registrations/Confirm.vue"),
+      path: "/users/confirmation",
+      name: "users-confirmation",
+      component: () => import(/* webpackChunkName: "users-confirm" */ "./views/users/Confirmation.vue"),
+    },
+    {
+      path: "/users/login",
+      name: "users-login",
+      component: () => import(/* webpackChunkName: "users-login" */ "./views/users/Login.vue"),
     }
   ],
 });

@@ -18,6 +18,11 @@ export interface VerifyCodeParams {
   code: string;
 }
 
+export interface LoginParams {
+  username: string;
+  password: string;
+}
+
 export interface ISessionState {
   currentSession: ICurrentSession | null;
   username: string;
@@ -31,6 +36,7 @@ interface ISessionActions {
   checkCurrentSession: {};
   registerUser: RegisterUserParams;
   verifyCode: VerifyCodeParams;
+  login: LoginParams;
 }
 
 interface ISessionGetters {
@@ -42,9 +48,11 @@ interface ISessionMutations {
     session: ICurrentSession | null;
   };
   registerUserSuccess: { username: string };
-  registerUserFailed: { reason: string };
+  registerUserFailure: { reason: string };
   verifyCodeSuccess: {};
-  verifyCodeFailed: { reason: string };
+  verifyCodeFailure: { reason: string };
+  loginSuccess: {};
+  loginFailure: { reason: string };
 }
 
 const state: ISessionState = {
@@ -76,18 +84,27 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
       commit("registerUserSuccess", { username: payload.username });
     } catch (err) {
       console.error(err);
-      commit("registerUserFailed", { reason: err.message });
+      commit("registerUserFailure", { reason: err.message });
     }
   },
 
   async verifyCode({ commit, state }, payload) {
     try {
-      const r = await Auth.confirmSignUp(state.username, payload.code);
-      console.log(r);
+      await Auth.confirmSignUp(state.username, payload.code);
       commit("verifyCodeSuccess", {});
     } catch (err) {
       console.error(err);
-      commit("verifyCodeFailed", { reason: err.message });
+      commit("verifyCodeFailure", { reason: err.message });
+    }
+  },
+
+  async login({ commit }, payload) {
+    try {
+      const r = await Auth.signIn(payload.username, payload.password);
+      console.log(r);
+    } catch (err) {
+      console.error(err);
+      commit("loginFailure", { reason: err.message });
     }
   }
 };
@@ -104,16 +121,22 @@ const mutations: DefineMutations<ISessionMutations, ISessionState> = {
     state.username = username;
     state.isRegisterUserSuccess = true;
   },
-  registerUserFailed(state, { reason }) {
+  registerUserFailure(state, { reason }) {
     state.reason = reason;
     state.isRegisterUserSuccess = false;
   },
   verifyCodeSuccess(state, { }) {
     state.isVerifyCodeSuccess = true;
   },
-  verifyCodeFailed(state, { reason }) {
+  verifyCodeFailure(state, { reason }) {
     state.reason = reason;
     state.isVerifyCodeSuccess = false;
+  },
+  loginSuccess(state, { }) {
+    // Nothing to do
+  },
+  loginFailure(state, { reason }) {
+    state.reason = reason;
   }
 };
 

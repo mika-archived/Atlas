@@ -53,7 +53,7 @@ const verifyCode = (value: string): boolean => {
     }
   }
 })
-export default class Confirm extends Vue {
+export default class Confirmation extends Vue {
   public code: string = "";
 
   @Action("checkCurrentSession") public checkCurrentSession!: () => void;
@@ -75,7 +75,7 @@ export default class Confirm extends Vue {
   public async onClick(): Promise<void> {
     await this.verifyCode({ code: this.code });
     if (this.isVerifyCodeSuccess) {
-      this.$router.push("/");
+      this.$router.push("/users/login");
     }
   }
 
