@@ -32,6 +32,7 @@
 </template>
 
 <script lang="ts">
+import UIKit from "uikit";
 import { Component, Vue } from "vue-property-decorator";
 import { validationMixin } from "vuelidate";
 import { email, minLength, required } from "vuelidate/lib/validators";
@@ -82,6 +83,7 @@ export default class Confirmation extends Vue {
   public async created(): Promise<void> {
     await this.checkCurrentSession();
     if (this.hasSession) {
+      UIKit.notification({ message: "すでにログインしています" });
       this.$router.push("/");
     }
   }

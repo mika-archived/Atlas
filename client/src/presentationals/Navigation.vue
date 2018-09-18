@@ -7,8 +7,14 @@
 </template>
 
 <style lang="scss" scoped>
+$navbar-bg-color: white;
+
 .uk-container {
-  background-color: #f8f8f8;
+  background-color: $navbar-bg-color;
+}
+
+.uk-navbar-container:not(.uk-navbar-transparent) {
+  background: $navbar-bg-color;
 }
 
 img {
