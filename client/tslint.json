@@ -28,6 +28,9 @@
     "arrow-parens": [
       true,
       "ban-single-arg-parens"
+    ],
+    "no-console": [
+      false
     ]
   }
 }

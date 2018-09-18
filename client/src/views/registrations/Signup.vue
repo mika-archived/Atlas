@@ -42,6 +42,11 @@
               button.uk-button.uk-button-primary.uk-width-1-1(@click.prevent="onClick" :disabled="$v.$invalid")
                 | 登録する
 
+            template(v-if="reason")
+              p
+                small.uk-text-danger
+                  | エラーが発生しました : {{reason}}
+
             .uk-margin
               p
                 small
@@ -53,13 +58,13 @@
 </template>
 
 <script lang="ts">
-import Amplify, { Auth } from "aws-amplify";
 import { Component, Vue } from "vue-property-decorator";
 import { validationMixin } from "vuelidate";
 import { email, minLength, required } from "vuelidate/lib/validators";
+import { Action, Getter, State } from "vuex-class";
 
-import awsExports from "../../models/aws-exports";
-Amplify.configure(awsExports);
+import { IState } from "../../store";
+import { RegisterUserParams } from "../../store/session";
 
 const alphaNumericalSymbols = (value: string): boolean => {
   // https://qiita.com/mpyw/items/886218e7b418dfed254b
@@ -90,33 +95,34 @@ export default class Signup extends Vue {
   public email: string = "";
   public password: string = "";
 
+  @Action("checkCurrentSession") public checkCurrentSession!: () => void;
+
+  @Action("registerUser") public registerUser!: (payload: RegisterUserParams) => void;
+
+  @Getter("hasSession") public hasSession!: boolean;
+
+  @State((state: IState) => state.session.isRegisterUserSuccess)
+  public isRegisterUserSuccess!: boolean;
+
+  @State((state: IState) => state.session.reason)
+  public reason!: string;
+
   public formState(state: any): string {
     return state.$error ? "uk-form-danger" : "uk-form-success";
   }
 
   public async onClick(): Promise<void> {
-    try {
-      const result = await Auth.signUp({
-        username: this.username,
-        password: this.password,
-        attributes: {
-          email: this.email
-        }
-      });
-      console.log(result);
-    } catch (err) {
-      // ignored
+    await this.registerUser({ username: this.username, password: this.password, email: this.email });
+    if (this.isRegisterUserSuccess) {
+      this.$router.push("/registrations/confirm");
     }
   }
 
   public async created(): Promise<void> {
-    const session = await Auth.currentSession();
-    if (session) {
+    await this.checkCurrentSession();
+    if (this.hasSession) {
       this.$router.push("/");
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-</style>
