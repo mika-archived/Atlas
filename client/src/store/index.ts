@@ -28,3 +28,5 @@ export default new Vuex.Store({
 export interface IState {
   session: ISessionState;
 }
+
+export type ActionDescriber<T> = (payload: T) => void | Promise<void>;

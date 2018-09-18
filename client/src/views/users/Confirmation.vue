@@ -37,7 +37,7 @@ import { validationMixin } from "vuelidate";
 import { email, minLength, required } from "vuelidate/lib/validators";
 import { Action, Getter, State } from "vuex-class";
 
-import { IState } from "../../store";
+import { ActionDescriber, IState } from "../../store";
 import { VerifyCodeParams } from "../../store/session";
 
 const verifyCode = (value: string): boolean => {
@@ -58,7 +58,7 @@ export default class Confirmation extends Vue {
 
   @Action("checkCurrentSession") public checkCurrentSession!: () => void;
 
-  @Action("verifyCode") public verifyCode!: (payload: VerifyCodeParams) => void;
+  @Action("verifyCode") public verifyCode!: ActionDescriber<VerifyCodeParams>;
 
   @Getter("hasSession") public hasSession!: boolean;
 

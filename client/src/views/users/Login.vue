@@ -49,7 +49,7 @@ import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
 import { Action, Getter, State } from "vuex-class";
 
-import { IState } from "../../store";
+import { ActionDescriber, IState } from "../../store";
 import { LoginParams } from "../../store/session";
 
 @Component({
@@ -69,7 +69,7 @@ export default class Signup extends Vue {
 
   @Action("checkCurrentSession") public checkCurrentSession!: () => void;
 
-  @Action("login") public login!: (payload: LoginParams) => void;
+  @Action("login") public login!: ActionDescriber<LoginParams>;
 
   @Getter("hasSession") public hasSession!: boolean;
 

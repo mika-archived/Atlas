@@ -63,7 +63,7 @@ import { validationMixin } from "vuelidate";
 import { email, minLength, required } from "vuelidate/lib/validators";
 import { Action, Getter, State } from "vuex-class";
 
-import { IState } from "../../store";
+import { ActionDescriber, IState } from "../../store";
 import { RegisterUserParams } from "../../store/session";
 
 const alphaNumericalSymbols = (value: string): boolean => {
@@ -97,7 +97,7 @@ export default class Signup extends Vue {
 
   @Action("checkCurrentSession") public checkCurrentSession!: () => void;
 
-  @Action("registerUser") public registerUser!: (payload: RegisterUserParams) => void;
+  @Action("registerUser") public registerUser!: ActionDescriber<RegisterUserParams>;
 
   @Getter("hasSession") public hasSession!: boolean;
 
