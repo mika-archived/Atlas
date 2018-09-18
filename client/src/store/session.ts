@@ -47,6 +47,7 @@ interface ISessionMutations {
   updateCurrentSession: {
     session: ICurrentSession | null;
   };
+  clearReason: {};
   registerUserSuccess: { username: string };
   registerUserFailure: { reason: string };
   verifyCodeSuccess: {};
@@ -75,6 +76,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
   },
 
   async registerUser({ commit }, payload) {
+    commit("clearReason", {});
     try {
       await Auth.signUp({
         username: payload.username,
@@ -89,6 +91,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
   },
 
   async verifyCode({ commit, state }, payload) {
+    commit("clearReason", {});
     try {
       await Auth.confirmSignUp(state.username, payload.code);
       commit("verifyCodeSuccess", {});
@@ -99,6 +102,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
   },
 
   async login({ commit }, payload) {
+    commit("clearReason", {});
     try {
       const r = await Auth.signIn(payload.username, payload.password);
       console.log(r);
@@ -116,6 +120,9 @@ const getters: DefineGetters<ISessionGetters, ISessionState> = {
 const mutations: DefineMutations<ISessionMutations, ISessionState> = {
   updateCurrentSession(state, { session }) {
     state.currentSession = session;
+  },
+  clearReason(state, { }) {
+    state.reason = "";
   },
   registerUserSuccess(state, { username }) {
     state.username = username;
