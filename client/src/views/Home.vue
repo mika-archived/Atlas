@@ -1,12 +1,15 @@
 <template lang="pug">
   div
-    .uk-height-medium.uk-flex.uk-flex-left.uk-flex-middle.uk-background-cover.uk-light(
-     data-src="https://images.unsplash.com/photo-1490822180406-880c226c150b?fit=crop&w=650&h=433&q=80"
-     data-srcset="https://images.unsplash.com/photo-1490822180406-880c226c150b?fit=crop&w=650&h=433&q=80 650w,https://images.unsplash.com/photo-1490822180406-880c226c150b?fit=crop&w=1300&h=866&q=80 1300w"
+    .uk-height-medium.uk-flex.uk-flex-center.uk-flex-middle.uk-background-cover.uk-inline.uk-light(
+     data-src="/img/hero.jpg"
      data-sizes="(min-width: 650px) 650px, 100vw"
      uk-img
     )
-      h1.uk-heading-primary Atlas
+      .uk-overlay-primary.uk-position-cover
+      .uk-overlay.uk-position-center.uk-light
+        h1.uk-heading-primary.uk-text-center Atlas
+        p
+          | タグベースのイラスト管理サービス
     section.uk-section.uk-container
       div.uk-text-center(uk-grid)
         div(class="uk-width-1-4@l uk-width-1-2@s")
@@ -39,13 +42,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
-
-@Component({
-  components: {
-    HelloWorld
-  }
-})
+@Component
 export default class Home extends Vue {}
 </script>
 

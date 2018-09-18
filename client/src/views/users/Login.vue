@@ -82,7 +82,6 @@ export default class Signup extends Vue {
 
   public async onClick(): Promise<void> {
     await this.login({ username: this.username, password: this.password });
-    // await this.checkCurrentSession();
     if (this.hasSession) {
       this.$router.push("/");
     }
