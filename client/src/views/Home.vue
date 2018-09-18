@@ -21,13 +21,13 @@
             | オープンソース
           p
             | 誰もが検閲や制限のない、自分のためだけのサーバーを建てることができます。
-        div(class="uk-width-1-4@l uk-width-1-2@m")
+        div(class="uk-width-1-4@l uk-width-1-2@s")
           h3.title.is-4
             div.fas.fa-user-secret.fa-2x
             | 自由なアクセス
           p
             | アップロードしたイラストには、自由にアクセス制限をかけることができます。
-        div(class="uk-width-1-4@l uk-width-1-2@m")
+        div(class="uk-width-1-4@l uk-width-1-2@s")
           h3.title.is-4
             div.fal.fa-usd-circle.fa-2x
             | 無料
