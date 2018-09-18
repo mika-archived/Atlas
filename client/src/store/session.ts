@@ -67,9 +67,13 @@ const state: ISessionState = {
 const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, ISessionGetters> = {
   async checkCurrentSession({ commit }) {
     try {
-      const session = Auth.currentSession();
-      console.log(session);
-      commit("updateCurrentSession", { session: null });
+      const user = await Auth.currentAuthenticatedUser();
+      commit("updateCurrentSession", {
+        session: {
+          username: user.username,
+          attributes: { email_verified: user.attributes.email_verified }
+        }
+      });
     } catch (err) {
       console.error(err);
     }
@@ -104,8 +108,14 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
   async login({ commit }, payload) {
     commit("clearReason", {});
     try {
-      const r = await Auth.signIn(payload.username, payload.password);
-      console.log(r);
+      await Auth.signIn(payload.username, payload.password);
+      const user = await Auth.currentAuthenticatedUser();
+      commit("updateCurrentSession", {
+        session: {
+          username: user.username,
+          attributes: { email_verified: user.attributes.email_verified }
+        }
+      });
     } catch (err) {
       console.error(err);
       commit("loginFailure", { reason: err.message });

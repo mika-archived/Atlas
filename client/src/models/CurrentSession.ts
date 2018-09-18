@@ -1,4 +1,5 @@
 export interface ICurrentSession {
   // TODO: Typing
-  awesome: any;
+  username: string;
+  attributes: { email_verified: boolean };
 }
