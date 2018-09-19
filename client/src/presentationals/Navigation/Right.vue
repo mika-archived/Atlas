@@ -1,0 +1,35 @@
+<template lang="pug">
+  .uk-navbar-right
+    template(v-if="!hasSession")
+      hamburger
+        template(slot-scope="content")
+          li
+            router-link(to="/users/signup") アカウント登録
+          li
+            router-link(to="/users/login") ログイン
+    template(v-else)
+      hamburger
+        template(slot-scope="content")
+          li
+            router-link(to="/upload") 
+              i.fal.fa-upload.fa-fw(class="uk-visible@m")
+              | アップロード
+          li
+            router-link(to="/users/logout") ログアウト
+</template>
+
+<script lang="ts">
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { Getter } from "vuex-class";
+
+import Hamburger from "./Hamburger.vue";
+
+@Component({
+  components: {
+    Hamburger
+  }
+})
+export default class Navigation extends Vue {
+  @Prop() public hasSession!: boolean;
+}
+</script>

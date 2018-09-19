@@ -4,30 +4,22 @@
       .uk-navbar-left
         router-link.uk-navbar-item.uk-logo(to="/")
           img(src="../assets/logo.png" height="40px")
-      .uk-navbar-right
-        template(v-if="!hasSession")
-          ul.uk-navbar-nav
-            li
-              router-link(to="/users/signup") アカウント登録
-            li
-              router-link(to="/users/login") ログイン
-        template(v-else)
-          ul.uk-navbar-nav
-            li
-              router-link(to="/upload") 
-                i.fal.fa-upload.fa-fw
-                | アップロード
-            li
-              router-link(to="/users/logout") ログアウト
+      right(:has-session="hasSession")
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { Action, Getter, State } from "vuex-class";
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { Getter } from "vuex-class";
 
-@Component
+import Right from "../presentationals/Navigation/Right.vue";
+
+@Component({
+  components: {
+    Right
+  }
+})
 export default class Navigation extends Vue {
-  @Getter("hasSession") public hasSession!: boolean;
+  @Prop() public hasSession!: boolean;
 }
 </script>
 
