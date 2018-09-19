@@ -1,3 +1,4 @@
+import NProgress from "nprogress";
 import UIKit from "uikit";
 import Vue from "vue";
 import Router, { RawLocation, Route } from "vue-router";
@@ -60,6 +61,8 @@ Amplify.configure(awsExports);
 
 
 router.beforeEach(async (to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) => {
+  NProgress.start();
+
   if (to.matched.some(record => (record.meta as RouteMeta).auth === "both")) {
     next();
   } else {
@@ -89,6 +92,7 @@ router.beforeEach(async (to: Route, from: Route, next: (to?: RawLocation | false
       }
     }
   }
+  NProgress.done();
 });
 
 export default router;
