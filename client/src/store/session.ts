@@ -76,6 +76,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
       });
     } catch (err) {
       console.error(err);
+      commit("updateCurrentSession", { session: null });
     }
   },
 
