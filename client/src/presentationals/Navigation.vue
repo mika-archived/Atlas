@@ -4,6 +4,12 @@
       .uk-navbar-left
         router-link.uk-navbar-item.uk-logo(to="/")
           img(src="../assets/logo.png" height="40px")
+      .uk-navbar-right
+        ul.uk-navbar-nav
+          li
+            router-link(to="/users/signup") アカウント登録
+          li
+            router-link(to="/users/login") ログイン
 </template>
 
 <style lang="scss" scoped>

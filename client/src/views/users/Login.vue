@@ -45,12 +45,11 @@
 
 <script lang="ts">
 import UIKit from "uikit";
-import { Component, Mixins } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
 import { Action, Getter, State } from "vuex-class";
 
-import { AnonymousUser } from "../../mixins/AnonymousUser";
 import { ActionDescriber, IState } from "../../models/types";
 import { LoginParams } from "../../store/session";
 
@@ -65,7 +64,7 @@ import { LoginParams } from "../../store/session";
     }
   }
 })
-export default class Signup extends Mixins(AnonymousUser) {
+export default class Signup extends Vue {
   public username: string = "";
   public password: string = "";
 
@@ -74,6 +73,8 @@ export default class Signup extends Mixins(AnonymousUser) {
   @State((state: IState) => state.session.reason)
   public reason!: string;
 
+  @Getter("hasSession") public hasSession!: boolean;
+
   public formState(state: any): string {
     return state.$error ? "uk-form-danger" : "uk-form-success";
   }
@@ -81,7 +82,7 @@ export default class Signup extends Mixins(AnonymousUser) {
   public async onClick(): Promise<void> {
     await this.login({ username: this.username, password: this.password });
     if (this.hasSession) {
-      this.$router.push("/");
+      this.$router.push(this.$route.query.redirectTo ? this.$route.query.redirectTo : "/");
     }
   }
 }

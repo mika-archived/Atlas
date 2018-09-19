@@ -33,12 +33,11 @@
 
 <script lang="ts">
 import UIKit from "uikit";
-import { Component, Mixins } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import { validationMixin } from "vuelidate";
-import { email, minLength, required } from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 import { Action, Getter, State } from "vuex-class";
 
-import { AnonymousUser } from "../../mixins/AnonymousUser";
 import { ActionDescriber, IState } from "../../models/types";
 import { VerifyCodeParams } from "../../store/session";
 
@@ -55,7 +54,7 @@ const verifyCode = (value: string): boolean => {
     }
   }
 })
-export default class Confirmation extends Mixins(AnonymousUser) {
+export default class Confirmation extends Vue {
   public code: string = "";
 
   @Action("verifyCode") public verifyCode!: ActionDescriber<VerifyCodeParams>;
