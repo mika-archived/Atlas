@@ -45,12 +45,13 @@
 
 <script lang="ts">
 import UIKit from "uikit";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
 import { Action, Getter, State } from "vuex-class";
 
-import { ActionDescriber, IState, NextFunc, Route } from "../../models/types";
+import { AnonymousUser } from "../../mixins/AnonymousUser";
+import { ActionDescriber, IState } from "../../models/types";
 import { LoginParams } from "../../store/session";
 
 @Component({
@@ -64,15 +65,11 @@ import { LoginParams } from "../../store/session";
     }
   }
 })
-export default class Signup extends Vue {
+export default class Signup extends Mixins(AnonymousUser) {
   public username: string = "";
   public password: string = "";
 
-  @Action("checkCurrentSession") public checkCurrentSession!: () => void;
-
   @Action("login") public login!: ActionDescriber<LoginParams>;
-
-  @Getter("hasSession") public hasSession!: boolean;
 
   @State((state: IState) => state.session.reason)
   public reason!: string;
@@ -86,16 +83,6 @@ export default class Signup extends Vue {
     if (this.hasSession) {
       this.$router.push("/");
     }
-  }
-
-  public beforeRouteEnter(to: Route, from: Route, next: NextFunc<Signup>): any {
-    next(async vm => {
-      await vm.checkCurrentSession();
-      if (vm.hasSession) {
-        UIKit.notification({ message: "すでにログインしています" });
-        vm.$router.push("/");
-      }
-    });
   }
 }
 </script>

@@ -59,12 +59,13 @@
 
 <script lang="ts">
 import UIKit from "uikit";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import { validationMixin } from "vuelidate";
 import { email, minLength, required } from "vuelidate/lib/validators";
 import { Action, Getter, State } from "vuex-class";
 
-import { ActionDescriber, IState, NextFunc, Route } from "../../models/types";
+import { AnonymousUser } from "../../mixins/AnonymousUser";
+import { ActionDescriber, IState } from "../../models/types";
 import { RegisterUserParams } from "../../store/session";
 
 const alphaNumericalSymbols = (value: string): boolean => {
@@ -91,16 +92,12 @@ const alphaNumericalSymbols = (value: string): boolean => {
     }
   }
 })
-export default class Signup extends Vue {
+export default class Signup extends Mixins(AnonymousUser) {
   public username: string = "";
   public email: string = "";
   public password: string = "";
 
-  @Action("checkCurrentSession") public checkCurrentSession!: () => void;
-
   @Action("registerUser") public registerUser!: ActionDescriber<RegisterUserParams>;
-
-  @Getter("hasSession") public hasSession!: boolean;
 
   @State((state: IState) => state.session.isRegisterUserSuccess)
   public isRegisterUserSuccess!: boolean;
@@ -117,16 +114,6 @@ export default class Signup extends Vue {
     if (this.isRegisterUserSuccess) {
       this.$router.push("/users/confirmation");
     }
-  }
-
-  public beforeRouteEnter(to: Route, from: Route, next: NextFunc<Signup>): any {
-    next(async vm => {
-      await vm.checkCurrentSession();
-      if (vm.hasSession) {
-        UIKit.notification({ message: "すでにログインしています" });
-        vm.$router.push("/");
-      }
-    });
   }
 }
 </script>

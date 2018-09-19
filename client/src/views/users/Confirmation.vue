@@ -33,12 +33,13 @@
 
 <script lang="ts">
 import UIKit from "uikit";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import { validationMixin } from "vuelidate";
 import { email, minLength, required } from "vuelidate/lib/validators";
 import { Action, Getter, State } from "vuex-class";
 
-import { ActionDescriber, IState, NextFunc, Route } from "../../models/types";
+import { AnonymousUser } from "../../mixins/AnonymousUser";
+import { ActionDescriber, IState } from "../../models/types";
 import { VerifyCodeParams } from "../../store/session";
 
 const verifyCode = (value: string): boolean => {
@@ -54,14 +55,10 @@ const verifyCode = (value: string): boolean => {
     }
   }
 })
-export default class Confirmation extends Vue {
+export default class Confirmation extends Mixins(AnonymousUser) {
   public code: string = "";
 
-  @Action("checkCurrentSession") public checkCurrentSession!: () => void;
-
   @Action("verifyCode") public verifyCode!: ActionDescriber<VerifyCodeParams>;
-
-  @Getter("hasSession") public hasSession!: boolean;
 
   @State((state: IState) => state.session.isVerifyCodeSuccess)
   public isVerifyCodeSuccess!: boolean;
@@ -78,16 +75,6 @@ export default class Confirmation extends Vue {
     if (this.isVerifyCodeSuccess) {
       this.$router.push("/users/login");
     }
-  }
-
-  public beforeRouteEnter(to: Route, from: Route, next: NextFunc<Confirmation>): any {
-    next(async vm => {
-      await vm.checkCurrentSession();
-      if (vm.hasSession) {
-        UIKit.notification({ message: "すでにログインしています" });
-        vm.$router.push("/");
-      }
-    });
   }
 }
 </script>
