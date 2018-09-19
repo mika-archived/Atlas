@@ -37,6 +37,7 @@ interface ISessionActions {
   registerUser: RegisterUserParams;
   verifyCode: VerifyCodeParams;
   login: LoginParams;
+  logout: {};
 }
 
 interface ISessionGetters {
@@ -120,6 +121,17 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
     } catch (err) {
       console.error(err);
       commit("loginFailure", { reason: err.message });
+    }
+  },
+
+  async logout({ commit }) {
+    commit("clearReason", {});
+    try {
+      await Auth.signOut();
+      commit("updateCurrentSession", { session: null });
+    } catch (err) {
+      console.error(err);
+      // 通る...？
     }
   }
 };

@@ -3,6 +3,8 @@ import UIKit from "uikit";
 import Vue from "vue";
 import Router, { RawLocation, Route } from "vue-router";
 
+import store from "./store";
+
 import Home from "./views/Home.vue";
 
 Vue.use(Router);
@@ -49,6 +51,12 @@ const router = new Router({
       name: "users-login",
       component: () => import(/* webpackChunkName: "users-login" */ "./views/users/Login.vue"),
       meta: { auth: "anonymous" } as RouteMeta
+    },
+    {
+      path: "/users/logout",
+      name: "users-logout",
+      component: () => import(/* webpackChunkName: "users-logout" */ "./views/users/Logout.vue"),
+      meta: { auth: "registered" } as RouteMeta,
     }
   ],
 });
@@ -63,16 +71,12 @@ Amplify.configure(awsExports);
 router.beforeEach(async (to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) => {
   NProgress.start();
 
+  await store.dispatch("checkCurrentSession");
+  const hasSession = store.getters.hasSession;
+
   if (to.matched.some(record => (record.meta as RouteMeta).auth === "both")) {
     next();
   } else {
-    let hasSession = false;
-    try {
-      await Auth.currentAuthenticatedUser();
-      hasSession = true;
-    } catch (err) {
-      //
-    }
     if (to.matched.some(record => (record.meta as RouteMeta).auth === "registered")) {
       if (hasSession) {
         // pass
