@@ -1,8 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import { ISessionState } from "@/store/session";
-
 interface IModules {
   [key: string]: any;
 }
@@ -23,10 +21,3 @@ export default new Vuex.Store({
   modules,
   strict: process.env.NODE_ENV !== "production"
 });
-
-// types
-export interface IState {
-  session: ISessionState;
-}
-
-export type ActionDescriber<T> = (payload: T) => void | Promise<void>;

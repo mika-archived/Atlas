@@ -64,7 +64,7 @@ import { validationMixin } from "vuelidate";
 import { email, minLength, required } from "vuelidate/lib/validators";
 import { Action, Getter, State } from "vuex-class";
 
-import { ActionDescriber, IState } from "../../store";
+import { ActionDescriber, IState, NextFunc, Route } from "../../models/types";
 import { RegisterUserParams } from "../../store/session";
 
 const alphaNumericalSymbols = (value: string): boolean => {
@@ -119,12 +119,14 @@ export default class Signup extends Vue {
     }
   }
 
-  public async created(): Promise<void> {
-    await this.checkCurrentSession();
-    if (this.hasSession) {
-      UIKit.notification({ message: "すでにログインしています" });
-      this.$router.push("/");
-    }
+  public beforeRouteEnter(to: Route, from: Route, next: NextFunc<Signup>): any {
+    next(async vm => {
+      await vm.checkCurrentSession();
+      if (vm.hasSession) {
+        UIKit.notification({ message: "すでにログインしています" });
+        vm.$router.push("/");
+      }
+    });
   }
 }
 </script>
