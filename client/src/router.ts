@@ -61,13 +61,6 @@ const router = new Router({
   ],
 });
 
-import Amplify, { Auth } from "aws-amplify";
-
-import awsExports from "@/models/aws-exports";
-
-Amplify.configure(awsExports);
-
-
 router.beforeEach(async (to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) => {
   NProgress.start();
 
