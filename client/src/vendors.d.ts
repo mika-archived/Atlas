@@ -1,3 +1,9 @@
+declare module "md5" {
+  const exports: any;
+  export default exports;
+}
+
+
 declare module "uikit" {
   const exports: any;
   export default exports;

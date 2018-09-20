@@ -20,7 +20,6 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Getter } from "vuex-class";
 
 import Hamburger from "./Hamburger.vue";
 
@@ -29,7 +28,7 @@ import Hamburger from "./Hamburger.vue";
     Hamburger
   }
 })
-export default class Navigation extends Vue {
+export default class Right extends Vue {
   @Prop() public hasSession!: boolean;
 }
 </script>

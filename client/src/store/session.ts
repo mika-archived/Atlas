@@ -2,7 +2,8 @@ import Amplify, { Auth } from "aws-amplify";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 
 import awsExports from "@/models/aws-exports";
-import { ICurrentSession } from "@/models/CurrentSession";
+import { ISession } from "@/models/session";
+import { Nullable } from "@/models/types";
 
 Amplify.configure(awsExports);
 
@@ -24,7 +25,7 @@ export interface LoginParams {
 }
 
 export interface ISessionState {
-  currentSession: ICurrentSession | null;
+  currentSession: Nullable<ISession>;
   username: string;
   //
   reason: string;
@@ -42,11 +43,12 @@ interface ISessionActions {
 
 interface ISessionGetters {
   hasSession: boolean;
+  getSession: Nullable<ISession>;
 }
 
 interface ISessionMutations {
   updateCurrentSession: {
-    session: ICurrentSession | null;
+    session: Nullable<ISession>;
   };
   clearReason: {};
   registerUserSuccess: { username: string };
@@ -72,7 +74,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
       commit("updateCurrentSession", {
         session: {
           username: user.username,
-          attributes: { email_verified: user.attributes.email_verified }
+          attributes: { email: user.attributes.email, email_verified: user.attributes.email_verified }
         }
       });
     } catch (err) {
@@ -115,7 +117,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
       commit("updateCurrentSession", {
         session: {
           username: user.username,
-          attributes: { email_verified: user.attributes.email_verified }
+          attributes: { email: user.attributes.email, email_verified: user.attributes.email_verified }
         }
       });
     } catch (err) {
@@ -138,6 +140,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
 
 const getters: DefineGetters<ISessionGetters, ISessionState> = {
   hasSession: state => state.currentSession != null,
+  getSession: state => state.currentSession
 };
 
 const mutations: DefineMutations<ISessionMutations, ISessionState> = {

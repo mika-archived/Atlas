@@ -12,6 +12,9 @@ export interface IState {
   session: ISessionState;
 }
 
+// generic
+export type Nullable<T> = T | null;
+
 // vuex action
 export type ActionDescriber<T> = (payload: T) => void | Promise<void>;
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-  #app
+  #app.uk-offcanvas-content
     navigation(:has-session="hasSession")
     router-view
     atlas-footer
