@@ -1,10 +1,9 @@
 <template lang="pug">
-  nav.breadcrumb(aria-label="breadcrumbs")
-    ul
-      li
-        router-link(to="/") Home
-      li(v-for="(hierarchy, idx) in hierarchies" :key="idx")
-        router-link(:to="hierarchy.route" :class="{'is-active': isLast(idx)}") {{hierarchy.name}}
+  ul.uk-breadcrumb(aria-label="breadcrumbs")
+    li
+      router-link(to="/") Home
+    li(v-for="(hierarchy, idx) in hierarchies" :key="idx")
+      router-link(:to="hierarchy.route" :class="{'is-active': isLast(idx)}") {{hierarchy.name}}
 </template>
 
 <script lang="ts">
