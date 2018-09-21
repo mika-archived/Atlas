@@ -77,13 +77,21 @@ router.beforeEach(async (to: Route, from: Route, next: (to?: RawLocation | false
       } else {
         // require login
         next({ path: "/users/login", query: { redirectTo: to.fullPath } });
-        UIKit.notification("ログインする必要があります");
+        UIKit.notification(`
+        <div class="notification is-warning">
+          ログインする必要があります
+        </div>
+        `);
       }
     } else {
       if (hasSession) {
         // require anonymous session
         next({ path: "/" });
-        UIKit.notification("すでにログインしています");
+        UIKit.notification(`
+        <div class="notification is-warning">
+          すでにログインしています
+        </div>
+        `);
       } else {
         next();
       }
