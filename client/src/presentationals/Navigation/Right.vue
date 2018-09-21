@@ -11,7 +11,7 @@
       hamburger
         template(slot-scope="content")
           li
-            router-link(to="/upload") 
+            router-link(to="/files/upload") 
               i.fal.fa-upload.fa-fw(class="uk-visible@m")
               | アップロード
           li

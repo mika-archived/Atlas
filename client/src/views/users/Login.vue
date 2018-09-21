@@ -44,7 +44,6 @@
 </template>
 
 <script lang="ts">
-import UIKit from "uikit";
 import { Component, Vue } from "vue-property-decorator";
 import { validationMixin } from "vuelidate";
 import { required } from "vuelidate/lib/validators";
