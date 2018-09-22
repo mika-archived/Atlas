@@ -8,14 +8,18 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Action, Getter, State } from "vuex-class";
+import { Action } from "vuex-class";
 
+import { ALLOWED_TYPES } from "../models/constants";
 import { ActionDescriber, IState } from "../models/types";
+import { IAddToUploadQueueParams } from "../store/uploader";
 
 // ref: https://codepen.io/nguernse/pen/JyYdNY
 @Component
 export default class GlobalUploader extends Vue {
   public classes: string = "";
+
+  @Action("addToUploadQueue") public AddToUploadQueue!: ActionDescriber<IAddToUploadQueueParams>;
 
   public mounted(): void {
     window.addEventListener("dragenter", this.onDragEnter);
@@ -49,6 +53,14 @@ export default class GlobalUploader extends Vue {
   private onDrop(event: DragEvent) {
     event.preventDefault();
     this.classes = "hidden";
+    const files: File[] = [];
+    for (let i = 0; i < event.dataTransfer.files.length; i++) {
+      const file = event.dataTransfer.files.item(i);
+      if (file != null && ALLOWED_TYPES.indexOf(file.type) >= 0) {
+        files.push(file);
+      }
+    }
+    this.AddToUploadQueue({ files });
   }
 }
 </script>
