@@ -6,10 +6,8 @@
     template(v-if="hasSession")
       global-uploader
       toast(:visible="true")
-        template(slot="header")
-          uploader-header(:uploading="true" :total="totalCountOfFiles" :current="uploadingCount")
-        template(slot="content")
-          p 3個のファイルをアップロードしました
+        uploader-header(slot="header" :uploading="true" :total="totalCountOfFiles" :current="uploadingCount")
+        uploader-content(slot="content" :uploading="false" :files="queuedFiles" :current="uploadingCount")
 </template>
 
 <script lang="ts">
@@ -17,6 +15,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 
 import GlobalUploader from "@/components/GlobalUploader.vue";
+import UploaderContent from "@/components/Uploader/Content.vue";
 import UploaderHeader from "@/components/Uploader/Header.vue";
 import AtlasFooter from "@/presentationals/Footer.vue";
 import Navigation from "@/presentationals/Navigation.vue";
@@ -28,6 +27,7 @@ import Toast from "@/presentationals/Toast.vue";
     GlobalUploader,
     Navigation,
     Toast,
+    UploaderContent,
     UploaderHeader
   }
 })
