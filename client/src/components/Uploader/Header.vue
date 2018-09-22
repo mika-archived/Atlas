@@ -13,8 +13,8 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 @Component
 export default class UploaderHeader extends Vue {
   @Prop() public uploading!: boolean;
-  @Prop() public total!: File[];
-  @Prop() public current!: boolean;
+  @Prop() public total!: number;
+  @Prop() public current!: number;
 }
 </script>
 
