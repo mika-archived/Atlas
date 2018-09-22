@@ -5,21 +5,19 @@
     atlas-footer
     template(v-if="hasSession")
       global-uploader
-      toast(title="Uploading images..." :is-visible="true")
+      toast(:visible="true")
         template(slot="header")
-          p
-            img.icon(src="./assets/cloud2.png" height="20px")
-            | アップロードが完了しました
+          uploader-header(:uploading="true" :total="totalCountOfFiles" :current="uploadingCount")
         template(slot="content")
           p 3個のファイルをアップロードしました
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Component, Vue } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 
 import GlobalUploader from "@/components/GlobalUploader.vue";
+import UploaderHeader from "@/components/Uploader/Header.vue";
 import AtlasFooter from "@/presentationals/Footer.vue";
 import Navigation from "@/presentationals/Navigation.vue";
 import Toast from "@/presentationals/Toast.vue";
@@ -29,17 +27,14 @@ import Toast from "@/presentationals/Toast.vue";
     AtlasFooter,
     GlobalUploader,
     Navigation,
-    Toast
+    Toast,
+    UploaderHeader
   }
 })
 export default class App extends Vue {
   @Getter("hasSession") public hasSession!: boolean;
+  @Getter("queuedFiles") public queuedFiles!: File[];
+  @Getter("totalCountOfFiles") public totalCountOfFiles!: number;
+  @Getter("uploadingCount") public uploadingCount!: number;
 }
 </script>
-
-<style lang="scss" scoped>
-.icon {
-  margin: 0 5px 0 0;
-  height: 32px;
-}
-</style>
