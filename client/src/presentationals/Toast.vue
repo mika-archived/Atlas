@@ -2,10 +2,10 @@
   .toast(:class="classes")
     .message.is-info
       .message-header
-        p {{title}}
+        slot(name="header")
         button.delete(aria-label="delete" @click="onClose")
       .message-body
-        slot(body)
+        slot(name="content")
 </template>
 
 <script lang="ts">
@@ -13,7 +13,6 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class Toast extends Vue {
-  @Prop() public title!: string;
   @Prop() public isVisible!: boolean;
 
   public classes: string = "hidden";
@@ -37,6 +36,8 @@ export default class Toast extends Vue {
   left: 20px;
   bottom: 20px;
   z-index: 1000;
+
+  box-shadow: 2.5px 5px 10px 2.5px rgba(0, 0, 0, 0.25);
 
   p {
     margin: 0;

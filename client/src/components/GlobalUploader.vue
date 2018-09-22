@@ -2,7 +2,7 @@
   .uploader.uk-overlay.uk-overlay-primary.uk-inline(:class="classes")
     .uk-position-center
       .uk-text-center
-        img(src="../assets/cloud.png")
+        img(src="../assets/cloud1.png")
         h3 ここにドロップしてアップロード
 </template>
 
