@@ -2,7 +2,7 @@
   p
     img.icon(src="../../assets/cloud2.png" height="20px")
     template(v-if="uploading")
-      | {{total}} 個中 {{current}} 個目の画像をアップロードしています...
+      | アップロード中... {{current}}枚 / {{total}}枚
     template(v-else)
       | アップロードが完了しました
 </template>

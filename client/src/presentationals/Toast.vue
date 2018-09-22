@@ -33,10 +33,16 @@ export default class Toast extends Vue {
 <style lang="scss" scoped>
 .toast {
   position: fixed;
-  left: 20px;
-  bottom: 20px;
+  left: 0px;
+  bottom: 0px;
   z-index: 1000;
+  max-width: 100%;
+  width: 350px;
 
+  @media (min-width: 380px) {
+    left: 20px;
+    bottom: 20px;
+  }
   box-shadow: 2.5px 5px 10px 2.5px rgba(0, 0, 0, 0.25);
 
   p {
