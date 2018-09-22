@@ -1,9 +1,9 @@
 <template lang="pug">
   .uploader.uk-overlay.uk-overlay-primary.uk-inline(:class="classes")
-      .uk-position-center
-        .uk-text-center
-          img(src="../assets/cloud.png")
-          h3 ここにドロップしてアップロード
+    .uk-position-center
+      .uk-text-center
+        img(src="../assets/cloud.png")
+        h3 ここにドロップしてアップロード
 </template>
 
 <script lang="ts">
