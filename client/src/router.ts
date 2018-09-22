@@ -66,6 +66,9 @@ router.beforeEach(async (to: Route, from: Route, next: (to?: RawLocation | false
 
   await store.dispatch("checkCurrentSession");
   const hasSession = store.getters.hasSession;
+  if (store.getters.currentVersions.length === 0) {
+    await store.dispatch("getCurrentVersions");
+  }
 
   if (to.matched.some(record => (record.meta as RouteMeta).auth === "both")) {
     next();
