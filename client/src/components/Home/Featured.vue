@@ -38,7 +38,6 @@
             | 全ての人が無料で、一切の機能を制限されることなく使うことができます。
 </template>
 
-
 <style lang="scss" scoped>
 .hero {
   p {

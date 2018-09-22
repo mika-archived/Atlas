@@ -3,7 +3,6 @@ import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper"
 
 import awsExports from "@/models/aws-exports";
 import { API_NAME } from "@/models/constants";
-import { Nullable } from "@/models/types";
 
 Amplify.configure(awsExports);
 
@@ -34,8 +33,8 @@ const state: IVersionState = {
 const actions: DefineActions<IVersionActions, IVersionState, IVersionMutations, IVersionGetters> = {
   async getCurrentVersions({ commit }) {
     try {
-      const json = await API.get(API_NAME, "/versions", {});
-      commit("updateCurrent", { current: json.versions });
+      const response = await API.get(API_NAME, "/versions", {});
+      commit("updateCurrent", { current: response.versions });
     } catch (err) {
       console.warn(err);
     }

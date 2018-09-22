@@ -13,9 +13,9 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component
 export default class Toast extends Vue {
-  @Prop() public isVisible!: boolean;
+  @Prop() public visible!: boolean;
 
-  public classes: string = "hidden";
+  public classes: string = "toast-visible";
 
   @Watch("isVisible")
   public onIsVisibleChanged(val: boolean, oldVal: boolean): void {
