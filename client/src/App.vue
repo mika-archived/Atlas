@@ -6,8 +6,12 @@
     template(v-if="hasSession")
       global-uploader
       toast(title="Uploading images..." :is-visible="true")
-        template(slot-scope="content")
-          p アップロードしています...
+        template(slot="header")
+          p
+            img.icon(src="./assets/cloud2.png" height="20px")
+            | アップロードが完了しました
+        template(slot="content")
+          p 3個のファイルをアップロードしました
 </template>
 
 <script lang="ts">
@@ -32,3 +36,10 @@ export default class App extends Vue {
   @Getter("hasSession") public hasSession!: boolean;
 }
 </script>
+
+<style lang="scss" scoped>
+.icon {
+  margin: 0 5px 0 0;
+  height: 32px;
+}
+</style>
