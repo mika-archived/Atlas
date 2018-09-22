@@ -78,7 +78,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
         }
       });
     } catch (err) {
-      console.error(err);
+      console.warn(err);
       commit("updateCurrentSession", { session: null });
     }
   },
@@ -93,7 +93,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
       });
       commit("registerUserSuccess", { username: payload.username });
     } catch (err) {
-      console.error(err);
+      console.warn(err);
       commit("registerUserFailure", { reason: err.message });
     }
   },
@@ -104,7 +104,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
       await Auth.confirmSignUp(state.username, payload.code);
       commit("verifyCodeSuccess", {});
     } catch (err) {
-      console.error(err);
+      console.warn(err);
       commit("verifyCodeFailure", { reason: err.message });
     }
   },
@@ -121,7 +121,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
         }
       });
     } catch (err) {
-      console.error(err);
+      console.warn(err);
       commit("loginFailure", { reason: err.message });
     }
   },
@@ -132,7 +132,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
       await Auth.signOut();
       commit("updateCurrentSession", { session: null });
     } catch (err) {
-      console.error(err);
+      console.warn(err);
       // 通る...？
     }
   }
