@@ -37,9 +37,9 @@ export default class Toast extends Vue {
   bottom: 0px;
   z-index: 1000;
   max-width: 100%;
-  width: 350px;
+  width: 440px;
 
-  @media (min-width: 380px) {
+  @media (min-width: 440px) {
     left: 20px;
     bottom: 20px;
   }
@@ -55,6 +55,11 @@ export default class Toast extends Vue {
 
   &-hidden {
     opacity: 0;
+  }
+
+  .message-body {
+    max-height: 150px;
+    overflow-y: scroll;
   }
 }
 </style>
