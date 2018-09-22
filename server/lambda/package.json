@@ -1,0 +1,17 @@
+{
+  "name": "atlas-server",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc "
+  },
+  "dependencies": {
+    "aws-sdk": "^2.320.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.13",
+    "@types/request": "^2.47.1",
+    "request": "^2.88.0",
+    "typescript": "^3.0.3"
+  }
+}
