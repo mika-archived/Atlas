@@ -1,6 +1,6 @@
 import { APIGatewayEvent } from "aws-lambda";
 
-import { IResponse } from "../shared/types";
+import { IResponse } from "../../shared/types";
 
 exports.handler = async (event: APIGatewayEvent) => {
   const response = {

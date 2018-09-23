@@ -55,7 +55,7 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
     try {
       state.files.forEach(async (file, idx) => {
         commit("updateUploadingCount", { count: idx + 1 });
-        const response = await API.post(API_NAME, "/images/upload", {});
+        const response = await API.post(API_NAME, "/images", {});
         console.log(response);
       });
       commit("clearUploadQueue", {});

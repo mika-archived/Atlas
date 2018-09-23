@@ -20,6 +20,7 @@ export default class GlobalUploader extends Vue {
   public classes: string = "";
 
   @Action("addToUploadQueue") public AddToUploadQueue!: ActionDescriber<IAddToUploadQueueParams>;
+  @Action("upload") public upload!: () => void;
 
   public mounted(): void {
     window.addEventListener("dragenter", this.onDragEnter);
@@ -61,6 +62,7 @@ export default class GlobalUploader extends Vue {
       }
     }
     this.AddToUploadQueue({ files });
+    this.upload();
   }
 }
 </script>
