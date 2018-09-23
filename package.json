@@ -2,7 +2,7 @@
   "private": true,
   "workspaces": [
     "client",
-    "server/cloudformation",
+    "serverless",
     "server/lambda"
   ]
 }
