@@ -42,6 +42,7 @@ interface ISessionActions {
   veridyCredential: {};
   login: LoginParams;
   logout: {};
+  clearSessionFailReason: {};
 }
 
 interface ISessionGetters {
@@ -155,6 +156,10 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
       console.warn(err);
       // 通る...？
     }
+  },
+
+  clearSessionFailReason({ commit }) {
+    commit("clearReason", {});
   }
 };
 

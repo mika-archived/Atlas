@@ -37,25 +37,25 @@ const router = new Router({
     {
       path: "/users/signup",
       name: "users-signup",
-      component: () => import(/* webpackChunkName: "users-signup" */ "./views/users/Signup.vue"),
+      component: () => import(/* webpackChunkName: "users/signup" */ "./views/users/Signup.vue"),
       meta: { auth: "anonymous" } as RouteMeta
     },
     {
       path: "/users/confirmation",
       name: "users-confirmation",
-      component: () => import(/* webpackChunkName: "users-confirm" */ "./views/users/Confirmation.vue"),
+      component: () => import(/* webpackChunkName: "users/confirm" */ "./views/users/Confirmation.vue"),
       meta: { auth: "anonymous" } as RouteMeta
     },
     {
       path: "/users/login",
       name: "users-login",
-      component: () => import(/* webpackChunkName: "users-login" */ "./views/users/Login.vue"),
+      component: () => import(/* webpackChunkName: "users/login" */ "./views/users/Login.vue"),
       meta: { auth: "anonymous" } as RouteMeta
     },
     {
       path: "/users/logout",
       name: "users-logout",
-      component: () => import(/* webpackChunkName: "users-logout" */ "./views/users/Logout.vue"),
+      component: () => import(/* webpackChunkName: "users/logout" */ "./views/users/Logout.vue"),
       meta: { auth: "registered" } as RouteMeta,
     }
   ],
@@ -65,6 +65,7 @@ router.beforeEach(async (to: Route, from: Route, next: (to?: RawLocation | false
   NProgress.start();
 
   await store.dispatch("checkCurrentSession");
+  await store.dispatch("clearSessionFailReason");
   const hasSession = store.getters.hasSession;
   if (store.getters.currentVersions.length === 0) {
     await store.dispatch("getCurrentVersions");
