@@ -35,6 +35,12 @@ const router = new Router({
       meta: { auth: "both" } as RouteMeta
     },
     {
+      path: "/tos",
+      name: "tos",
+      component: () => import(/* webpackChunkName: "tos" */ "./views/Tos.vue"),
+      meta: { auth: "both" } as RouteMeta,
+    },
+    {
       path: "/users/signup",
       name: "users-signup",
       component: () => import(/* webpackChunkName: "users/signup" */ "./views/users/Signup.vue"),
