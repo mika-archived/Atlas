@@ -79,6 +79,37 @@
     "@aws-cdk/cdk" "^0.9.2"
     "@aws-cdk/cx-api" "^0.9.2"
 
+"@aws-cdk/aws-apigateway@^0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-apigateway/-/aws-apigateway-0.9.2.tgz#15ab2339981635a7eb29eb5d7cac1c64cf294a2e"
+  dependencies:
+    "@aws-cdk/aws-iam" "^0.9.2"
+    "@aws-cdk/aws-lambda" "^0.9.2"
+    "@aws-cdk/cdk" "^0.9.2"
+
+"@aws-cdk/aws-applicationautoscaling@^0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-applicationautoscaling/-/aws-applicationautoscaling-0.9.2.tgz#af2fd29f10ddd00f6b0ca31c01fe2df1edc7a96f"
+  dependencies:
+    "@aws-cdk/cdk" "^0.9.2"
+
+"@aws-cdk/aws-certificatemanager@^0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-certificatemanager/-/aws-certificatemanager-0.9.2.tgz#095458dfe028acd65ddc0400508fd94227b1075d"
+  dependencies:
+    "@aws-cdk/aws-iam" "^0.9.2"
+    "@aws-cdk/cdk" "^0.9.2"
+
+"@aws-cdk/aws-cloudfront@^0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cloudfront/-/aws-cloudfront-0.9.2.tgz#452c8903be0465c2f96ae854d7a7acb01cd7e7f5"
+  dependencies:
+    "@aws-cdk/aws-certificatemanager" "^0.9.2"
+    "@aws-cdk/aws-iam" "^0.9.2"
+    "@aws-cdk/aws-kms" "^0.9.2"
+    "@aws-cdk/aws-s3" "^0.9.2"
+    "@aws-cdk/cdk" "^0.9.2"
+
 "@aws-cdk/aws-cloudwatch@^0.9.2":
   version "0.9.2"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cloudwatch/-/aws-cloudwatch-0.9.2.tgz#c3cc45946ab593f4081793dc6511a881eee92b8f"
@@ -94,6 +125,20 @@
     "@aws-cdk/aws-iam" "^0.9.2"
     "@aws-cdk/cdk" "^0.9.2"
     "@aws-cdk/util" "^0.9.2"
+
+"@aws-cdk/aws-cognito@^0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cognito/-/aws-cognito-0.9.2.tgz#de8d394f6d865a2d7928cbf8cf71a4a3f5c09f1e"
+  dependencies:
+    "@aws-cdk/cdk" "^0.9.2"
+
+"@aws-cdk/aws-dynamodb@^0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-dynamodb/-/aws-dynamodb-0.9.2.tgz#c25b50f0bbc3779838b85022bcb79b698aac4ce3"
+  dependencies:
+    "@aws-cdk/aws-applicationautoscaling" "^0.9.2"
+    "@aws-cdk/aws-iam" "^0.9.2"
+    "@aws-cdk/cdk" "^0.9.2"
 
 "@aws-cdk/aws-ec2@^0.9.2":
   version "0.9.2"
@@ -162,6 +207,12 @@
     "@aws-cdk/aws-iam" "^0.9.2"
     "@aws-cdk/aws-kms" "^0.9.2"
     "@aws-cdk/aws-s3-notifications" "^0.9.2"
+    "@aws-cdk/cdk" "^0.9.2"
+
+"@aws-cdk/aws-ses@^0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-ses/-/aws-ses-0.9.2.tgz#38639a97d33e6dc460c9c4b38530e9ee9b7c6fe7"
+  dependencies:
     "@aws-cdk/cdk" "^0.9.2"
 
 "@aws-cdk/aws-sns@^0.9.2":
