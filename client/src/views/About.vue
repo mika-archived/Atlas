@@ -2,9 +2,20 @@
   .uk-container
     breadcrumb
     section
-      h1 About Atlas
+      h1 Atlas について
       p
-        | About page
+        | Atlas は、イラストなどの画像をクラウド上でより便利に管理するための Web アプリケーションです。
+        br
+        | Google Photo や Amazon Prime Photo 等のように、画像の保存が無制限...という訳ではありませんが、
+        | Altas ではイラストに重きを置いて開発を行っています。
+        br
+        | タグベースの検索やエンコードを行わないこと、自由なアクセス制限など、多くの機能を備えています。
+
+      h2 使用料金について
+      p
+        | Atlas は現在 Beta 版のため、ご利用に関して使用料金は頂いておりません。
+        br
+        | しかしながら、現在利用頂いている機能については、正式版以降も無料で使い続けることが可能です。
 </template>
 
 <script lang="ts">

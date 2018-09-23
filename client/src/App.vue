@@ -2,7 +2,8 @@
   #app.uk-offcanvas-content
     navigation(:has-session="hasSession")
     router-view
-    atlas-footer
+    .footer
+      atlas-footer
     template(v-if="hasSession")
       global-uploader
       toast(:visible="true")
@@ -38,3 +39,15 @@ export default class App extends Vue {
   @Getter("uploadingCount") public uploadingCount!: number;
 }
 </script>
+
+<style lang="scss" scoped>
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.footer {
+  margin-top: auto;
+}
+</style>
