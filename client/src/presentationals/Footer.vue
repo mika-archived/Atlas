@@ -12,7 +12,7 @@
             | Source code is available under the 
             a(href="https://opensource.org/licenses/mit-license.php" target="_blank") MIT License
             | .
-          p Project Aria &copy; 2018
+          p Aria Network &copy; 2018
         div(class="uk-width-1-2@s")
           p
             router-link(to="/about") このサービスについて
