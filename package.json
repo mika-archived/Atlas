@@ -2,7 +2,6 @@
   "private": true,
   "workspaces": [
     "client",
-    "serverless",
     "server/lambda"
   ]
 }
