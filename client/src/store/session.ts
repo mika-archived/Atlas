@@ -1,7 +1,8 @@
-import Amplify, { Auth } from "aws-amplify";
+import Amplify, { API, Auth } from "aws-amplify";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 
 import awsExports from "@/models/aws-exports";
+import { API_NAME } from "@/models/constants";
 import { ISession } from "@/models/session";
 import { Nullable } from "@/models/types";
 
@@ -31,12 +32,14 @@ export interface ISessionState {
   reason: string;
   isRegisterUserSuccess: boolean;
   isVerifyCodeSuccess: boolean;
+  isVerifyCredentialSuccess: boolean;
 }
 
 interface ISessionActions {
   checkCurrentSession: {};
   registerUser: RegisterUserParams;
   verifyCode: VerifyCodeParams;
+  veridyCredential: {};
   login: LoginParams;
   logout: {};
 }
@@ -55,6 +58,8 @@ interface ISessionMutations {
   registerUserFailure: { reason: string };
   verifyCodeSuccess: {};
   verifyCodeFailure: { reason: string };
+  verifyCredentialSuccess: {};
+  verifyCredentialFailure: { reason: string };
   loginSuccess: {};
   loginFailure: { reason: string };
 }
@@ -65,6 +70,7 @@ const state: ISessionState = {
   reason: "",
   isRegisterUserSuccess: false,
   isVerifyCodeSuccess: false,
+  isVerifyCredentialSuccess: false
 };
 
 const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, ISessionGetters> = {
@@ -106,6 +112,20 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
     } catch (err) {
       console.warn(err);
       commit("verifyCodeFailure", { reason: err.message });
+    }
+  },
+
+  async veridyCredential({ commit }) {
+    try {
+      const response = await API.get(API_NAME, "/users/verify", {});
+      if (response.message === "ok") {
+        commit("verifyCredentialSuccess", {});
+      } else {
+        commit("verifyCredentialFailure", { reason: "Invalid response" });
+      }
+    } catch (err) {
+      console.warn(err);
+      commit("verifyCredentialFailure", { reason: err.message });
     }
   },
 
@@ -164,6 +184,13 @@ const mutations: DefineMutations<ISessionMutations, ISessionState> = {
   verifyCodeFailure(state, { reason }) {
     state.reason = reason;
     state.isVerifyCodeSuccess = false;
+  },
+  verifyCredentialSuccess(state, { }) {
+    state.isVerifyCredentialSuccess = true;
+  },
+  verifyCredentialFailure(state, { reason }) {
+    state.reason = reason;
+    state.isVerifyCredentialSuccess = false;
   },
   loginSuccess(state, { }) {
     // Nothing to do
