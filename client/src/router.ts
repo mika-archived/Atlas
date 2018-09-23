@@ -63,6 +63,12 @@ const router = new Router({
       name: "users-logout",
       component: () => import(/* webpackChunkName: "users/logout" */ "./views/users/Logout.vue"),
       meta: { auth: "registered" } as RouteMeta,
+    },
+    {
+      path: "*",
+      name: "404",
+      component: () => import(/* webpackChunkName: "404" */ "./views/404.vue"),
+      meta: { auth: "both" } as RouteMeta
     }
   ],
 });
