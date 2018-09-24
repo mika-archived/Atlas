@@ -21,7 +21,7 @@ export default class UploaderContent extends Vue {
   @Prop() public files!: FileWrapper[];
 
   public get total(): number {
-    return this.files.length;
+    return this.files.filter(w => w.state === UploadState.UPLOADED).length;
   }
 
   public get uploadedFiles(): FileWrapper[] {
