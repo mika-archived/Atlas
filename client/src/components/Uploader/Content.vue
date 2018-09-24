@@ -5,12 +5,16 @@
         | アップロードしています :&nbsp;
         b {{currentFile()}}
     template(v-else)
-      p {{total}} 個の画像のアップロードが完了しました
-      .uk-child-width-1-10.uk-grid-collapse(uk-grid)
-        div(v-for="(file, idx) in uploadedFiles" :key="idx")
-          img(:src="asBlob(file)")
-</template>
-
+      template(v-if="uploadedFiles.length > 0")
+        p {{uploadedFiles.length}} 枚のアップロードが完了しました
+        .uk-child-width-1-10.uk-grid-collapse(uk-grid)
+          div(v-for="(file, idx) in uploadedFiles" :key="idx")
+            img(:src="asBlob(file)")
+      template(v-if="failedFiles.length > 0")
+        p {{failedFiles.length}} 枚のアップロードに失敗しました
+        .uk-child-width-1-10.uk-grid-collapse(uk-grid)
+          div(v-for="(file, idx) in failedFiles" :key="idx")
+            img(:src="asBlob(file)")</template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
@@ -27,6 +31,10 @@ export default class UploaderContent extends Vue {
 
   public get uploadedFiles(): FileWrapper[] {
     return this.files.filter(w => w.state === UploadState.UPLOADED);
+  }
+
+  public get failedFiles(): FileWrapper[] {
+    return this.files.filter(w => w.state === UploadState.FAILED);
   }
 
   public currentFile(): string {
