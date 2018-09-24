@@ -10,22 +10,19 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+import { Action } from "vuex-class";
 
 @Component
 export default class Toast extends Vue {
   @Prop() public visible!: boolean;
+  @Action("hideUploaderToast") public hideUploaderToast!: () => void;
 
-  public classes: string = "toast-visible";
-
-  @Watch("isVisible")
-  public onIsVisibleChanged(val: boolean, oldVal: boolean): void {
-    if (val) {
-      this.classes = "toast-visible";
-    }
+  public get classes() {
+    return this.visible ? "toast-visible" : "toast-hidden";
   }
 
   public onClose(): void {
-    this.classes = "toast-hidden";
+    this.hideUploaderToast();
   }
 }
 </script>

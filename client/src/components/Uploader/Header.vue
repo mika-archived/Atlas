@@ -8,13 +8,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+import { FileWrapper, UploadState } from "../../models/FileWrapper";
 
 @Component
 export default class UploaderHeader extends Vue {
+  public current: number = 1;
   @Prop() public uploading!: boolean;
-  @Prop() public total!: number;
-  @Prop() public current!: number;
+  @Prop() public files!: FileWrapper[];
+
+  public get total(): number {
+    return this.files.length;
+  }
+
+  @Watch("files")
+  public onFilesChanged(newValue: FileWrapper[], oldValue: FileWrapper[]): void {
+    this.current = newValue.filter(w => w.state !== UploadState.QUEUED).length;
+    // this.$forceUpdate();
+  }
 }
 </script>
 

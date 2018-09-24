@@ -1,9 +1,10 @@
 import Amplify, { API } from "aws-amplify";
+import Vue from "vue";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 
 import awsExports from "@/models/aws-exports";
-import { encode } from "@/models/base64";
 import { API_NAME } from "@/models/constants";
+import { FileWrapper, UploadState } from "@/models/FileWrapper";
 
 Amplify.configure(awsExports);
 
@@ -14,84 +15,99 @@ export interface IAddToUploadQueueParams {
 }
 
 export interface IUploaderState {
-  files: File[];
+  workingFiles: FileWrapper[];
   uploading: boolean;
-  uploadedOf: number;
+  visibleToast: boolean;
 }
 
 interface IUploaderActions {
-  addToUploadQueue: IAddToUploadQueueParams;
+  addToWorkingFiles: IAddToUploadQueueParams;
   upload: {};
+  clearWorkingFiles: {};
+  hideUploaderToast: {};
 }
 
 interface IUploaderGetters {
   isUploading: boolean;
-  totalCountOfFiles: number;
-  uploadingCount: number;
-  queuedFiles: File[];
+  isVisibleToast: boolean;
+  workingFiles: FileWrapper[];
 }
 
 interface IUploaderMutations {
-  addToUploadQueue: { file: File };
+  addToUploadQueue: { fw: FileWrapper };
   clearUploadQueue: {};
   toggleUploadingState: { uploading: boolean };
-  updateUploadingCount: { count: number };
+  markAs: { index: number, sts: UploadState };
+  toggleToastVisibility: { visible: boolean };
 }
 
 const state: IUploaderState = {
-  files: [],
   uploading: false,
-  uploadedOf: 0,
+  workingFiles: [],
+  visibleToast: false,
 };
 
 const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutations, IUploaderGetters> = {
-  addToUploadQueue({ commit }, payload) {
+  async addToWorkingFiles({ commit }, payload) {
     payload.files.forEach(file => {
-      commit("addToUploadQueue", { file });
+      commit("addToUploadQueue", { fw: new FileWrapper(file) });
     });
-    commit("toggleUploadingState", { uploading: true });
   },
   async upload({ commit, state }) {
-    // Nothing to do
-    try {
-      state.files.forEach(async (file, idx) => {
-        commit("updateUploadingCount", { count: idx + 1 });
-        const response = await API.post(API_NAME, "/images", {
+    commit("toggleToastVisibility", { visible: true });
+    commit("toggleUploadingState", { uploading: true });
+    let idx = 0;
+    for (const file of state.workingFiles) {
+      const index = idx++;
+      commit("markAs", { index, sts: UploadState.UPLOADING });
+      try {
+        await API.post(API_NAME, "/images", {
           body: {
             // なんかバイナリデータは直接 S3 に投げる想定らしい
-            image: await encode(file),
+            image: await file.asBase64(),
             restrict: "private"
           },
         });
-        console.log(response);
-      });
-      commit("clearUploadQueue", {});
-      commit("toggleUploadingState", { uploading: false });
-    } catch (err) {
-      console.warn(err);
+        commit("markAs", { index, sts: UploadState.UPLOADED });
+      } catch (err) {
+        console.warn(err);
+        commit("markAs", { index, sts: UploadState.FAILED });
+      }
     }
+    commit("toggleUploadingState", { uploading: false });
+  },
+  async clearWorkingFiles({ commit }) {
+    commit("clearUploadQueue", {});
+  },
+  async hideUploaderToast({ commit }) {
+    commit("toggleToastVisibility", { visible: false });
+    commit("clearUploadQueue", {});
   }
 };
 
 const getters: DefineGetters<IUploaderGetters, IUploaderState> = {
   isUploading: state => state.uploading,
-  queuedFiles: state => state.files,
-  totalCountOfFiles: state => state.files.length,
-  uploadingCount: state => state.uploadedOf,
+  workingFiles: state => state.workingFiles,
+  isVisibleToast: state => state.visibleToast,
 };
 
 const mutations: DefineMutations<IUploaderMutations, IUploaderState> = {
-  addToUploadQueue(state, { file }) {
-    state.files.push(file);
+  addToUploadQueue(state, { fw }) {
+    state.workingFiles.push(fw);
   },
   clearUploadQueue(state) {
-    state.files = [];
+    state.workingFiles = [];
+  },
+  markAs(state, { index, sts }) {
+    const fw = state.workingFiles[index];
+    fw.markAs(sts);
+    Vue.set(state.workingFiles, index, fw);
   },
   toggleUploadingState(state, { uploading }) {
     state.uploading = uploading;
   },
-  updateUploadingCount(state, { count }) {
-    state.uploadedOf = count;
+  toggleToastVisibility(state, { visible }) {
+    state.visibleToast = visible;
   }
 };
 

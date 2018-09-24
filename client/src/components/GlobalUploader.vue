@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Action } from "vuex-class";
+import { Action, State } from "vuex-class";
 
 import { ALLOWED_TYPES } from "../models/constants";
 import { ActionDescriber, IState } from "../models/types";
@@ -19,8 +19,10 @@ import { IAddToUploadQueueParams } from "../store/uploader";
 export default class GlobalUploader extends Vue {
   public classes: string = "";
 
-  @Action("addToUploadQueue") public AddToUploadQueue!: ActionDescriber<IAddToUploadQueueParams>;
+  @Action("addToWorkingFiles") public addToWorkingFiles!: ActionDescriber<IAddToUploadQueueParams>;
+  @Action("clearWorkingFiles") public clearWorkingFiles!: () => void;
   @Action("upload") public upload!: () => void;
+  @State("isUploading") public isUploading!: boolean;
 
   public mounted(): void {
     window.addEventListener("dragenter", this.onDragEnter);
@@ -61,7 +63,9 @@ export default class GlobalUploader extends Vue {
         files.push(file);
       }
     }
-    this.AddToUploadQueue({ files });
+    // アップロード中ならそのまま加える、それ以外の場合は clear する
+    this.clearWorkingFiles();
+    this.addToWorkingFiles({ files });
     this.upload();
   }
 }
