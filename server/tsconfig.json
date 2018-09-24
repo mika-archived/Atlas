@@ -15,7 +15,12 @@
       "dom",
       "dom.iterable",
       "scripthost"
-    ]
+    ],
+    "paths": {
+      "@/*": [
+        "shared/*"
+      ]
+    },
   },
   "exclude": [
     "node_modules"

@@ -1,11 +1,11 @@
 import { APIGatewayEvent } from "aws-lambda";
 
-import { IResponse } from "../shared/types";
+import { IResponse } from "@/types";
 
 exports.handler = async (event: APIGatewayEvent) => {
   const response = {
     body: JSON.stringify({
-      versions: ["v1"]
+      message: ["ok"]
     }),
     headers: {
       "access-control-allow-credentials": "true",

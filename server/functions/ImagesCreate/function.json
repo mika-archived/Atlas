@@ -1,0 +1,4 @@
+{
+  "description": "POST /images; 画像を S3 へ保存し、 DynamoDB へレコードを書き込みます。",
+  "timeout": 5
+}

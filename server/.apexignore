@@ -1,0 +1,10 @@
+# Per Directory
+src/
+node_modules/
+package.json
+
+# Root
+tsconfig.json
+.gitignore
+README.md
+yarn.lock

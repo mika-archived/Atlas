@@ -1,0 +1,4 @@
+{
+  "description": "GET /users/verify; Atlas ユーザー認証が成功しているかどうかを検証します。",
+  "timeout": 1
+}
