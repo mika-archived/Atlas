@@ -7,11 +7,14 @@
   },
   "dependencies": {
     "aws-sdk": "^2.320.0",
+    "gm": "^1.23.1",
     "source-map-support": "^0.5.9",
+    "spawn-sync": "^2.0.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.13",
+    "@types/gm": "^1.18.0",
     "@types/imagemagick": "^0.0.30",
     "@types/uuid": "^3.4.4",
     "ts-loader": "^5.2.0",

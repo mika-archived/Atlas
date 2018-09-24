@@ -1,22 +1,29 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { DynamoDB, S3 } from "aws-sdk";
 import * as fs from "fs";
-import * as im from "imagemagick";
+import * as gm from "gm";
 import { v4 as uuid } from 'uuid';
 
 import { createResponse } from "@/response";
 
+const im = gm.subClass({ imageMagick: true });
+
 const regex = new RegExp(/data:image\/([a-z]+);base64,(.*)/);
 
-function resize(options: any): Promise<any> {
+function resize(filename: string, buffer: Buffer, options: gm.ResizeOption): Promise<void> {
   return new Promise((resolve, reject) => {
-    im.resize(options, (err, res) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(res);
-      }
-    });
+    im(buffer)
+      .limit("memory", "96MB")
+      .limit("disk", "0")
+      .autoOrient()
+      .resize(350, 350)
+      .write(filename, (err, stdout, stderr, cmd) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
   });
 }
 
@@ -34,29 +41,13 @@ exports.handler = async (event: APIGatewayEvent) => {
   const extension = matches[1];
   const storageId = uuid();
 
-  // write to tmp directory
-  const srcPath = `/tmp/${uuid()}.${extension}`;
-  const buffer = new Buffer(matches[2], "base64");
-  fs.writeFileSync(srcPath, buffer);
-
   // resize image (max 350x350)
-  const args = {
-    srcPath,
-    dstPath: `/tmp/${storageId}.${extension}`,
-    height: 350,
-    width: 350,
-    customArgs: [
-      "-auto-orient",
-      "-limit memory 96MB",
-      "-limit disk 0"
-    ]
-  };
+  const destTo = `/tmp/${storageId}.${extension}`
+  await resize(destTo, new Buffer(matches[2], "base64"), {} as gm.ResizeOption);
 
-  await resize(args);
-
-  const img = new Buffer(fs.readFileSync(args.dstPath)).toString("base64");
+  const img = new Buffer(fs.readFileSync(destTo)).toString("base64");
   try {
-    fs.unlinkSync(args.dstPath);
+    fs.unlinkSync(destTo);
   } catch {
     // ignore
   }
