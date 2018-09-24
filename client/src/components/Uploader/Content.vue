@@ -1,8 +1,9 @@
 <template lang="pug">
-  p
+  div
     template(v-if="uploading")
-      | アップロードしています...&nbsp;
-      b {{currentFile()}}
+      .single
+        | アップロードしています :&nbsp;
+        b {{currentFile()}}
     template(v-else)
       p {{total}} 個の画像のアップロードが完了しました
       .uk-child-width-1-10.uk-grid-collapse(uk-grid)
@@ -43,6 +44,12 @@ export default class UploaderContent extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.single {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .uk-child-width-1-10 > * {
   width: calc(100% * 1 / 10);
 
