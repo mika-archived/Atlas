@@ -30,12 +30,12 @@
 
 ### Parameters
 
-| Key          | Required | Default   | Value                                          | Example     |
-| ------------ | -------- | --------- | ---------------------------------------------- | ----------- |
-| `image`      | Yes      | NA        | Image binary data                              | N/A         |
-| `attributes` | No       | `[]`      | Comma-separated tags                           | `tag1,tag2` |
-| `restrict`   | No       | `private` | `public`, `registered`, `allowed` or `private` | `private`   |
-| `allowed`    | No       | `[]`      | Commma-separated UserIDs that allow access     | `mika,aki`  |
+| Key           | Required | Default   | Value                                          | Example     |
+| ------------- | -------- | --------- | ---------------------------------------------- | ----------- |
+| `base64Image` | Yes      | NA        | Base64 encoded binary data                     | N/A         |
+| `attributes`  | No       | `[]`      | Comma-separated tags                           | `tag1,tag2` |
+| `restrict`    | No       | `private` | `public`, `registered`, `allowed` or `private` | `private`   |
+| `allowed`     | No       | `[]`      | Commma-separated UserIDs that allow access     | `mika,aki`  |
 
 
 ### Response
@@ -47,7 +47,7 @@
   "storageId": "6866ed3b-e92f-4e1b-9378-5d1b17cfe6d5",
   "attributes": [],
   "restrict": "private",
-  "allowAccess": [],
+  "allowed": [],
 }
 ```
 

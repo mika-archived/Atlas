@@ -64,7 +64,7 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
         await API.post(API_NAME, "/images", {
           body: {
             // なんかバイナリデータは直接 S3 に投げる想定らしい
-            image: await file.asBase64(),
+            base64Image: await file.asBase64(),
             restrict: "private"
           },
         });
