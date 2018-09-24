@@ -2,6 +2,7 @@ import Amplify, { API } from "aws-amplify";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 
 import awsExports from "@/models/aws-exports";
+import { encode } from "@/models/base64";
 import { API_NAME } from "@/models/constants";
 
 Amplify.configure(awsExports);
@@ -55,7 +56,13 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
     try {
       state.files.forEach(async (file, idx) => {
         commit("updateUploadingCount", { count: idx + 1 });
-        const response = await API.post(API_NAME, "/images", {});
+        const response = await API.post(API_NAME, "/images", {
+          body: {
+            // なんかバイナリデータは直接 S3 に投げる想定らしい
+            image: await encode(file),
+            restrict: "private"
+          },
+        });
         console.log(response);
       });
       commit("clearUploadQueue", {});
