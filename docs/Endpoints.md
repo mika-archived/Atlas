@@ -79,9 +79,9 @@
 
 
 
-## `GET /users/verify`
+## `GET /users/associate`
 
-ユーザー認証が成功しているかどうかを検証します。
+Atlas ユーザー情報の関連付けを行います。
 
 
 ### Information
