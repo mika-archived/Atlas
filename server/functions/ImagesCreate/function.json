@@ -1,4 +1,5 @@
 {
   "description": "POST /images; 画像を S3 へ保存し、 DynamoDB へレコードを書き込みます。",
-  "timeout": 10
+  "timeout": 10,
+  "role": "arn:aws:iam::011761533955:role/Lambda_AtlasS3AndDynamoDBAccess_Role"
 }

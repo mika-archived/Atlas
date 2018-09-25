@@ -3,7 +3,7 @@
   "description": "Atlas Server-Side Implementation",
   "memory": 128,
   "timeout": 3,
-  "role": "arn:aws:iam::011761533955:role/atlas-server_lambda_function",
+  "role": "arn:aws:iam::011761533955:role/Lambda_AtlasNoAccess_Role",
   "runtime": "nodejs8.10",
   "handler": "dist/index.handler",
   "environment": {},
