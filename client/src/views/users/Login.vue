@@ -68,6 +68,7 @@ export default class Signup extends Vue {
   public password: string = "";
 
   @Action("login") public login!: ActionDescriber<LoginParams>;
+  @Action("associateCredentials") public associateCredentials!: () => Promise<void>;
 
   @State((state: IState) => state.session.reason)
   public reason!: string;
@@ -81,6 +82,7 @@ export default class Signup extends Vue {
   public async onClick(): Promise<void> {
     await this.login({ username: this.username, password: this.password });
     if (this.hasSession) {
+      await this.associateCredentials();
       this.$router.push(this.$route.query.redirectTo ? this.$route.query.redirectTo : "/");
     }
   }

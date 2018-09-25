@@ -81,7 +81,6 @@ router.beforeEach(async (to: Route, from: Route, next: (to?: RawLocation | false
   const hasSession = store.getters.hasSession;
   if (store.getters.currentVersions.length === 0) {
     await store.dispatch("getCurrentVersions");
-    await store.dispatch("veridyCredential");
   }
 
   if (to.matched.some(record => (record.meta as RouteMeta).auth === "both")) {

@@ -32,14 +32,14 @@ export interface ISessionState {
   reason: string;
   isRegisterUserSuccess: boolean;
   isVerifyCodeSuccess: boolean;
-  isVerifyCredentialSuccess: boolean;
+  isAssociateCredentialSuccess: boolean;
 }
 
 interface ISessionActions {
   checkCurrentSession: {};
   registerUser: RegisterUserParams;
   verifyCode: VerifyCodeParams;
-  veridyCredential: {};
+  associateCredentials: {};
   login: LoginParams;
   logout: {};
   clearSessionFailReason: {};
@@ -59,8 +59,8 @@ interface ISessionMutations {
   registerUserFailure: { reason: string };
   verifyCodeSuccess: {};
   verifyCodeFailure: { reason: string };
-  verifyCredentialSuccess: {};
-  verifyCredentialFailure: { reason: string };
+  associateCredentialSuccess: {};
+  associateCredentialFailure: { reason: string };
   loginSuccess: {};
   loginFailure: { reason: string };
 }
@@ -71,7 +71,7 @@ const state: ISessionState = {
   reason: "",
   isRegisterUserSuccess: false,
   isVerifyCodeSuccess: false,
-  isVerifyCredentialSuccess: false
+  isAssociateCredentialSuccess: false
 };
 
 const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, ISessionGetters> = {
@@ -116,17 +116,17 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
     }
   },
 
-  async veridyCredential({ commit }) {
+  async associateCredentials({ commit }) {
     try {
-      const response = await API.get(API_NAME, "/users/verify", {});
+      const response = await API.get(API_NAME, "/users/associate", {});
       if (response.message === "ok") {
-        commit("verifyCredentialSuccess", {});
+        commit("associateCredentialSuccess", {});
       } else {
-        commit("verifyCredentialFailure", { reason: "Invalid response" });
+        commit("associateCredentialFailure", { reason: "Invalid response" });
       }
     } catch (err) {
       console.warn(err);
-      commit("verifyCredentialFailure", { reason: err.message });
+      commit("associateCredentialFailure", { reason: err.message });
     }
   },
 
@@ -190,12 +190,12 @@ const mutations: DefineMutations<ISessionMutations, ISessionState> = {
     state.reason = reason;
     state.isVerifyCodeSuccess = false;
   },
-  verifyCredentialSuccess(state, { }) {
-    state.isVerifyCredentialSuccess = true;
+  associateCredentialSuccess(state, { }) {
+    state.isAssociateCredentialSuccess = true;
   },
-  verifyCredentialFailure(state, { reason }) {
+  associateCredentialFailure(state, { reason }) {
     state.reason = reason;
-    state.isVerifyCredentialSuccess = false;
+    state.isAssociateCredentialSuccess = false;
   },
   loginSuccess(state, { }) {
     // Nothing to do
