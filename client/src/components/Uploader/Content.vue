@@ -9,7 +9,8 @@
         p {{uploadedFiles.length}} 枚のアップロードが完了しました
         .uk-child-width-1-10.uk-grid-collapse(uk-grid)
           div(v-for="(file, idx) in uploadedFiles" :key="idx")
-            img(:src="asBlob(file)")
+            router-link(:to="`/images/${file.id}`")
+              img(:src="asBlob(file)")
       template(v-if="failedFiles.length > 0")
         p {{failedFiles.length}} 枚のアップロードに失敗しました
         .uk-child-width-1-10.uk-grid-collapse(uk-grid)
@@ -22,8 +23,10 @@ import { FileWrapper, UploadState } from "../../models/FileWrapper";
 
 @Component
 export default class UploaderContent extends Vue {
-  @Prop() public uploading!: boolean;
-  @Prop() public files!: FileWrapper[];
+  @Prop()
+  public uploading!: boolean;
+  @Prop()
+  public files!: FileWrapper[];
 
   public get total(): number {
     return this.files.filter(w => w.state === UploadState.UPLOADED).length;

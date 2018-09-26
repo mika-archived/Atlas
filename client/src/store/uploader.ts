@@ -37,7 +37,7 @@ interface IUploaderMutations {
   addToUploadQueue: { fw: FileWrapper };
   clearUploadQueue: {};
   toggleUploadingState: { uploading: boolean };
-  markAs: { index: number, sts: UploadState };
+  markAs: { index: number, sts: UploadState, id?: string };
   toggleToastVisibility: { visible: boolean };
 }
 
@@ -61,14 +61,14 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
       const index = idx++;
       commit("markAs", { index, sts: UploadState.UPLOADING });
       try {
-        await API.post(API_NAME, "/images", {
+        const { storageId } = await API.post(API_NAME, "/images", {
           body: {
             // なんかバイナリデータは直接 S3 に投げる想定らしい
             base64Image: await file.asBase64(),
             restrict: "private"
           },
         });
-        commit("markAs", { index, sts: UploadState.UPLOADED });
+        commit("markAs", { index, sts: UploadState.UPLOADED, id: storageId });
       } catch (err) {
         console.warn(err);
         commit("markAs", { index, sts: UploadState.FAILED });
@@ -98,9 +98,9 @@ const mutations: DefineMutations<IUploaderMutations, IUploaderState> = {
   clearUploadQueue(state) {
     state.workingFiles = [];
   },
-  markAs(state, { index, sts }) {
+  markAs(state, { index, sts, id }) {
     const fw = state.workingFiles[index];
-    fw.markAs(sts);
+    fw.markAs(sts, id);
     Vue.set(state.workingFiles, index, fw);
   },
   toggleUploadingState(state, { uploading }) {
