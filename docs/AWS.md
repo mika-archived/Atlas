@@ -5,9 +5,9 @@
 Atlas では、1つのテーブル `Atlas` に全てのデータを保存しています。  
 テーブル構造は、以下の構造の通りです。
 
-| Partition Key | Sort Key             | Attributes |
-| ------------- | -------------------- | ---------- |
-| Atlas ID      | "t" type [timestamp] | ...        |
+| Partition Key | Sort Key | Attributes |
+| ------------- | -------- | ---------- |
+| id            | varies   | ...        |
 
 Partition Key は、 UserID や StorageID などの一意の ID です。  
 Sort Key は、型名もしくは型名にタイムスタンプを付与した文字列を使用します。  
