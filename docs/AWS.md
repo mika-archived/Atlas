@@ -11,7 +11,7 @@ Atlas では、1つのテーブル `Atlas` に全てのデータを保存して�
 
 Partition Key は、 UserID や StorageID などの一意の ID です。  
 Sort Key は、型名もしくは型名にタイムスタンプを付与した文字列を使用します。  
-型名は [`/server/shared/records.ts`](server/shared/records.ts) に定義されている型を使用します。  
+型名は [`../server/shared/records.ts`](../server/shared/records.ts) に定義されている型を使用します。  
 Sort Key は以下のような形式になります。
 
 ```ts
@@ -25,7 +25,7 @@ tStorage1537966412095 // 2018/09/26 21:55 頃に作成された Storage 型の�
 
 ## S3 の Bucket について
 
-Atlas では、 Bucket `storage.atlas.mochizuki.moe` に対してファイルを保存しており、  
+Atlas では、 Bucket `storage.atlas.mochizuki.moe` にファイルを保存しており、  
 認証時に付与される IAM ロールによって、アクセス制限を行っています。  
 ただし、 `allow` 属性のファイルについては、 API Gateway によって制御されます。
 
