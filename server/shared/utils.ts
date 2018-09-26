@@ -1,7 +1,7 @@
 import { APIGatewayEvent } from "aws-lambda";
 import jsSHA from "jssha";
 
-import { IResponse } from "@/types";
+import { IPrimaryKeySeeds, IResponse } from "@/types";
 
 export function createResponse(statusCode: number, body: any): IResponse {
   return {
@@ -28,19 +28,25 @@ export function retrieveUserId(event: APIGatewayEvent): string {
   throw `Invalid authentication provider: ${provider}`;
 }
 
-export function createPrimaryKey(user?: string, storage?: string): string {
-  if (user === null && storage === null) {
-    throw "Missing argument: user or storage is required";
+export function createPrimaryKey(seeds: IPrimaryKeySeeds): string {
+  if (seeds == null) {
+    throw "Missing argument: seed is required";
   }
 
   const sha = new jsSHA("SHA-512", "TEXT");
+  const variables: string[] = [];
 
-  if (user && storage) {
-
-  } else if (user) {
-
-  } else if (storage) {
-
+  if (seeds.user) {
+    variables.push(`USER=${seeds.user}`);
   }
-  //
+  if (seeds.storage) {
+    variables.push(`STORAGE=${seeds.storage}`);
+  }
+  if (variables.length === 0) {
+    throw "Invalid argument: least one argument required";
+  }
+
+  sha.update(variables.join(","));
+  return sha.getHash("HEX");
 }
+
