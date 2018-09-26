@@ -1,0 +1,5 @@
+{
+  "description": "GET /users/associate; Cognito User Pool と Federated Identity ユーザー情報を関連付けします",
+  "timeout": 1,
+  "role": "arn:aws:iam::011761533955:role/Lambda_AtlasDynamoDBAccess_Role"
+}

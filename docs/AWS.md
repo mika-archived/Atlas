@@ -10,17 +10,14 @@ Atlas では、1つのテーブル `Atlas` に全てのデータを保存して�
 | id            | varies   | ...        |
 
 Partition Key は、 UserID や StorageID などの一意の ID です。  
-Sort Key は、型名もしくは型名にタイムスタンプを付与した文字列を使用します。  
+Sort Key は、型名もしくは型名にインデックスを付与した文字列を使用します。  
 型名は [`../server/shared/records.ts`](../server/shared/records.ts) に定義されている型を使用します。  
 Sort Key は以下のような形式になります。
 
 ```ts
 tUser // User 型の項目
-tStorage1537966412095 // 2018/09/26 21:55 頃に作成された Storage 型の項目
+tStorage:1 // Storage 型の項目のうちの1つめ
 ```
-
-なお、タイムスタンプを付与した Sort Key を使用した場合、項目を時系列順に並べることが可能ですが、  
-検索時など参照を行う時にもタイムスタンプを Query に渡す必要があります。
 
 
 ## S3 の Bucket について

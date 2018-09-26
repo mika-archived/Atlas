@@ -118,7 +118,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
 
   async associateCredentials({ commit }) {
     try {
-      const response = await API.get(API_NAME, "/users/associate", {});
+      const response = await API.post(API_NAME, "/users/associate", {});
       if (response.message === "ok") {
         commit("associateCredentialSuccess", {});
       } else {

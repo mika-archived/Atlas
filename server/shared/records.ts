@@ -1,40 +1,75 @@
-export interface IPrimaryKeys {
+export interface IPrimaryKey {
+  // partition key
+  id: string;
 
-  // Primary Key : user sub
+  // sort key
+  varies: string;
+}
+
+export interface IUser {
+  // user id (sub)
   userId: string;
 
-  // Sort Key : unix time millseconds
-  timestamp: number;
+  // username
+  username?: string;
+
+  // cognito federated identity id
+  cognitoIdentityId?: string;
 }
 
-export interface IStorage extends IPrimaryKeys {
-
-  // Unique Storage ID
+export interface IStorage {
   storageId: string;
 
-  // Tags
+  userId: string;
+
   attributes: string[];
 
-  // Access Restrict
   restrict: "private" | "allowed" | "registered" | "public";
 
-  // File Size (Bytes)
-  size: number;
-
-  // User IDs that allowed access
   allowedIds: string[];
+
+  size: number;
 }
 
-export interface IUserAssociation extends IPrimaryKeys {
-  // username
-  username: string;
+export interface ITag {
+  // associated user id (sub)
+  userId: string;
 
-  // identity id
-  cognitoIdentityId: string;
-}
+  // tag
+  tag: string;
 
-export interface IAllowAccessStorages extends IPrimaryKeys {
+  // tag index
+  idx: number;
 
-  // Storage IDs that allowed access
+  // array of storage id
   storageIds: string[];
+}
+
+export function createUser({ userId, username = "EMPTY", cognitoIdentityId = "EMPTY" }: IUser): IPrimaryKey {
+  return {
+    id: userId,
+    varies: "tUser",
+    username,
+    cognitoIdentityId
+  } as IPrimaryKey;
+}
+
+export function createUserPrimary({ userId }: IUser): IPrimaryKey {
+  return {
+    id: userId,
+    varies: "tUser"
+  };
+}
+
+export function createStorage({ }: IStorage): IPrimaryKey {
+  return {
+  } as IPrimaryKey;
+}
+
+export function createTag({ userId, tag, idx, storageIds = [] }: ITag): IPrimaryKey {
+  return {
+    id: userId,
+    varies: `${tag}:${idx}`,
+    storageIds,
+  } as IPrimaryKey;
 }

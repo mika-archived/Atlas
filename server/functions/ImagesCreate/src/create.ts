@@ -1,11 +1,13 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
-import { DynamoDB, S3 } from "aws-sdk";
+import { S3 } from "aws-sdk";
 import * as fs from "fs";
 import * as gm from "gm";
 import { v4 as uuid } from 'uuid';
 
-import { createResponse } from "@/response";
+import { Bucket } from "@/constants";
+import { createResponse } from "@/utils";
 
+const s3 = new S3();
 const im = gm.subClass({ imageMagick: true });
 
 const regex = new RegExp(/data:image\/([a-z]+);base64,(.*)/);
@@ -24,19 +26,6 @@ function resize(filename: string, buffer: Buffer): Promise<void> {
           resolve();
         }
       });
-  });
-}
-
-function putObject(params: S3.PutObjectRequest): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const s3 = new S3();
-    s3.putObject(params, (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve();
-      }
-    });
   });
 }
 
@@ -61,11 +50,11 @@ exports.handler = async (event: APIGatewayEvent, context: Context) => {
 
   // save to S3 as original
   const params1 = {
-    Bucket: "storage.atlas.mochizuki.moe",
-    Key: `cognito/users/${cognitoId}/${storageId}/original.${extension}`,
+    Bucket,
+    Key: `private/${cognitoId}/${storageId}/original.${extension}`,
     Body: original,
   } as S3.PutObjectRequest;
-  await putObject(params1);
+  await s3.putObject(params1).promise();
 
   // resize image (max 350x350)
   const destTo = `/tmp/${storageId}.${extension}`
@@ -73,11 +62,11 @@ exports.handler = async (event: APIGatewayEvent, context: Context) => {
 
   // save to S3 as thumbnail
   const params2 = {
-    Bucket: "storage.atlas.mochizuki.moe",
-    Key: `cognito/users/${cognitoId}/${storageId}/thumbnail.${extension}`,
+    Bucket,
+    Key: `private/${cognitoId}/${storageId}/thumbnail.${extension}`,
     Body: new Buffer(fs.readFileSync(destTo))
   };
-  await putObject(params2);
+  await s3.putObject(params2).promise();
 
   try {
     fs.unlinkSync(destTo);

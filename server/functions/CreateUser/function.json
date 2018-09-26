@@ -1,0 +1,5 @@
+{
+  "description": "INTERNAL; Cognito User Pool の情報を元に、ユーザーを作成します。",
+  "timeout": 1,
+  "role": "arn:aws:iam::011761533955:role/Lambda_AtlasDynamoDBAccess_Role"
+}
