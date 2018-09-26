@@ -22,13 +22,17 @@ export interface IStorage {
 
   userId: string;
 
-  attributes: string[];
+  attributes?: string[];
 
   restrict: "private" | "allowed" | "registered" | "public";
 
-  allowedIds: string[];
-
   size: number;
+}
+
+export interface IStorageAllowUsers {
+  storageId: string;
+
+  userIds: string[];
 }
 
 export interface ITag {
@@ -61,8 +65,14 @@ export function createUserPrimary({ userId }: IUser): IPrimaryKey {
   };
 }
 
-export function createStorage({ }: IStorage): IPrimaryKey {
+export function createStorage({ storageId, userId, size, restrict, attributes = [] }: IStorage): IPrimaryKey {
   return {
+    id: storageId,
+    varies: "tStorage",
+    userId,
+    size,
+    restrict,
+    attributes,
   } as IPrimaryKey;
 }
 

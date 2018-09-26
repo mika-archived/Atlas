@@ -1,14 +1,16 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
-import { S3 } from "aws-sdk";
+import { DynamoDB, S3 } from "aws-sdk";
 import * as fs from "fs";
 import * as gm from "gm";
 import { v4 as uuid } from 'uuid';
 
-import { Bucket } from "@/constants";
-import { createResponse } from "@/utils";
+import { Bucket, TableName } from "@/constants";
+import { createResponse, retrieveUserId } from "@/utils";
+import { createStorage } from "@/records";
 
 const s3 = new S3();
 const im = gm.subClass({ imageMagick: true });
+const client = new DynamoDB.DocumentClient();
 
 const regex = new RegExp(/data:image\/([a-z]+);base64,(.*)/);
 
@@ -67,6 +69,20 @@ exports.handler = async (event: APIGatewayEvent, context: Context) => {
     Body: new Buffer(fs.readFileSync(destTo))
   };
   await s3.putObject(params2).promise();
+
+  const userId = retrieveUserId(event);
+
+  const params3 = {
+    TableName,
+    Item: createStorage({
+      storageId,
+      userId,
+      restrict: "private",
+      size: original.byteLength,
+    })
+  } as DynamoDB.DocumentClient.PutItemInput;
+
+  await client.put(params3).promise();
 
   try {
     fs.unlinkSync(destTo);
