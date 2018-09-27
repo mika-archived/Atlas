@@ -1,8 +1,8 @@
-# Lambda Computing Tasks
+# Computing Tasks
 
 ## Deployment
 
 ```
-$ yarn
-$ apex deploy
+$ yarn build
+$ yarn deploy
 ```
