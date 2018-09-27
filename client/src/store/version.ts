@@ -1,10 +1,4 @@
-import Amplify, { API } from "aws-amplify";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
-
-import awsExports from "@/models/aws-exports";
-import { API_NAME } from "@/models/constants";
-
-Amplify.configure(awsExports);
 
 // tslint:disable no-shadowed-variable
 
@@ -33,8 +27,8 @@ const state: IVersionState = {
 const actions: DefineActions<IVersionActions, IVersionState, IVersionMutations, IVersionGetters> = {
   async getCurrentVersions({ commit }) {
     try {
-      const response = await API.get(API_NAME, "/versions", {});
-      commit("updateCurrent", { current: response.versions });
+      // const response = await API.get(API_NAME, "/versions", {});
+      // commit("updateCurrent", { current: response.versions });
     } catch (err) {
       console.warn(err);
     }

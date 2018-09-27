@@ -1,12 +1,7 @@
-import Amplify, { API } from "aws-amplify";
 import Vue from "vue";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 
-import awsExports from "@/models/aws-exports";
-import { API_NAME } from "@/models/constants";
 import { FileWrapper, UploadState } from "@/models/FileWrapper";
-
-Amplify.configure(awsExports);
 
 // tslint:disable no-shadowed-variable
 
@@ -61,6 +56,7 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
       const index = idx++;
       commit("markAs", { index, sts: UploadState.UPLOADING });
       try {
+        /*
         const { storageId } = await API.post(API_NAME, "/images", {
           body: {
             // なんかバイナリデータは直接 S3 に投げる想定らしい
@@ -69,6 +65,7 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
           },
         });
         commit("markAs", { index, sts: UploadState.UPLOADED, id: storageId });
+        */
       } catch (err) {
         console.warn(err);
         commit("markAs", { index, sts: UploadState.FAILED });

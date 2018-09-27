@@ -8,7 +8,7 @@ You must register GCP for hosting Atlas.
 
 ## Requirements
 
-* Node.js v10.x
-* Yarn
+* Node.js >= 10.0.0
+* Yarn >= 1.0.0
 * Firebase CLI
 

@@ -1,48 +1,19 @@
-import Amplify, { API, Auth } from "aws-amplify";
+import { auth } from "firebase";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 
-import awsExports from "@/models/aws-exports";
-import { API_NAME } from "@/models/constants";
 import { ISession } from "@/models/session";
 import { Nullable } from "@/models/types";
 
-Amplify.configure(awsExports);
-
 // tslint:disable no-shadowed-variable
-
-export interface RegisterUserParams {
-  username: string;
-  password: string;
-  email: string;
-}
-
-export interface VerifyCodeParams {
-  code: string;
-}
-
-export interface LoginParams {
-  username: string;
-  password: string;
-}
-
 export interface ISessionState {
   currentSession: Nullable<ISession>;
-  username: string;
-  //
-  reason: string;
-  isRegisterUserSuccess: boolean;
-  isVerifyCodeSuccess: boolean;
-  isAssociateCredentialSuccess: boolean;
 }
 
 interface ISessionActions {
   checkCurrentSession: {};
-  registerUser: RegisterUserParams;
-  verifyCode: VerifyCodeParams;
-  associateCredentials: {};
-  login: LoginParams;
+  login: {};
   logout: {};
-  clearSessionFailReason: {};
+  verifyCredentials: {};
 }
 
 interface ISessionGetters {
@@ -51,116 +22,53 @@ interface ISessionGetters {
 }
 
 interface ISessionMutations {
-  updateCurrentSession: {
-    session: Nullable<ISession>;
-  };
-  clearReason: {};
-  registerUserSuccess: { username: string };
-  registerUserFailure: { reason: string };
-  verifyCodeSuccess: {};
-  verifyCodeFailure: { reason: string };
-  associateCredentialSuccess: {};
-  associateCredentialFailure: { reason: string };
-  loginSuccess: {};
-  loginFailure: { reason: string };
+  updateCurrentSession: { session: Nullable<ISession> };
 }
 
 const state: ISessionState = {
-  username: "",
   currentSession: null,
-  reason: "",
-  isRegisterUserSuccess: false,
-  isVerifyCodeSuccess: false,
-  isAssociateCredentialSuccess: false
 };
 
 const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, ISessionGetters> = {
   async checkCurrentSession({ commit }) {
-    try {
-      const user = await Auth.currentAuthenticatedUser();
-      commit("updateCurrentSession", {
-        session: {
-          username: user.username,
-          attributes: { email: user.attributes.email, email_verified: user.attributes.email_verified }
-        }
-      });
-    } catch (err) {
-      console.warn(err);
+    const user = auth().currentUser;
+    console.log(user);
+    if (user === null) {
       commit("updateCurrentSession", { session: null });
-    }
-  },
-
-  async registerUser({ commit }, payload) {
-    commit("clearReason", {});
-    try {
-      await Auth.signUp({
-        username: payload.username,
-        password: payload.password,
-        attributes: { email: payload.email }
-      });
-      commit("registerUserSuccess", { username: payload.username });
-    } catch (err) {
-      console.warn(err);
-      commit("registerUserFailure", { reason: err.message });
-    }
-  },
-
-  async verifyCode({ commit, state }, payload) {
-    commit("clearReason", {});
-    try {
-      await Auth.confirmSignUp(state.username, payload.code);
-      commit("verifyCodeSuccess", {});
-    } catch (err) {
-      console.warn(err);
-      commit("verifyCodeFailure", { reason: err.message });
-    }
-  },
-
-  async associateCredentials({ commit }) {
-    try {
-      const response = await API.post(API_NAME, "/users/associate", {});
-      if (response.message === "ok") {
-        commit("associateCredentialSuccess", {});
-      } else {
-        commit("associateCredentialFailure", { reason: "Invalid response" });
-      }
-    } catch (err) {
-      console.warn(err);
-      commit("associateCredentialFailure", { reason: err.message });
-    }
-  },
-
-  async login({ commit }, payload) {
-    commit("clearReason", {});
-    try {
-      await Auth.signIn(payload.username, payload.password);
-      const user = await Auth.currentAuthenticatedUser();
+    } else {
       commit("updateCurrentSession", {
         session: {
-          username: user.username,
-          attributes: { email: user.attributes.email, email_verified: user.attributes.email_verified }
-        }
+          username: user.displayName
+        } as ISession
       });
+    }
+  },
+
+  async login() {
+    const provider = new auth.GoogleAuthProvider();
+    auth().signInWithRedirect(provider);
+  },
+
+  async verifyCredentials({ commit }) {
+    try {
+      const r = await auth().getRedirectResult();
+      if (r.credential !== null && r.user !== null) {
+        commit("updateCurrentSession", {
+          session: {
+            username: (r.user as firebase.User).displayName,
+          } as ISession
+        });
+      }
+      console.log(r);
     } catch (err) {
       console.warn(err);
-      commit("loginFailure", { reason: err.message });
     }
   },
 
   async logout({ commit }) {
-    commit("clearReason", {});
-    try {
-      await Auth.signOut();
-      commit("updateCurrentSession", { session: null });
-    } catch (err) {
-      console.warn(err);
-      // 通る...？
-    }
+    await auth().signOut();
+    commit("updateCurrentSession", { session: null });
   },
-
-  clearSessionFailReason({ commit }) {
-    commit("clearReason", {});
-  }
 };
 
 const getters: DefineGetters<ISessionGetters, ISessionState> = {
@@ -171,37 +79,6 @@ const getters: DefineGetters<ISessionGetters, ISessionState> = {
 const mutations: DefineMutations<ISessionMutations, ISessionState> = {
   updateCurrentSession(state, { session }) {
     state.currentSession = session;
-  },
-  clearReason(state, { }) {
-    state.reason = "";
-  },
-  registerUserSuccess(state, { username }) {
-    state.username = username;
-    state.isRegisterUserSuccess = true;
-  },
-  registerUserFailure(state, { reason }) {
-    state.reason = reason;
-    state.isRegisterUserSuccess = false;
-  },
-  verifyCodeSuccess(state, { }) {
-    state.isVerifyCodeSuccess = true;
-  },
-  verifyCodeFailure(state, { reason }) {
-    state.reason = reason;
-    state.isVerifyCodeSuccess = false;
-  },
-  associateCredentialSuccess(state, { }) {
-    state.isAssociateCredentialSuccess = true;
-  },
-  associateCredentialFailure(state, { reason }) {
-    state.reason = reason;
-    state.isAssociateCredentialSuccess = false;
-  },
-  loginSuccess(state, { }) {
-    // Nothing to do
-  },
-  loginFailure(state, { reason }) {
-    state.reason = reason;
   }
 };
 
