@@ -1,3 +1,4 @@
+
 export interface IPrimaryKey {
   // partition key
   id: string;
@@ -18,35 +19,39 @@ export interface IUser {
 }
 
 export interface IStorage {
+  // storage id (uuid)
   storageId: string;
 
+  // user id (ref)
   userId: string;
 
+  // tag attributes
   attributes?: string[];
 
+  // access restrict
   restrict: "private" | "allowed" | "registered" | "public";
 
+  // file size
   size: number;
 }
 
 export interface IStorageAllowUsers {
+  // storage id (ref)
   storageId: string;
 
+  // user ids that allowed access to this
   userIds: string[];
 }
 
-export interface ITag {
-  // associated user id (sub)
-  userId: string;
+export interface INotice {
+  // notice id (uuid)
+  noticeId: string;
 
-  // tag
-  tag: string;
+  // notice expired at
+  expiredAt: string;
 
-  // tag index
-  idx: number;
-
-  // array of storage id
-  storageIds: string[];
+  // notice body
+  body: string;
 }
 
 export function createUser({ userId, username = "EMPTY", cognitoIdentityId = "EMPTY" }: IUser): IPrimaryKey {
@@ -73,13 +78,5 @@ export function createStorage({ storageId, userId, size, restrict, attributes = 
     size,
     restrict,
     attributes,
-  } as IPrimaryKey;
-}
-
-export function createTag({ userId, tag, idx, storageIds = [] }: ITag): IPrimaryKey {
-  return {
-    id: userId,
-    varies: `${tag}:${idx}`,
-    storageIds,
   } as IPrimaryKey;
 }
