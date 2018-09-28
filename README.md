@@ -1,14 +1,25 @@
 # Atlas
 
-Atlas is a user-friendly and tag-based illustration management web service.
+Atlas はユーザーフレンドリーなタグベースのイラスト管理 Web サービスです。  
+Atlas は Google Firebase 上で動作します。
 
-Atlas is running on Google Firebase and Google Cloud Platform.  
-You must register GCP for hosting Atlas.
+
+## Services
+
+* Firebase Database (Cloud Firestore)
+* Firebase Functions
+* Firebase Hosting
+* Firebase Storage
+* Netlify
 
 
 ## Requirements
 
-* Node.js >= 10.0.0
+* Node.js >= 10.x and 8.x
 * Yarn >= 1.0.0
 * Firebase CLI
 
+
+## Deployment
+
+Atlas Client および Atlas Server の README.md を参照してください。

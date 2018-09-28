@@ -1,31 +1,20 @@
 # Atlas Client
 
-## Project setup
-```
-yarn install
-```
+Atlas Client は Netlify 上で動作する Atlas のフロントエンド実装です。
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
 
-### Compiles and minifies for production
-```
-yarn run build
-```
+## Services
 
-### Lints and fixes files
-```
-yarn run lint
-```
+* Firebase Authentication
+* Netlify
 
-### Run your unit tests
-```
-yarn run test:unit
-```
 
-### Run your end-to-end tests
-```
-yarn run test:e2e
+## Deployment
+
+```coffee
+# Please connect GitHub and Netlify
+$ git clone git@github.com:mika-f/Atlas.git
+$ git checkout master
+$ git set-url origin YOUR_REPOSITORY_URL
+$ git push origin master
 ```
