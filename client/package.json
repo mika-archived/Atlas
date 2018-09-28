@@ -29,6 +29,7 @@
     "vuex-type-helper": "^1.2.0"
   },
   "devDependencies": {
+    "@firebase/app-types": "^0.3.2",
     "@types/jest": "^23.1.4",
     "@vue/cli-plugin-babel": "^3.0.0",
     "@vue/cli-plugin-e2e-cypress": "^3.0.0",
