@@ -4,7 +4,7 @@
       .uk-navbar-left
         router-link.uk-navbar-item.uk-logo(to="/")
           img(src="../assets/logo.png" height="40px")
-      right(:has-session="hasSession")
+      right(:is-registered-user="isRegisteredUser" :is-anonymous-user="isAnonymousUser")
 </template>
 
 <script lang="ts">
@@ -19,7 +19,11 @@ import Right from "../presentationals/Navigation/Right.vue";
   }
 })
 export default class Navigation extends Vue {
-  @Prop() public hasSession!: boolean;
+  @Prop()
+  public isRegisteredUser!: boolean;
+
+  @Prop()
+  public isAnonymousUser!: boolean;
 }
 </script>
 

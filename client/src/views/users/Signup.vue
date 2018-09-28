@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Action } from "vuex-class";
+import { Action, Getter } from "vuex-class";
 
 @Component
 export default class Signup extends Vue {
@@ -35,12 +35,18 @@ export default class Signup extends Vue {
   @Action("verifyCredentials")
   public verifyCredentials!: () => Promise<void>;
 
+  @Getter("isRegisteredUser")
+  public isRegisteredUser!: boolean;
+
   public async onClick(): Promise<void> {
     await this.login();
   }
 
   public async created(): Promise<void> {
     await this.verifyCredentials();
+    if (this.isRegisteredUser) {
+      this.$router.push("/");
+    }
   }
 }
 </script>

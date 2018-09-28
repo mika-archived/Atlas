@@ -1,12 +1,15 @@
 import { auth } from "firebase";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 
-import { ISession } from "@/models/session";
+import { currentUser, ISession } from "@/models/session";
 import { Nullable } from "@/models/types";
 
 // tslint:disable no-shadowed-variable
+export type SessionState = "anonymous" | "uneasy" | "registered";
+
 export interface ISessionState {
   currentSession: Nullable<ISession>;
+  sessionState: SessionState;
 }
 
 interface ISessionActions {
@@ -17,30 +20,38 @@ interface ISessionActions {
 }
 
 interface ISessionGetters {
-  hasSession: boolean;
-  getSession: Nullable<ISession>;
+  isSessionLoading: boolean;
+  isRegisteredUser: boolean;
+  isAnonymousUser: boolean;
+  sessionState: SessionState;
 }
 
 interface ISessionMutations {
-  updateCurrentSession: { session: Nullable<ISession> };
+  updateCurrentSessionAsRegistered: { session: ISession };
+  updateCurrentSessionAsAnonymous: {};
+  updateCurrentSessionAsUneasy: {};
 }
 
 const state: ISessionState = {
   currentSession: null,
+  sessionState: "uneasy",
 };
 
 const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, ISessionGetters> = {
   async checkCurrentSession({ commit }) {
-    const user = auth().currentUser;
-    console.log(user);
-    if (user === null) {
-      commit("updateCurrentSession", { session: null });
-    } else {
-      commit("updateCurrentSession", {
-        session: {
-          username: user.displayName
-        } as ISession
-      });
+    commit("updateCurrentSessionAsUneasy", {});
+    try {
+      const user = await currentUser();
+      if (user !== null) {
+        commit("updateCurrentSessionAsRegistered", {
+          session: { username: user.displayName, } as ISession
+        });
+      } else {
+        commit("updateCurrentSessionAsAnonymous", {});
+      }
+    } catch (err) {
+      commit("updateCurrentSessionAsAnonymous", {});
+      console.warn(err);
     }
   },
 
@@ -53,13 +64,12 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
     try {
       const r = await auth().getRedirectResult();
       if (r.credential !== null && r.user !== null) {
-        commit("updateCurrentSession", {
+        commit("updateCurrentSessionAsRegistered", {
           session: {
             username: (r.user as firebase.User).displayName,
-          } as ISession
+          } as ISession,
         });
       }
-      console.log(r);
     } catch (err) {
       console.warn(err);
     }
@@ -67,18 +77,32 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
 
   async logout({ commit }) {
     await auth().signOut();
-    commit("updateCurrentSession", { session: null });
+    console.log("hello");
+    commit("updateCurrentSessionAsAnonymous", {});
   },
 };
 
 const getters: DefineGetters<ISessionGetters, ISessionState> = {
-  hasSession: state => state.currentSession != null,
-  getSession: state => state.currentSession
+  sessionState: state => state.sessionState,
+  isRegisteredUser: state => state.sessionState === "registered" && state.currentSession != null,
+  isSessionLoading: state => state.sessionState === "uneasy",
+  isAnonymousUser: state => state.sessionState === "anonymous",
 };
 
 const mutations: DefineMutations<ISessionMutations, ISessionState> = {
-  updateCurrentSession(state, { session }) {
+  updateCurrentSessionAsRegistered(state, { session }) {
+    state.sessionState = "registered";
     state.currentSession = session;
+  },
+
+  updateCurrentSessionAsAnonymous(state) {
+    state.sessionState = "anonymous";
+    state.currentSession = null;
+  },
+
+  updateCurrentSessionAsUneasy(state) {
+    state.sessionState = "uneasy";
+    state.currentSession = null;
   }
 };
 

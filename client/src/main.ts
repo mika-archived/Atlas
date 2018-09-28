@@ -1,4 +1,3 @@
-import Firebase from "firebase";
 import Vue from "vue";
 
 import "tslib";
