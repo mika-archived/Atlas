@@ -8,8 +8,9 @@
     "shell": "yarn run build && firebase functions:shell",
     "start": "yarn run shell",
     "deploy": "firebase deploy",
-    "deploy:functions": "firebase deploy --only functions",
     "deploy:firestore": "firebase deploy --only firestore",
+    "deploy:functions": "firebase deploy --only functions",
+    "deploy:hosting": "firebase deploy --only hosting",
     "deploy:storage": "firebase deploy --only storage",
     "logs": "firebase functions:log"
   },
