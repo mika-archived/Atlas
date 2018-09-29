@@ -1,15 +1,10 @@
-import Amplify, { API } from "aws-amplify";
+import { auth, storage } from "firebase";
 import Vue from "vue";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 
-import awsExports from "@/models/aws-exports";
-import { API_NAME } from "@/models/constants";
 import { FileWrapper, UploadState } from "@/models/FileWrapper";
 
-Amplify.configure(awsExports);
-
 // tslint:disable no-shadowed-variable
-
 export interface IAddToUploadQueueParams {
   files: File[];
 }
@@ -54,21 +49,21 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
     });
   },
   async upload({ commit, state }) {
+    const storageRef = storage().ref();
+    let idx = 0;
+
     commit("toggleToastVisibility", { visible: true });
     commit("toggleUploadingState", { uploading: true });
-    let idx = 0;
     for (const file of state.workingFiles) {
       const index = idx++;
       commit("markAs", { index, sts: UploadState.UPLOADING });
       try {
-        const { storageId } = await API.post(API_NAME, "/images", {
-          body: {
-            // なんかバイナリデータは直接 S3 に投げる想定らしい
-            base64Image: await file.asBase64(),
-            restrict: "private"
-          },
-        });
-        commit("markAs", { index, sts: UploadState.UPLOADED, id: storageId });
+        const currentUser = auth().currentUser;
+        if (currentUser === null) {
+          throw new Error("current user is null");
+        }
+        await storageRef.child(`/${currentUser.uid}/private/${file.id}`).put(file.asFile());
+        commit("markAs", { index, sts: UploadState.UPLOADED });
       } catch (err) {
         console.warn(err);
         commit("markAs", { index, sts: UploadState.FAILED });
@@ -98,9 +93,9 @@ const mutations: DefineMutations<IUploaderMutations, IUploaderState> = {
   clearUploadQueue(state) {
     state.workingFiles = [];
   },
-  markAs(state, { index, sts, id }) {
+  markAs(state, { index, sts }) {
     const fw = state.workingFiles[index];
-    fw.markAs(sts, id);
+    fw.markAs(sts);
     Vue.set(state.workingFiles, index, fw);
   },
   toggleUploadingState(state, { uploading }) {

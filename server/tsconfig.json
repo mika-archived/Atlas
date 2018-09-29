@@ -1,26 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es6",
     "module": "commonjs",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "sourceMap": false,
     "baseUrl": ".",
+    "rootDir": "functions/src",
+    "outDir": "functions/lib",
     "types": [
       "node",
     ],
     "lib": [
       "esnext",
-      "dom",
-      "dom.iterable",
       "scripthost"
-    ],
-    "paths": {
-      "@/*": [
-        "shared/*"
-      ]
-    },
+    ]
   },
   "exclude": [
     "node_modules"

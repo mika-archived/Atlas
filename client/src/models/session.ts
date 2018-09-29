@@ -1,5 +1,20 @@
+import { auth } from "firebase";
+
 export interface ISession {
   // TODO: Typing
   username: string;
-  attributes: { email: string, email_verified: boolean };
+}
+
+export async function currentUser(): Promise<firebase.User> {
+  return new Promise<firebase.User>((resolve, reject) => {
+    auth().onAuthStateChanged(user => {
+      if (user === null) {
+        reject();
+      } else {
+        resolve(user);
+      }
+    }, err => {
+      reject();
+    });
+  });
 }

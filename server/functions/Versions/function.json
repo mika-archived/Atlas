@@ -1,4 +1,0 @@
-{
-  "description": "GET /versions; 現在使用されている Atlas API のバージョンを返却します。",
-  "timeout": 1
-}

@@ -1,13 +1,13 @@
 <template lang="pug">
   .uk-navbar-right
-    template(v-if="!hasSession")
+    template(v-if="isAnonymousUser")
       hamburger
         template(slot-scope="content")
           li
             router-link(to="/users/signup") アカウント登録
           li
             router-link(to="/users/login") ログイン
-    template(v-else)
+    template(v-else-if="isRegisteredUser")
       hamburger
         template(slot-scope="content")
           li
@@ -23,6 +23,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
+import { SessionState } from "../../store/session";
 import Hamburger from "./Hamburger.vue";
 
 @Component({
@@ -31,6 +32,10 @@ import Hamburger from "./Hamburger.vue";
   }
 })
 export default class Right extends Vue {
-  @Prop() public hasSession!: boolean;
+  @Prop()
+  public isAnonymousUser!: boolean;
+
+  @Prop()
+  public isRegisteredUser!: boolean;
 }
 </script>

@@ -3,9 +3,10 @@ import UIKit from "uikit";
 import Vue from "vue";
 import Router, { RawLocation, Route } from "vue-router";
 
-import store from "./store";
+import store from "@/store";
+import { SessionState } from "@/store/session";
+import Home from "@/views/Home.vue";
 
-import Home from "./views/Home.vue";
 
 Vue.use(Router);
 
@@ -44,19 +45,13 @@ const router = new Router({
       path: "/users/signup",
       name: "users-signup",
       component: () => import(/* webpackChunkName: "users/signup" */ "./views/users/Signup.vue"),
-      meta: { auth: "anonymous" } as RouteMeta
-    },
-    {
-      path: "/users/confirmation",
-      name: "users-confirmation",
-      component: () => import(/* webpackChunkName: "users/confirm" */ "./views/users/Confirmation.vue"),
-      meta: { auth: "anonymous" } as RouteMeta
+      meta: { auth: "both" } as RouteMeta  // XXX: Google Firebase Authentication cannot set redirect URI
     },
     {
       path: "/users/login",
       name: "users-login",
       component: () => import(/* webpackChunkName: "users/login" */ "./views/users/Login.vue"),
-      meta: { auth: "anonymous" } as RouteMeta
+      meta: { auth: "both" } as RouteMeta // XXX: Google Firebase Authentication cannot set redirect URI
     },
     {
       path: "/users/logout",
@@ -77,8 +72,7 @@ router.beforeEach(async (to: Route, from: Route, next: (to?: RawLocation | false
   NProgress.start();
 
   await store.dispatch("checkCurrentSession");
-  await store.dispatch("clearSessionFailReason");
-  const hasSession = store.getters.hasSession;
+  const session = store.getters.sessionState as SessionState;
   if (store.getters.currentVersions.length === 0) {
     await store.dispatch("getCurrentVersions");
   }
@@ -87,7 +81,7 @@ router.beforeEach(async (to: Route, from: Route, next: (to?: RawLocation | false
     next();
   } else {
     if (to.matched.some(record => (record.meta as RouteMeta).auth === "registered")) {
-      if (hasSession) {
+      if (session === "registered") {
         // pass
         next();
       } else {
@@ -100,7 +94,7 @@ router.beforeEach(async (to: Route, from: Route, next: (to?: RawLocation | false
         `);
       }
     } else {
-      if (hasSession) {
+      if (session === "registered") {
         // require anonymous session
         next({ path: "/" });
         UIKit.notification(`

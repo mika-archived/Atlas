@@ -4,12 +4,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { Action, Getter, State } from "vuex-class";
+import { Action } from "vuex-class";
 
 @Component
 export default class Logout extends Vue {
-  @Action("logout") public logout!: () => Promise<void>;
-  @Getter("hasSession") public hasSession!: boolean;
+  @Action("logout")
+  public logout!: () => Promise<void>;
 
   public async created(): Promise<void> {
     await this.logout();
