@@ -5,6 +5,6 @@ Firebase.initializeApp({
   authDomain: "auth.atlas.mochizuki.moe",
   databaseURL: "https://atlas-1537035161848.firebaseio.com",
   projectId: "atlas-1537035161848",
-  storageBucket: "atlas-1537035161848.appspot.com",
+  storageBucket: "storage.atlas.mochizuki.moe",
   messagingSenderId: "478882579120"
 });
