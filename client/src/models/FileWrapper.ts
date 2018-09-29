@@ -1,3 +1,5 @@
+import { v4 as uuid } from "uuid";
+
 import { encode } from "@/models/base64";
 
 export enum UploadState {
@@ -18,7 +20,7 @@ export class FileWrapper {
   public constructor(file: File) {
     this.file = file;
     this.currentState = UploadState.QUEUED;
-    this.storageId = "";
+    this.storageId = uuid();
   }
 
   public get name(): string {
@@ -37,12 +39,15 @@ export class FileWrapper {
     return URL.createObjectURL(this.file);
   }
 
+  public asFile(): File {
+    return this.file;
+  }
+
   public async asBase64(): Promise<string> {
     return await encode(this.file);
   }
 
-  public markAs(state: UploadState, id?: string): void {
+  public markAs(state: UploadState): void {
     this.currentState = state;
-    this.storageId = id || "";
   }
 }

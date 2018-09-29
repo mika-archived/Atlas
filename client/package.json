@@ -17,6 +17,7 @@
     "register-service-worker": "^1.0.0",
     "tslib": "^1.9.3",
     "uikit": "^3.0.0-rc.16",
+    "uuid": "^3.3.2",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",
     "vue-property-decorator": "^7.0.0",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "@firebase/app-types": "^0.3.2",
     "@types/jest": "^23.1.4",
+    "@types/uuid": "^3.4.4",
     "@vue/cli-plugin-babel": "^3.0.0",
     "@vue/cli-plugin-e2e-cypress": "^3.0.0",
     "@vue/cli-plugin-pwa": "^3.0.0",
