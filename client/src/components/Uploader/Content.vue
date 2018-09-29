@@ -2,6 +2,7 @@
   div
     template(v-if="uploading")
       .single
+        progress.uk-progress(max="100" :value="progress")
         | アップロードしています :&nbsp;
         b {{currentFile()}}
     template(v-else)
@@ -27,6 +28,8 @@ export default class UploaderContent extends Vue {
   public uploading!: boolean;
   @Prop()
   public files!: FileWrapper[];
+  @Prop()
+  public progress!: number;
 
   public get total(): number {
     return this.files.filter(w => w.state === UploadState.UPLOADED).length;
@@ -69,5 +72,9 @@ export default class UploaderContent extends Vue {
     height: 36px;
     width: 36px;
   }
+}
+
+.uk-progress {
+  height: 5px;
 }
 </style>

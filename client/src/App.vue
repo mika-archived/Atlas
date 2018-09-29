@@ -8,7 +8,7 @@
       global-uploader
       toast(:visible="isVisibleToast")
         uploader-header(slot="header" :uploading="isUploading" :files="workingFiles")
-        uploader-content(slot="content" :uploading="isUploading" :files="workingFiles")
+        uploader-content(slot="content" :uploading="isUploading" :files="workingFiles" :progress="progress")
     template(v-if="isSessionLoading")
       .loading.uk-inline
         .uk-overlay-default.uk-position-cover
@@ -50,6 +50,9 @@ export default class App extends Vue {
 
   @Getter("isUploading")
   public isUploading!: boolean;
+
+  @Getter("progress")
+  public progress!: number;
 
   @Getter("isVisibleToast")
   public isVisibleToast!: boolean;

@@ -12,6 +12,7 @@ export interface IAddToUploadQueueParams {
 export interface IUploaderState {
   workingFiles: FileWrapper[];
   uploading: boolean;
+  progress: number;
   visibleToast: boolean;
 }
 
@@ -25,6 +26,7 @@ interface IUploaderActions {
 interface IUploaderGetters {
   isUploading: boolean;
   isVisibleToast: boolean;
+  progress: number;
   workingFiles: FileWrapper[];
 }
 
@@ -33,12 +35,14 @@ interface IUploaderMutations {
   clearUploadQueue: {};
   toggleUploadingState: { uploading: boolean };
   markAs: { index: number, sts: UploadState, id?: string };
+  updateProgress: { progress: number };
   toggleToastVisibility: { visible: boolean };
 }
 
 const state: IUploaderState = {
-  uploading: false,
   workingFiles: [],
+  uploading: false,
+  progress: 0,
   visibleToast: false,
 };
 
@@ -58,15 +62,26 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
       const index = idx++;
       commit("markAs", { index, sts: UploadState.UPLOADING });
       try {
+        commit("updateProgress", { progress: 0 });
         const currentUser = auth().currentUser;
         if (currentUser === null) {
           throw new Error("current user is null");
         }
-        await storageRef.child(`/${currentUser.uid}/private/${file.id}`).put(file.asFile());
-        commit("markAs", { index, sts: UploadState.UPLOADED });
+        const ref = storageRef.child(`/${currentUser.uid}/private/${file.id}`).put(file.asFile());
+        ref.on("state_changed", (w: any) => {
+          const progress = (w.bytesTransferred / w.totalBytes) * 100;
+          commit("updateProgress", { progress });
+        }, err => {
+          console.warn(err);
+          commit("markAs", { index, sts: UploadState.FAILED });
+        }, () => {
+          commit("markAs", { index, sts: UploadState.UPLOADED });
+        });
+        await ref;
       } catch (err) {
         console.warn(err);
         commit("markAs", { index, sts: UploadState.FAILED });
+        commit("toggleUploadingState", { uploading: false });
       }
     }
     commit("toggleUploadingState", { uploading: false });
@@ -82,8 +97,9 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
 
 const getters: DefineGetters<IUploaderGetters, IUploaderState> = {
   isUploading: state => state.uploading,
-  workingFiles: state => state.workingFiles,
   isVisibleToast: state => state.visibleToast,
+  progress: state => state.progress,
+  workingFiles: state => state.workingFiles,
 };
 
 const mutations: DefineMutations<IUploaderMutations, IUploaderState> = {
@@ -97,6 +113,9 @@ const mutations: DefineMutations<IUploaderMutations, IUploaderState> = {
     const fw = state.workingFiles[index];
     fw.markAs(sts);
     Vue.set(state.workingFiles, index, fw);
+  },
+  updateProgress(state, { progress }) {
+    state.progress = progress;
   },
   toggleUploadingState(state, { uploading }) {
     state.uploading = uploading;
