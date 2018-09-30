@@ -5,7 +5,7 @@ service firebase.storage {
     }
 
     function isUserAuthenticated(userId) {
-      return request.auth.uid == userId;
+      return request.auth != null && request.auth.uid == userId;
     }
 
   	match /index.html {
@@ -33,7 +33,7 @@ service firebase.storage {
 
       // In private directory, only upload user allows to read files
       match /private/{allPaths=**} {
-        allow read, write: ifisUserAuthenticated(userId);
+        allow read, write: if isUserAuthenticated(userId);
       }
     }
   }
