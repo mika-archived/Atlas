@@ -9,5 +9,5 @@ export const createUser = functions.auth.user().onCreate(async user => {
   await docRef.set({
     username: user.displayName,
     icon: user.photoURL,
-  } as IUser, { merge: true });
+  } as IUser);
 });

@@ -1,6 +1,8 @@
+import { firestore } from "firebase-admin";
+
 export interface IUser {
   // uid
-  id: string;
+  id?: string;
 
   // display username (In first, auto filled by SSO provider)
   username: string;
@@ -11,10 +13,10 @@ export interface IUser {
 
 export interface IImage {
   // Image ID
-  id: string;
+  id?: string;
 
   // reference to user
-  user: IUser;
+  user: IUser | firestore.DocumentReference;
 
   restrict: "private" | "limited" | "registered" | "public";
 

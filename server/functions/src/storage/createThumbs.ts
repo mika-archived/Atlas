@@ -1,11 +1,14 @@
-import { storage } from "firebase-admin";
+import { firestore, storage } from "firebase-admin";
 import * as functions from "firebase-functions";
 import * as fs from "fs";
 import * as gm from "gm";
 import * as path from "path";
 
+import "../bootstrap/initializeFirebase";
+
 import { BUCKET_NAME } from "../shared/constants";
-import "../shared/initializeFirebase";
+import { IImage } from "../shared/types";
+import { retrieveImageIdFromBucket, retrieveUserIdFromBucket } from "../shared/utils";
 
 interface Size {
   width: number;
@@ -14,12 +17,12 @@ interface Size {
 
 interface Thumbnail {
   size: Size;
-  suffix: string;
+  name: string;
 }
 
 const im = gm.subClass({ imageMagick: true });
 const thumbnails: Thumbnail[] = [
-  { size: { width: 350, height: 350 }, suffix: "square350" },
+  { size: { width: 350, height: 350 }, name: "square350" },
 ];
 
 function resize(src: Buffer, dest: string, size: Size): Promise<void> {
@@ -57,19 +60,29 @@ export const createThumbs = functions.storage.bucket(BUCKET_NAME).object().onFin
 
   const masterName = obj.name; // this is a "master" file.
   const bucketName = path.dirname(masterName);
-  const objectName = path.basename(masterName);
 
   // Download master file
   const buffer = await storage().bucket(BUCKET_NAME).file(masterName).download();
 
   for (const thumb of thumbnails) {
-    const dest = path.normalize(`/tmp/${objectName}_${thumb.suffix}`);
-    await resize(buffer[0], `/tmp/${objectName}_${thumb.suffix}`, thumb.size);
+    const dest = path.normalize(`/tmp/${thumb.name}`);
+    await resize(buffer[0], `/tmp/${thumb.name}`, thumb.size);
 
     await storage().bucket(BUCKET_NAME).upload(dest, {
-      destination: path.normalize(`/${bucketName}/${objectName}_${thumb.suffix}`),
+      destination: path.normalize(`/${bucketName}/${thumb.name}`),
       contentType: obj.contentType,
     });
     fs.unlinkSync(dest);
   }
+
+  // Write to firestore
+  const imageId = retrieveImageIdFromBucket(obj);
+  const userId = retrieveUserIdFromBucket(obj);
+  const userRef = firestore().collection("users").doc(userId);
+
+  await firestore().collection("images").doc(imageId).set({
+    user: userRef,
+    restrict: "private",
+    attributes: []
+  } as IImage);
 });
