@@ -1,5 +1,13 @@
 service firebase.storage {
   match /b/{bucket}/o {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isUserAuthenticated(userId) {
+      return request.auth.uid == userId;
+    }
+
   	match /index.html {
       allow read;
     }
@@ -8,24 +16,24 @@ service firebase.storage {
       // In public directory, everyone allows to read files
       match /public/{allPaths=**} {
         allow read;
-        allow write: if request.auth.uid == userId;
+        allow write: if isUserAuthenticated(userId);
       }
 
       // In local directory, registered users allows to read files
       match /local/{allPaths=**} {
-        allow read: if request.auth != null;
-        allow write: if request.auth.uid == userId;
+        allow read: if isAuthenticated();
+        allow write: if isUserAuthenticated(userId);
       }
 
       // In limited directory, limited users (invited) allows to read files
       match /limited/{allPaths=**} {
-        allow read: if request.auth != null;
-        allow write: if request.auth.uid == userId;
+        allow read: if isAuthenticated();
+        allow write: if isUserAuthenticated(userId);
       }
 
       // In private directory, only upload user allows to read files
       match /private/{allPaths=**} {
-        allow read, write: if request.auth.uid == userId
+        allow read, write: ifisUserAuthenticated(userId);
       }
     }
   }
