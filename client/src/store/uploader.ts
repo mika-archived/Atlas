@@ -2,7 +2,7 @@ import { auth, storage } from "firebase";
 import Vue from "vue";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 
-import { FileWrapper, UploadState } from "@/models/FileWrapper";
+import { FileWrapper, UploadState } from "../models/FileWrapper";
 
 // tslint:disable no-shadowed-variable
 export interface IAddToUploadQueueParams {
@@ -67,7 +67,7 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
         if (currentUser === null) {
           throw new Error("current user is null");
         }
-        const ref = storageRef.child(`/${currentUser.uid}/private/${file.id}`).put(file.asFile());
+        const ref = storageRef.child(`/${currentUser.uid}/private/${file.id}/master`).put(file.asFile());
         ref.on("state_changed", (w: any) => {
           const progress = (w.bytesTransferred / w.totalBytes) * 100;
           commit("updateProgress", { progress });
