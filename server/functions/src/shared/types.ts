@@ -9,6 +9,9 @@ export interface IUser {
 
   // icon url
   icon: string;
+
+  // schema version
+  version: "1";
 }
 
 export interface IImage {
@@ -18,7 +21,15 @@ export interface IImage {
   // reference to user
   user: IUser | firestore.DocumentReference;
 
+  // access restrict
   restrict: "private" | "limited" | "registered" | "public";
 
+  // attributes
   attributes: string[];
+
+  // array of user id
+  limited: string[];
+
+  // schema version
+  version: "1";
 }
