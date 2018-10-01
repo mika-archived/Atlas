@@ -48,9 +48,6 @@ const actions: DefineActions<IImagesActions, IImagesState, IImagesMutations, IIm
       snapshot.forEach(image => {
         console.log(image.data());
       });
-      console.log("===================");
-      const badSnapshot = await query.get();
-      badSnapshot.forEach(w => console.log(w.data()));
     } catch (err) {
       console.warn(err);
     }
