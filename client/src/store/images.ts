@@ -17,7 +17,7 @@ interface IImagesActions {
 }
 
 interface IImagesGetters {
-  images: (key: string) => IImage[];
+  images: IImage[];
 }
 
 // tslint:disable:no-empty-interface
@@ -38,7 +38,7 @@ const actions: DefineActions<IImagesActions, IImagesState, IImagesMutations, IIm
 };
 
 const getters: DefineGetters<IImagesGetters, IImagesState> = {
-  images: state => key => state.images,
+  images: state => state.images,
 };
 
 const mutations: DefineMutations<IImagesMutations, IImagesState> = {};
