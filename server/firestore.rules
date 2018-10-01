@@ -22,16 +22,18 @@ service cloud.firestore {
 
     match /users {
       match /{userId} {
-        allow write: if isUserAuthenticated(userId);
+        allow write: if isUserAuthenticated(userId) && matchUserReference(resource.data.user, requeat.auth.uid);
         allow read: if isAuthenticated();
       }
     }
 
     match /images {
       match /{imageId} {
-        allow create: if isAuthenticated() && matchUserReference(request.auth.id, requeat.resource.data.user);
-        allow update, delete: if requeat.auth != null && matchUserReference(request.auth.uid, resource.data,user);
-        allow read: if canReadImage(request.auth, resource.data);
+        allow create: if isAuthenticated() && matchUserReference(requeat.resource.data.user, request.auth.id);
+        allow update, delete: if requeat.auth != null && matchUserReference(resource.data,user, request.auth.uid);
+
+        allow list: if isAuthenticated() && matchUserReference(request.resource.data.user, requeat.auth.id);
+        allow get: if canReadImage(request.auth, resource.data); // Allowed users only
       }
     }
   }
