@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { firebaseMutations } from "vuexfire";
 
 interface IModules {
   [key: string]: any;
@@ -19,5 +20,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules,
+  mutations: {
+    ...firebaseMutations,
+  },
   strict: process.env.NODE_ENV !== "production"
 });
