@@ -3,7 +3,6 @@ declare module "md5" {
   export default exports;
 }
 
-
 declare module "uikit" {
   const exports: any;
   export default exports;
