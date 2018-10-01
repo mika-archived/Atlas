@@ -1,38 +1,38 @@
 service cloud.firestore {
   match /databases/{database}/documents {
-    function isAuthenticated() {
+    function isAuth() {
       return request.auth != null;
     }
 
-    function isUserAuthenticated(userId) {
-      return request.auth.uid == userId;
+    function isSelf(userId) {
+      return isAuth() && request.auth.uid == userId;
     }
 
     // ref: https://qiita.com/sgr-ksmt/items/1a731fdadf06119d35fc
-    function matchUserReference(ref, uid) {
+    function matchUserRef(ref, uid) {
       return ref != null && ref == /databases/$(database)/documents/users/$(uid);
     }
 
     function canReadImage(auth, data) {
       return (data.restrict == "public") // Allow all users to read
        || (data.restrict == "registered" && auth != null && auth.uid != null) // Allow registered users to read
-       || (data.restrict == "limited" && auth != null && (matchUserReference(data.user, auth.uid) || auth.uid in data.limited)) // Allow limited users to read
-       || (data.restrict == "private" && auth != null && matchUserReference(data.user, auth.uid)); // Allow upload user to read
+       || (data.restrict == "limited" && auth != null && (matchUserRef(data.user, auth.uid) || auth.uid in data.limited)) // Allow limited users to read
+       || (data.restrict == "private" && auth != null && matchUserRef(data.user, auth.uid)); // Allow upload user to read
     }
 
     match /users {
       match /{userId} {
-        allow write: if isUserAuthenticated(userId) && matchUserReference(resource.data.user, requeat.auth.uid);
-        allow read: if isAuthenticated();
+        allow write: if isSelf(userId) && matchUserRef(resource.data.user, request.auth.uid);
+        allow read: if isAuth();
       }
     }
 
     match /images {
       match /{imageId} {
-        allow create: if isAuthenticated() && matchUserReference(requeat.resource.data.user, request.auth.id);
-        allow update, delete: if requeat.auth != null && matchUserReference(resource.data,user, request.auth.uid);
+        allow create: if isAuth() && matchUserRef(request.resource.data.user, request.auth.uid);
+        allow update, delete: if request.auth != null && matchUserRef(resource.data,user, request.auth.uid);
 
-        allow list: if isAuthenticated() && matchUserReference(request.resource.data.user, requeat.auth.id);
+        allow list: if isAuth();
         allow get: if canReadImage(request.auth, resource.data); // Allowed users only
       }
     }
