@@ -895,6 +895,11 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.2.tgz#54c5a964462be3d4d78af631363c18d6fa91ac26"
   integrity sha512-yprFYuno9FtNsSHVlSWd+nRlmGoAbqbeCwOryP6sC/zoCjhpArcRMYp19EvpSUSizJAlsXEwJv+wcWS9XaXdMw==
 
+"@posva/vuefire-core@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@posva/vuefire-core/-/vuefire-core-1.0.2.tgz#a9b0bdc755a5365da5d401e4493759a442eb43f2"
+  integrity sha512-cgCklRR/Cg1nOzVFcOibp7w2ng0BYccpBTdKnR46t9oGQvQX6D+Jtd25F3icx2gznOBvcckvtD3HQAkE52r1nA==
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -10989,10 +10994,12 @@ vuex@^3.0.1:
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.0.1.tgz#e761352ebe0af537d4bb755a9b9dc4be3df7efd2"
   integrity sha512-wLoqz0B7DSZtgbWL1ShIBBCjv22GV5U+vcBFox658g6V0s4wZV9P4YjCNyoHSyIBpj1f29JBoNQIqD82cR4O3w==
 
-vuexfire@^2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/vuexfire/-/vuexfire-2.3.1.tgz#9a3bd6cab06183f48dd864c401073688898643c2"
-  integrity sha512-DLlpCew+uDIhHpVKGHbpgOUBSJT6loK2EZmKWiVvz/m0hzw8hNPFLnx/MZwtitfX5zVaq59hD8b72/YA03oSsA==
+vuexfire@^3.0.0-alpha.9:
+  version "3.0.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/vuexfire/-/vuexfire-3.0.0-alpha.9.tgz#3ca5652aacad6c7f3b8431fd7f3a0180563de857"
+  integrity sha512-0bBIXXy/xdlksQbOARSa6CY+nNIxYJtIQvjNoyuVZtcJ2FjFjANSg4fV7pC9fodTZyJMu1dud4cJhmSzln0fSA==
+  dependencies:
+    "@posva/vuefire-core" "^1.0.2"
 
 w3c-hr-time@^1.0.1:
   version "1.0.1"
