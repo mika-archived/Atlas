@@ -29,7 +29,7 @@ const state: IImagesState = {
 
 const actions: DefineActions<IImagesActions, IImagesState, IImagesMutations, IImagesGetters> = {
   async getImages(ctx, payload) {
-    firebaseAction<IImagesState, IImagesGetters, IImagesActions, IImagesMutations, typeof payload>(async ({ bindFirebaseRef }, { }) => {
+    firebaseAction<typeof ctx, typeof payload>(async ({ bindFirebaseRef, getters }, { }) => {
       const user = await store.collection("users").doc((await currentUser()).uid).get();
       const query = store.collection("images").where("user", "==", user.ref);
       bindFirebaseRef("images", query);

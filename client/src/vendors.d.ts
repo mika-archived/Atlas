@@ -89,8 +89,8 @@ declare module 'vuelidate/lib/validators' {
 declare module "vuexfire" {
   import { ActionContext } from "vuex-type-helper";
 
-  type Fn<S, G, AE, M, K> = (ctx: ActionContext<S, G, AE, M>, payload: K) => void | Promise<any>;
-  function firebaseAction<S, G, AE, M, K>(func: Fn<S, G, AE, M, K>): Fn<S, G, AE, M, K>;
+  type Fn<C, K> = (ctx: C, payload: K) => void | Promise<any>;
+  function firebaseAction<C extends ActionContext<any, any, any, any>, K>(func: Fn<C, K>): Fn<C, K>;
   const firebaseMutations: {};
 
   export {
