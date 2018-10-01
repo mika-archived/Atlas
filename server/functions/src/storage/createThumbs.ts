@@ -81,6 +81,7 @@ export const createThumbs = functions.storage.bucket(BUCKET_NAME).object().onFin
   const userRef = firestore().collection("users").doc(userId);
 
   await firestore().collection("images").doc(imageId).set({
+    id: imageId,
     user: userRef,
     restrict: "private",
     attributes: [],

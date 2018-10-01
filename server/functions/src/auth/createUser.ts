@@ -7,6 +7,7 @@ export const createUser = functions.auth.user().onCreate(async user => {
   // create a new user on firestore
   const docRef = firestore().collection("users").doc(user.uid);
   await docRef.set({
+    id: user.uid,
     username: user.displayName,
     icon: user.photoURL,
     version: "1"
