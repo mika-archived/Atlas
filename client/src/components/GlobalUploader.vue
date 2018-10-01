@@ -19,10 +19,14 @@ import { IAddToUploadQueueParams } from "../store/uploader";
 export default class GlobalUploader extends Vue {
   public classes: string = "";
 
-  @Action("addToWorkingFiles") public addToWorkingFiles!: ActionDescriber<IAddToUploadQueueParams>;
-  @Action("clearWorkingFiles") public clearWorkingFiles!: () => void;
-  @Action("upload") public upload!: () => void;
-  @State("isUploading") public isUploading!: boolean;
+  @Action("addToWorkingFiles")
+  public addToWorkingFiles!: ActionDescriber<IAddToUploadQueueParams>;
+  @Action("clearWorkingFiles")
+  public clearWorkingFiles!: () => void;
+  @Action("upload")
+  public upload!: () => void;
+  @State("isUploading")
+  public isUploading!: boolean;
 
   public mounted(): void {
     window.addEventListener("dragenter", this.onDragEnter);
@@ -55,6 +59,10 @@ export default class GlobalUploader extends Vue {
 
   private onDrop(event: DragEvent) {
     event.preventDefault();
+    if (event.dataTransfer == null) {
+      return;
+    }
+
     this.classes = "hidden";
     const files: File[] = [];
     for (let i = 0; i < event.dataTransfer.files.length; i++) {
