@@ -85,3 +85,17 @@ declare module 'vuelidate/lib/validators' {
   function minValue(min: number): (value: any) => boolean
   function maxValue(max: number): (value: any) => boolean
 }
+
+declare module "vuexfire" {
+  import { ActionContext } from "vuex-type-helper";
+
+  type Fn<S, G, AE, M, K> = (ctx: ActionContext<S, G, AE, M>, payload: K) => void | Promise<any>;
+  function firebaseAction<S, G, AE, M, K>(func: Fn<S, G, AE, M, K>): Fn<S, G, AE, M, K>;
+  const firebaseMutations: {};
+
+  export {
+    firebaseAction,
+    firebaseMutations
+  };
+}
+
