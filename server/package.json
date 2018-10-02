@@ -14,7 +14,6 @@
     "deploy:storage": "firebase deploy --only storage",
     "logs": "firebase functions:log"
   },
-  "dependencies": {},
   "devDependencies": {
     "@firebase/app-types": "^0.3.2",
     "ts-loader": "^5.2.0",

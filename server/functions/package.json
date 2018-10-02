@@ -10,9 +10,11 @@
   "dependencies": {
     "firebase-admin": "^6.0.0",
     "firebase-functions": "^2.0.5",
-    "gm": "^1.23.1"
+    "gm": "^1.23.1",
+    "mkdirp-promise": "^5.0.1"
   },
   "devDependencies": {
-    "@types/gm": "^1.18.0"
+    "@types/gm": "^1.18.0",
+    "@types/mkdirp-promise": "^5.0.0"
   }
 }
