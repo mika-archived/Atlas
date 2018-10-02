@@ -7,6 +7,7 @@ import * as path from "path";
 import "../bootstrap/initializeFirebase";
 
 import { BUCKET_NAME } from "../shared/constants";
+import { error, skip } from "../shared/logger";
 import { IImage } from "../shared/types";
 import { retrieveImageIdFromBucket, retrieveUserIdFromBucket } from "../shared/utils";
 
@@ -45,16 +46,19 @@ function resize(src: Buffer, dest: string, size: Size): Promise<void> {
 export const createThumbs = functions.storage.bucket(BUCKET_NAME).object().onFinalize(async obj => {
   // Validate
   if (!obj.contentType || !obj.name) {
+    skip("ContentType or Name is empty");
     return;
   }
 
   // Is this a image?
   if (!obj.contentType.startsWith("image/")) {
+    skip("ContentType is not started with `image/`");
     return;
   }
 
   // Generated thumbnails?
   if (!obj.name.endsWith("master")) {
+    skip("This is a generated object");
     return;
   }
 
@@ -75,7 +79,7 @@ export const createThumbs = functions.storage.bucket(BUCKET_NAME).object().onFin
       });
       fs.unlinkSync(dest);
     } catch (err) {
-      console.log(err);
+      error(err);
     }
   }
 
@@ -93,5 +97,4 @@ export const createThumbs = functions.storage.bucket(BUCKET_NAME).object().onFin
     timestamp: new Date().getTime(),
     version: "1",
   } as IImage);
-
 });
