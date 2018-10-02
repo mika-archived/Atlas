@@ -12,7 +12,7 @@
         br
         | いくつか画像をアップロードすることで、このエリアに画像が表示されます。
     section(v-else)
-      div(class="uk-child-width-1-3 uk-child-width-1-4@s uk-child-width-1-5@m uk-child-width-1-6@l" uk-grid)
+      .image-container(class="uk-child-width-1-3 uk-child-width-1-4@s uk-child-width-1-5@m uk-child-width-1-6@l" uk-grid)
         cloud-image.img(v-for="image in images" :image="image")
 </template>
 
@@ -45,7 +45,11 @@ export default class GlobalUploader extends Vue {
   margin: 0 auto;
 }
 
-.img {
-  height: 128px;
+.image-container {
+  padding-bottom: 20px;
+
+  .img {
+    height: 156px;
+  }
 }
 </style>

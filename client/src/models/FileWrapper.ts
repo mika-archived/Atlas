@@ -1,6 +1,7 @@
 import { v4 as uuid } from "uuid";
 
 import { encode } from "@/models/base64";
+import { resizeSquare } from "@/models/utils";
 
 export enum UploadState {
   QUEUED,
@@ -45,6 +46,32 @@ export class FileWrapper {
 
   public async asBase64(): Promise<string> {
     return await encode(this.file);
+  }
+
+  public asSquare(to: number): Promise<Blob> {
+    return new Promise<Blob>(async (resolve, reject) => {
+      const canvas = document.createElement("canvas") as HTMLCanvasElement;
+      const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+      const image = new Image();
+      image.onload = function(this: HTMLElement, e: Event) {
+        // f**k
+        ((self: HTMLImageElement) => {
+          const size = resizeSquare({ width: self.width, height: self.height }, to);
+          canvas.width = size.width;
+          canvas.height = size.height;
+          context.drawImage(self, 0, 0, self.width, self.height, 0, 0, size.width, size.height);
+
+          canvas.toBlob(blob => {
+            if (blob == null) {
+              reject();
+            } else {
+              resolve(blob);
+            }
+          });
+        })(this as HTMLImageElement);
+      };
+      image.src = await this.asBase64();
+    });
   }
 
   public markAs(state: UploadState): void {
