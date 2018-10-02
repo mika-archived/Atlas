@@ -53,6 +53,11 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
     });
   },
   async upload({ commit, state }) {
+    if (state.workingFiles.length === 0) {
+      commit("toggleToastVisibility", { visible: false });
+      return;
+    }
+
     const storageRef = storage().ref();
     let idx = 0;
 
