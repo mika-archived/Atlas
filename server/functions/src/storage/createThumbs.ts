@@ -58,23 +58,6 @@ export const createThumbs = functions.storage.bucket(BUCKET_NAME).object().onFin
     return;
   }
 
-  const masterName = obj.name; // this is a "master" file.
-  const bucketName = path.dirname(masterName);
-
-  // Download master file
-  const buffer = await storage().bucket(BUCKET_NAME).file(masterName).download();
-
-  for (const thumb of thumbnails) {
-    const dest = path.normalize(`/tmp/${thumb.name}`);
-    await resize(buffer[0], `/tmp/${thumb.name}`, thumb.size);
-
-    await storage().bucket(BUCKET_NAME).upload(dest, {
-      destination: path.normalize(`/${bucketName}/${thumb.name}`),
-      contentType: obj.contentType,
-    });
-    fs.unlinkSync(dest);
-  }
-
   // Write to firestore
   const imageId = retrieveImageIdFromBucket(obj);
   const userId = retrieveUserIdFromBucket(obj);
@@ -88,4 +71,25 @@ export const createThumbs = functions.storage.bucket(BUCKET_NAME).object().onFin
     limited: [],
     version: "1",
   } as IImage);
+
+  const masterName = obj.name; // this is a "master" file.
+  const bucketName = path.dirname(masterName);
+
+  // Download master file
+  const buffer = await storage().bucket(BUCKET_NAME).file(masterName).download();
+
+  for (const thumb of thumbnails) {
+    try {
+      const dest = path.normalize(`/tmp/${thumb.name}`);
+      await resize(buffer[0], `/tmp/${thumb.name}`, thumb.size);
+
+      await storage().bucket(BUCKET_NAME).upload(dest, {
+        destination: path.normalize(`/${bucketName}/${thumb.name}`),
+        contentType: obj.contentType,
+      });
+      fs.unlinkSync(dest);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 });
