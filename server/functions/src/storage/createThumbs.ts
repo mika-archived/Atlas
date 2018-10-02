@@ -23,7 +23,7 @@ interface Thumbnail {
 
 const im = gm.subClass({ imageMagick: true });
 const thumbnails: Thumbnail[] = [
-  { size: { width: 350, height: 350 }, name: "square350" },
+  { size: { width: 256, height: 256 }, name: "square256" },
 ];
 
 function resize(src: Buffer, dest: string, size: Size): Promise<void> {
@@ -32,7 +32,8 @@ function resize(src: Buffer, dest: string, size: Size): Promise<void> {
       .limit("memory", "192MB")
       .limit("disk", "0")
       .autoOrient()
-      .resize(size.width, size.height)
+      .quality(75)
+      .scale(size.width, size.height)
       .write(dest, err => {
         if (err) {
           reject(err);
@@ -42,6 +43,7 @@ function resize(src: Buffer, dest: string, size: Size): Promise<void> {
       });
   });
 }
+
 
 export const createThumbs = functions.storage.bucket(BUCKET_NAME).object().onFinalize(async obj => {
   // Validate
