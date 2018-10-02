@@ -10668,10 +10668,10 @@ uglifyjs-webpack-plugin@^1.2.4, uglifyjs-webpack-plugin@^1.2.7:
     webpack-sources "^1.1.0"
     worker-farm "^1.5.2"
 
-uikit@^3.0.0-rc.16:
-  version "3.0.0-rc.16"
-  resolved "https://registry.yarnpkg.com/uikit/-/uikit-3.0.0-rc.16.tgz#b003992acd3aa9c790eaf8577ff9aacf200877b9"
-  integrity sha512-xN3oIH2ugJCSGb5wIDePa0dGcGsaNj9piSaOn1ZX0WJ7cTz+u9OdGM84vcqKbxpnhFpORQ0flhw6nBHxswQUsA==
+uikit@^3.0.0-rc.17:
+  version "3.0.0-rc.17"
+  resolved "https://registry.yarnpkg.com/uikit/-/uikit-3.0.0-rc.17.tgz#831526186c3ad37d1d52b1013b276784388a2a76"
+  integrity sha512-uot0lldkFgdF/9Ubo0cJKvhdL+SeoEjWQpIPK1UqdpFxSX/1eAD0FLKmwWspHzfk+kp59rrs74j0CYNXgK6j6A==
 
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"

@@ -12,8 +12,8 @@
         br
         | いくつか画像をアップロードすることで、このエリアに画像が表示されます。
     section(v-else)
-      .image-container(class="uk-child-width-1-3 uk-child-width-1-4@s uk-child-width-1-5@m uk-child-width-1-6@l" uk-grid)
-        cloud-image.img(v-for="image in images" :image="image")
+      transition-group.image-container(class="uk-child-width-1-3 uk-child-width-1-4@s uk-child-width-1-5@m uk-child-width-1-6@l" name="flip" tag="div" uk-grid)
+        cloud-image.img(v-for="image in images" :image="image" :key="image.id")
 </template>
 
 <script lang="ts">
@@ -49,6 +49,7 @@ export default class GlobalUploader extends Vue {
   padding-bottom: 20px;
 
   .img {
+    transition: all 0.25s;
     height: 156px;
   }
 }
