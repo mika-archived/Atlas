@@ -31,7 +31,7 @@ const actions: DefineActions<IImagesActions, IImagesState, IImagesMutations, IIm
   async getImages(ctx, payload) {
     firebaseAction<typeof ctx, typeof payload>(async ({ bindFirebaseRef, getters }, { }) => {
       const user = await store.collection("users").doc((await currentUser()).uid).get();
-      const query = store.collection("images").where("user", "==", user.ref).orderBy("timestamp", "desc");
+      const query = store.collection("images").where("user", "==", user.ref).orderBy("timestamp", "desc").limit(60);
       bindFirebaseRef("images", query);
     })(ctx, payload);
   },

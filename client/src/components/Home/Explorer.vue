@@ -49,7 +49,7 @@ export default class GlobalUploader extends Vue {
   padding-bottom: 20px;
 
   .img {
-    transition: all 0.25s;
+    transition: transform 0.25s;
     height: 156px;
   }
 }
