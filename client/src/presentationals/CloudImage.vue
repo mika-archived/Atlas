@@ -9,20 +9,31 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { IImage } from "../models/image";
 import { currentUser } from "../models/session";
 
+const placeholder = "https://fakeimg.mochizuki.moe/100x100/?text=%20";
+
 @Component
 export default class CloudImage extends Vue {
-  public previewUrl: string = "https://fakeimg.mochizuki.moe/100x100/?text=%20";
+  public previewUrl: string = placeholder;
 
   @Prop()
   public image!: IImage;
 
   @Watch("image", { deep: true })
   public async onImageChanged(newImg: IImage, oldImg: IImage): Promise<void> {
+    this.previewUrl = placeholder;
+    await this.generateDownloadUrl(newImg);
+  }
+
+  public async created(): Promise<void> {
+    await this.generateDownloadUrl(this.image);
+  }
+
+  private async generateDownloadUrl(img: IImage): Promise<void> {
     try {
       // XXX: Vuexfire が user (ref) を吹き飛ばすから...
       const user = await currentUser();
       const ref = storage().refFromURL(
-        `gs://storage.atlas.mochizuki.moe/${user.uid}/${newImg.restrict}/${newImg.id}/square350`
+        `gs://storage.atlas.mochizuki.moe/${user.uid}/${img.restrict}/${img.id}/square350`
       );
       const url = await ref.getDownloadURL();
       if (/&token=/.test(url)) {
