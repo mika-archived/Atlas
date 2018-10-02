@@ -58,21 +58,6 @@ export const createThumbs = functions.storage.bucket(BUCKET_NAME).object().onFin
     return;
   }
 
-  // Write to firestore
-  const imageId = retrieveImageIdFromBucket(obj);
-  const userId = retrieveUserIdFromBucket(obj);
-  const userRef = firestore().collection("users").doc(userId);
-
-  await firestore().collection("images").doc(imageId).set({
-    id: imageId,
-    user: userRef,
-    restrict: "private",
-    attributes: [],
-    limited: [],
-    timestamp: new Date().getTime(),
-    version: "1",
-  } as IImage);
-
   const masterName = obj.name; // this is a "master" file.
   const bucketName = path.dirname(masterName);
 
@@ -93,4 +78,20 @@ export const createThumbs = functions.storage.bucket(BUCKET_NAME).object().onFin
       console.log(err);
     }
   }
+
+  // Write to firestore
+  const imageId = retrieveImageIdFromBucket(obj);
+  const userId = retrieveUserIdFromBucket(obj);
+  const userRef = firestore().collection("users").doc(userId);
+
+  await firestore().collection("images").doc(imageId).set({
+    id: imageId,
+    user: userRef,
+    restrict: "private",
+    attributes: [],
+    limited: [],
+    timestamp: new Date().getTime(),
+    version: "1",
+  } as IImage);
+
 });
