@@ -9,7 +9,7 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { IImage } from "../models/image";
 import { currentUser } from "../models/session";
 
-const placeholder = "https://fakeimg.mochizuki.moe/100x100/?text=%20";
+const placeholder = "https://fakeimg.mochizuki.moe/250x250/000000%2C000/000000%2C000/";
 
 @Component
 export default class CloudImage extends Vue {
