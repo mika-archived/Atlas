@@ -1,5 +1,7 @@
-import { createThumbs } from "./createThumbs";
+import { attachMetadata } from "./attachMetadata";
+import { registerImage } from "./registerImage";
 
 export {
-  createThumbs,
+  attachMetadata,
+  registerImage,
 };
