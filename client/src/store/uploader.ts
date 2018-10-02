@@ -72,6 +72,10 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
         if (currentUser === null) {
           throw new Error("current user is null");
         }
+
+        // 一瞬で終わるし、進捗表示しなくても良い
+        await storageRef.child(`/${currentUser.uid}/private/${file.id}/square192`).put(await file.asSquare(192));
+
         const ref = storageRef.child(`/${currentUser.uid}/private/${file.id}/master`).put(file.asFile());
         ref.on("state_changed", (w: any) => {
           const progress = (w.bytesTransferred / w.totalBytes) * 100;
@@ -83,6 +87,7 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
           commit("markAs", { index, sts: UploadState.UPLOADED });
         });
         await ref;
+
       } catch (err) {
         console.warn(err);
         commit("markAs", { index, sts: UploadState.FAILED });

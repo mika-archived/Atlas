@@ -23,7 +23,7 @@ interface Thumbnail {
 
 const im = gm.subClass({ imageMagick: true });
 const thumbnails: Thumbnail[] = [
-  { size: { width: 256, height: 256 }, name: "square256" },
+  // { size: { width: 196, height: 196 }, name: "square196" },
 ];
 
 function resize(src: Buffer, dest: string, size: Size): Promise<void> {
