@@ -30,6 +30,9 @@ export interface IImage {
   // array of user id
   limited: string[];
 
+  // unix timestamp (msec)
+  timestamp: number;
+
   // schema version
   version: "1";
 }

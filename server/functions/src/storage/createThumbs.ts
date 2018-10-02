@@ -69,6 +69,7 @@ export const createThumbs = functions.storage.bucket(BUCKET_NAME).object().onFin
     restrict: "private",
     attributes: [],
     limited: [],
+    timestamp: new Date().getTime(),
     version: "1",
   } as IImage);
 
