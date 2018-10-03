@@ -18,6 +18,9 @@ export default class CloudImage extends Vue {
   @Prop()
   public image!: IImage;
 
+  @Prop()
+  public mode!: string;
+
   @Watch("image", { deep: true })
   public async onImageChanged(newImg: IImage, oldImg: IImage): Promise<void> {
     this.previewUrl = placeholder;
@@ -33,7 +36,7 @@ export default class CloudImage extends Vue {
       // XXX: Vuexfire が user (ref) を吹き飛ばすから...
       const user = await currentUser();
       const ref = storage().refFromURL(
-        `gs://storage.atlas.mochizuki.moe/${user.uid}/${img.restrict}/${img.id}/square192`
+        `gs://storage.atlas.mochizuki.moe/${user.uid}/${img.restrict}/${img.id}/${this.mode}`
       );
       const url = await ref.getDownloadURL();
       if (/&token=/.test(url)) {
@@ -47,9 +50,3 @@ export default class CloudImage extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-img {
-  object-fit: cover;
-}
-</style>

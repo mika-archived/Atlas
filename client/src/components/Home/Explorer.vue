@@ -14,7 +14,7 @@
     section(v-else)
       transition-group.image-container(class="uk-child-width-1-3 uk-child-width-1-4@s uk-child-width-1-5@m uk-child-width-1-6@l" name="flip" tag="div" uk-grid)
         router-link(v-for="image in images" :key="image.id" :to="`/images/${image.id}`")
-          cloud-image.img(:image="image")
+          cloud-image.img(:image="image" mode="square192")
 </template>
 
 <script lang="ts">
@@ -63,6 +63,10 @@ export default class GlobalUploader extends Vue {
     .img {
       height: 156px;
       width: 100%;
+    }
+
+    /deep/ img {
+      object-fit: cover;
     }
   }
 }
