@@ -27,6 +27,7 @@ declare module 'vuelidate' {
   // handles making this.$v work within a component context, but it isn't typed
   // at all right now. still need to look in depth at @mrellipse's version
   module 'vue/types/vue' {
+
     interface Vue {
       $v?: { [x: string]: any }
     }
@@ -47,7 +48,7 @@ declare module 'vuelidate' {
 
   // these are untested, the Vue.use approach to make it a global mixin
   export function Vuelidate(Vue: vue): void
-  export default function (Vue: vue): void
+  export default function(Vue: vue): void
 }
 
 // the individual validators to import

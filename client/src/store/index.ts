@@ -2,6 +2,10 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { firebaseMutations } from "vuexfire";
 
+import { IImagesState } from "@/store/images";
+import { ISessionState } from "@/store/session";
+import { IUploaderState } from "@/store/uploader";
+
 interface IModules {
   [key: string]: any;
 }
@@ -17,6 +21,12 @@ files.keys().forEach((key: string) => {
 });
 
 Vue.use(Vuex);
+
+export interface IStore {
+  images: IImagesState;
+  session: ISessionState;
+  uploader: IUploaderState;
+}
 
 export default new Vuex.Store({
   modules,
