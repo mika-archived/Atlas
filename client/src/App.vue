@@ -1,15 +1,15 @@
 <template lang="pug">
   #app.uk-offcanvas-content
-    navigation(:is-registered-user="isRegisteredUser" :is-anonymous-user="isAnonymousUser")
+    navigation
     router-view
     .footer
       atlas-footer
-    template(v-if="isRegisteredUser")
+    template(v-if="$currentUser.isRegistered")
       global-uploader
       toast(:visible="isVisibleToast")
         uploader-header(slot="header" :uploading="isUploading" :files="workingFiles")
         uploader-content(slot="content" :uploading="isUploading" :files="workingFiles" :progress="progress")
-    template(v-if="isSessionLoading")
+    template(v-if="$currentUser.isLoading")
       .loading.uk-inline
         .uk-overlay-default.uk-position-cover
         .uk-overlay.uk-position-center
@@ -39,15 +39,6 @@ import Navigation from "@/presentationals/Navigation.vue";
   }
 })
 export default class App extends Vue {
-  @Getter("isRegisteredUser")
-  public isRegisteredUser!: boolean;
-
-  @Getter("isSessionLoading")
-  public isSessionLoading!: boolean;
-
-  @Getter("isAnonymousUser")
-  public isAnonymousUser!: boolean;
-
   @Getter("isUploading")
   public isUploading!: boolean;
 

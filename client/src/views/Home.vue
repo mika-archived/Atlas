@@ -14,7 +14,6 @@ import { Action, Getter } from "vuex-class";
 import Explorer from "../components/Home/Explorer.vue";
 import Featured from "../components/Home/Featured.vue";
 import { IImage } from "../models/image";
-import { ActionDescriber } from "../models/types";
 import { SessionState } from "../store/session";
 
 @Component({
@@ -35,12 +34,11 @@ export default class Navigation extends Vue {
 
   @Getter("images")
   public images!: IImage[];
-
-  @Action("getImages")
-  public getImages!: ActionDescriber<{ key: string }>;
-
-  public async created(): Promise<void> {
-    this.getImages({ key: "" });
-  }
 }
 </script>
+
+<style lang="scss" scoped>
+.lightbox {
+  position: relative;
+}
+</style>

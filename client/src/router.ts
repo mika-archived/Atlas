@@ -22,13 +22,11 @@ const router = new Router({
   routes: [
     {
       path: "/",
-      name: "home",
       component: Home,
       meta: { auth: "both" } as RouteMeta
     },
     {
       path: "/about",
-      name: "about",
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -37,31 +35,31 @@ const router = new Router({
     },
     {
       path: "/tos",
-      name: "tos",
       component: () => import(/* webpackChunkName: "tos" */ "./views/Tos.vue"),
       meta: { auth: "both" } as RouteMeta,
     },
     {
       path: "/users/signup",
-      name: "users-signup",
       component: () => import(/* webpackChunkName: "users/signup" */ "./views/users/Signup.vue"),
       meta: { auth: "both" } as RouteMeta  // XXX: Google Firebase Authentication cannot set redirect URI
     },
     {
       path: "/users/login",
-      name: "users-login",
       component: () => import(/* webpackChunkName: "users/login" */ "./views/users/Login.vue"),
       meta: { auth: "both" } as RouteMeta // XXX: Google Firebase Authentication cannot set redirect URI
     },
     {
       path: "/users/logout",
-      name: "users-logout",
       component: () => import(/* webpackChunkName: "users/logout" */ "./views/users/Logout.vue"),
       meta: { auth: "registered" } as RouteMeta,
     },
     {
+      path: "/images/:id",
+      component: () => import(/* webpackChunkName: "images/show" */ "./views/images/Show.vue"),
+      meta: { auth: "both" } as RouteMeta,
+    },
+    {
       path: "*",
-      name: "404",
       component: () => import(/* webpackChunkName: "404" */ "./views/404.vue"),
       meta: { auth: "both" } as RouteMeta
     }

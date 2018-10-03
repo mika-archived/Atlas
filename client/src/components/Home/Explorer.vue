@@ -22,6 +22,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { Action } from "vuex-class";
 
 import { IImage } from "../../models/image";
+import { ActionDescriber } from "../../models/types";
 import CloudImage from "../../presentationals/CloudImage.vue";
 
 // ref: https://codepen.io/nguernse/pen/JyYdNY
@@ -33,6 +34,13 @@ import CloudImage from "../../presentationals/CloudImage.vue";
 export default class GlobalUploader extends Vue {
   @Prop()
   public images!: IImage[];
+
+  @Action("getImages")
+  public getImages!: ActionDescriber<{ key: string }>;
+
+  public async created(): Promise<void> {
+    this.getImages({ key: "" });
+  }
 }
 </script>
 
@@ -47,7 +55,7 @@ export default class GlobalUploader extends Vue {
 }
 
 .image-container {
-  padding-bottom: 20px;
+  padding-bottom: 50px;
 
   a {
     transition: transform 0.25s;
