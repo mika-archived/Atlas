@@ -1,5 +1,8 @@
-import { firestore } from "firebase-admin";
+import { firestore, storage } from "firebase-admin";
 import * as functions from "firebase-functions";
+import sizeof from "image-size";
+import mkdirp from "mkdirp-promise";
+import path from "path";
 
 import "../bootstrap/initializeFirebase";
 
@@ -27,6 +30,15 @@ export const registerImage = functions.storage.bucket(BUCKET_NAME).object().onFi
     return;
   }
 
+  // Prepare
+  const dist = `/tmp/${obj.name}`;
+  await mkdirp(path.dirname(dist));
+
+  // Get image metadata
+  const buffer = await storage().bucket(BUCKET_NAME).file(obj.name).download();
+  const bytes = buffer[0].length;
+  const dimensions = sizeof(buffer[0]);
+
   // Write to firestore
   const imageId = retrieveImageIdFromBucket(obj);
   const userId = retrieveUserIdFromBucket(obj);
@@ -39,6 +51,10 @@ export const registerImage = functions.storage.bucket(BUCKET_NAME).object().onFi
     attributes: [],
     limited: [],
     timestamp: new Date().getTime(),
+    caption: "",
     version: "1",
+    type: dimensions.type,
+    size: bytes,
+    dimensions: [dimensions.width, dimensions.height],
   } as IImage);
 });

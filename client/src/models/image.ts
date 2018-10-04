@@ -21,6 +21,18 @@ export interface IImage {
   // unix timestamp (msec)
   timestamp: number;
 
+  // content type (PNG, JPEG, BMP, GIF, WEBP)
+  type?: string;
+
+  // filesize
+  size?: number;
+
+  // dimensions (x, y)
+  dimensions?: [number, number];
+
+  // caption
+  caption: string;
+
   // schema version
   version: "1";
 }
