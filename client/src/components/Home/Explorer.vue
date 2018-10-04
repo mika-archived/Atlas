@@ -60,13 +60,12 @@ export default class GlobalUploader extends Vue {
   a {
     transition: transform 0.25s;
 
-    .img {
-      height: 156px;
-      width: 100%;
-    }
-
-    /deep/ img {
-      object-fit: cover;
+    /deep/ div {
+      img {
+        height: 156px;
+        width: 100%;
+        object-fit: cover;
+      }
     }
   }
 }

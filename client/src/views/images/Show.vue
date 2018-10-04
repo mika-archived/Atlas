@@ -9,12 +9,12 @@
           a(href="#") Info
       ul.uk-switcher
         li
-          cloud-image.img(:image="image" mode="master")
+          cloud-image.img(:image="image" mode="master" ratio="3")
     // tablet ~
     .container(class="uk-visible@m")
       div(uk-grid)
         div(class="uk-width-2-3@m uk-width-3-4@l uk-width-4-5@xl")
-          cloud-image.img(:image="image" mode="master")
+          cloud-image.img(:image="image" mode="master" ratio="3")
 
         div(class="uk-width-1-3@m uk-width-1-4@l uk-width-1-5@xl")
           
@@ -63,11 +63,23 @@ export default class Show extends Vue {
   @media (min-width: 640px) {
     width: calc(100% - 60px);
   }
-}
 
-/deep/ img {
-  max-height: calc(100vh - 80px);
-  object-fit: contain;
-  width: 100%;
+  .img {
+    max-height: calc(100vh - 132px);
+
+    @media (min-width: 960px) {
+      max-height: calc(100vh - 80px);
+    }
+
+    /deep/ img {
+      max-height: calc(100vh - 132px);
+      object-fit: contain;
+      width: 100%;
+
+      @media (min-width: 960px) {
+        max-height: calc(100vh - 80px);
+      }
+    }
+  }
 }
 </style>
