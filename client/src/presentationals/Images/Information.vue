@@ -17,7 +17,13 @@
     table.uk-table.uk-table-divider
       tbody
         tr
-          td Date
+          td Format
+          td {{format}}
+        tr
+          td size
+          td {{size}}
+        tr
+          td Created at
           td {{timestamp}}
         tr
           td Version
@@ -28,6 +34,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { IImage } from "../../models/image";
+import { IUser } from "../../models/user";
 
 @Component
 export default class Information extends Vue {
@@ -36,7 +43,7 @@ export default class Information extends Vue {
 
   public get owner(): string {
     if (this.image) {
-      return this.image.user ? this.image.user.username : "Unknown";
+      return this.image.user ? (this.image.user as IUser).username : "Unknown";
     }
     return "Loading...";
   }
@@ -66,20 +73,36 @@ export default class Information extends Vue {
     return this.image ? this.image.attributes : [];
   }
 
+  public get format(): string {
+    if (this.image && this.image.type) {
+      return this.image.type.toLocaleUpperCase();
+    }
+    return "Loading...";
+  }
+
+  public get size(): string {
+    if (this.image && this.image.size) {
+      let bytes = this.image.size;
+      if (bytes <= 1024) return `${bytes} Bytes`;
+      bytes /= 1024;
+      if (bytes <= 1024) return `${bytes.toFixed(2)} KB`;
+      return `${(bytes / 1024).toFixed(2)} MB`;
+    }
+    return "Loading...";
+  }
+
   public get timestamp(): string {
     if (this.image) {
       return new Date(this.image.timestamp).toLocaleString();
-    } else {
-      return "Loading...";
     }
+    return "Loading...";
   }
 
   public get version(): string {
     if (this.image) {
       return this.image.version;
-    } else {
-      return "Loading...";
     }
+    return "Loading...";
   }
 }
 </script>
