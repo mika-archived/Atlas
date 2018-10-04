@@ -16,6 +16,7 @@ export interface IGetImageParams {
 export interface IImagesState {
   images: [];
   image: Nullable<IImage>;
+  hasError: boolean;
 }
 
 interface IImagesActions {
@@ -31,11 +32,13 @@ interface IImagesGetters {
 // tslint:disable:no-empty-interface
 interface IImagesMutations {
   clearImage: {};
+  toggleError: { value: boolean };
 }
 
 const state: IImagesState = {
   images: [],
   image: null,
+  hasError: false,
 };
 
 const actions: DefineActions<IImagesActions, IImagesState, IImagesMutations, IImagesGetters> = {
@@ -43,16 +46,22 @@ const actions: DefineActions<IImagesActions, IImagesState, IImagesMutations, IIm
     firebaseAction<typeof ctx, typeof payload>(async ({ bindFirebaseRef }) => {
       const user = await store.collection("users").doc((await currentUser()).uid).get();
       const query = store.collection("images").where("user", "==", user.ref).orderBy("timestamp", "desc").limit(60);
-      bindFirebaseRef("images", query);
+      await bindFirebaseRef("images", query);
     })(ctx, payload);
   },
 
   async getImage(ctx, payload) {
     ctx.commit("clearImage", {});
+    ctx.commit("toggleError", { value: false });
 
-    firebaseAction<typeof ctx, typeof payload>(async ({ bindFirebaseRef }, { id }) => {
-      const image = await store.collection("images").doc(id);
-      bindFirebaseRef("image", image);
+    firebaseAction<typeof ctx, typeof payload>(async ({ bindFirebaseRef, commit }, { id }) => {
+      try {
+        const image = await store.collection("images").doc(id);
+        await bindFirebaseRef("image", image);
+      } catch (err) {
+        console.warn(err);
+        commit("toggleError", { value: true });
+      }
     })(ctx, payload);
   }
 };
@@ -65,6 +74,9 @@ const getters: DefineGetters<IImagesGetters, IImagesState> = {
 const mutations: DefineMutations<IImagesMutations, IImagesState> = {
   clearImage(state) {
     state.image = null;
+  },
+  toggleError(state, { value }) {
+    state.hasError = value;
   }
 };
 
