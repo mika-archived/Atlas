@@ -1,5 +1,6 @@
 <template lang="pug">
   .uk-container
+    global-uploader
     .uk-section.uk-flex.uk-flex-center
       form.uk-search.uk-search-default
         span(uk-search-icon)
@@ -21,17 +22,19 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Action } from "vuex-class";
 
+import GlobalUploader from "@/components/GlobalUploader.vue";
 import { IImage } from "../../models/image";
 import { ActionDescriber } from "../../models/types";
-import CloudImage from "../../presentationals/CloudImage.vue";
+import CloudImage from "@/presentationals/CloudImage.vue";
 
 // ref: https://codepen.io/nguernse/pen/JyYdNY
 @Component({
   components: {
-    "cloud-image": CloudImage
+    GlobalUploader,
+    CloudImage
   }
 })
-export default class GlobalUploader extends Vue {
+export default class Explorer extends Vue {
   @Prop()
   public images!: IImage[];
 
@@ -61,6 +64,8 @@ export default class GlobalUploader extends Vue {
     transition: transform 0.25s;
 
     /deep/ div {
+      height: 100%;
+
       img {
         height: 156px;
         width: 100%;

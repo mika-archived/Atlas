@@ -5,7 +5,6 @@
     .footer
       atlas-footer
     template(v-if="$currentUser.isRegistered")
-      global-uploader
       toast(:visible="isVisibleToast")
         uploader-header(slot="header" :uploading="isUploading" :files="workingFiles")
         uploader-content(slot="content" :uploading="isUploading" :files="workingFiles" :progress="progress")
@@ -21,7 +20,6 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 
-import GlobalUploader from "@/components/GlobalUploader.vue";
 import Toast from "@/components/Toast.vue";
 import UploaderContent from "@/components/Uploader/Content.vue";
 import UploaderHeader from "@/components/Uploader/Header.vue";
@@ -31,7 +29,6 @@ import Navigation from "@/presentationals/Navigation.vue";
 @Component({
   components: {
     AtlasFooter,
-    GlobalUploader,
     Navigation,
     Toast,
     UploaderContent,

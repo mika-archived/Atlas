@@ -13,6 +13,7 @@ import { Action, State } from "vuex-class";
 import { ALLOWED_TYPES } from "../models/constants";
 import { ActionDescriber, IState } from "../models/types";
 import { IAddToUploadQueueParams } from "../store/uploader";
+import { stat } from "fs";
 
 // ref: https://codepen.io/nguernse/pen/JyYdNY
 @Component
@@ -28,7 +29,7 @@ export default class GlobalUploader extends Vue {
   @Action("upload")
   public upload!: ActionDescriber;
 
-  @State("isUploading")
+  @State((state: IState) => state.uploader.uploading)
   public isUploading!: boolean;
 
   public mounted(): void {
@@ -38,7 +39,7 @@ export default class GlobalUploader extends Vue {
     window.addEventListener("drop", this.onDrop);
   }
 
-  public destroy(): void {
+  public beforeDestroy(): void {
     window.removeEventListener("dragenter", this.onDragEnter);
     window.removeEventListener("dragover", this.onDragOver);
     window.removeEventListener("dragleave", this.onDragLeave);
@@ -74,10 +75,14 @@ export default class GlobalUploader extends Vue {
         files.push(file);
       }
     }
-    // アップロード中ならそのまま加える、それ以外の場合は clear する
-    this.clearWorkingFiles();
-    this.addToWorkingFiles({ files });
-    this.upload();
+
+    if (this.isUploading) {
+      this.addToWorkingFiles({ files });
+    } else {
+      this.clearWorkingFiles();
+      this.addToWorkingFiles({ files });
+      this.upload();
+    }
   }
 }
 </script>
