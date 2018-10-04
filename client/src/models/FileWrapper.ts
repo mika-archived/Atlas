@@ -54,21 +54,19 @@ export class FileWrapper {
       const context = canvas.getContext("2d") as CanvasRenderingContext2D;
       const image = new Image();
       image.onload = function(this: HTMLElement, e: Event) {
-        // f**k
-        ((self: HTMLImageElement) => {
-          const size = resizeSquare({ width: self.width, height: self.height }, to);
-          canvas.width = size.width;
-          canvas.height = size.height;
-          context.drawImage(self, 0, 0, self.width, self.height, 0, 0, size.width, size.height);
+        const self = this as HTMLImageElement;
+        const size = resizeSquare({ width: self.width, height: self.height }, to);
+        canvas.width = size.width;
+        canvas.height = size.height;
+        context.drawImage(self, 0, 0, self.width, self.height, 0, 0, size.width, size.height);
 
-          canvas.toBlob(blob => {
-            if (blob == null) {
-              reject();
-            } else {
-              resolve(blob);
-            }
-          });
-        })(this as HTMLImageElement);
+        canvas.toBlob(blob => {
+          if (blob == null) {
+            reject();
+          } else {
+            resolve(blob);
+          }
+        });
       };
       image.src = await this.asBase64();
     });
