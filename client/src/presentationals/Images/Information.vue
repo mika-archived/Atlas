@@ -1,33 +1,30 @@
 <template lang="pug">
   div
-    h4 Owner
+    h4 所有者
     | {{owner}}
 
-    h4 Access Restrict
+    h4 アクセス制限
     | {{restrict}}
 
-    h4 Tags
+    h4 タグ
     template(v-if="tags.length > 0")
       template(v-for="tag in tags")
         router-link.uk-button.uk-button-default(:to="`/?tag=${tag}`") {{tag}}
     template(v-else)
-      | No tags
+      | 登録されていません
 
-    h4 Information
+    h4 情報
     table.uk-table.uk-table-divider
       tbody
         tr
-          td Format
+          td タイプ
           td {{format}}
         tr
-          td size
+          td サイズ
           td {{size}}
         tr
-          td Created at
+          td 作成日
           td {{timestamp}}
-        tr
-          td Version
-          td {{version}}
 </template>
 
 <script lang="ts">
@@ -53,16 +50,16 @@ export default class Information extends Vue {
       switch (this.image.restrict) {
         default:
         case "private":
-          return "Private";
+          return "プライベート";
 
         case "limited":
-          return "Limited";
+          return "リミテッド";
 
         case "registered":
-          return "Atlas Users";
+          return "登録ユーザー";
 
         case "public":
-          return "World Wide";
+          return "ワールドワイド";
       }
     } else {
       return "Loading...";
@@ -94,13 +91,6 @@ export default class Information extends Vue {
   public get timestamp(): string {
     if (this.image) {
       return new Date(this.image.timestamp).toLocaleString();
-    }
-    return "Loading...";
-  }
-
-  public get version(): string {
-    if (this.image) {
-      return this.image.version;
     }
     return "Loading...";
   }
