@@ -1,5 +1,13 @@
 <template lang="pug">
-  img(:src="previewUrl")
+  .full-width(:class="{'uk-inline': isLoading}")
+    template(v-if="isLoading")
+      img(data-src="https://fakeimg.pl/200x200/000000%2C000/000000%2C000/" uk-img)
+      .uk-overlay
+        .uk-overlay-default.uk-position-cover
+        .uk-overlay.uk-position-center
+          div(:uk-spinner="spinner")
+    template(v-else)
+      img(:src="previewUrl")
 </template>
 
 <script lang="ts">
@@ -9,11 +17,9 @@ import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { IImage } from "../models/image";
 import { currentUser } from "../models/session";
 
-const placeholder = "https://fakeimg.mochizuki.moe/250x250/000000%2C000/000000%2C000/";
-
 @Component
 export default class CloudImage extends Vue {
-  public previewUrl: string = placeholder;
+  public previewUrl: string = "";
 
   @Prop()
   public image!: IImage;
@@ -21,19 +27,32 @@ export default class CloudImage extends Vue {
   @Prop()
   public mode!: string;
 
+  @Prop({ default: 1 })
+  public ratio!: number;
+
   @Watch("image", { deep: true })
   public async onImageChanged(newImg: IImage, oldImg: IImage): Promise<void> {
-    this.previewUrl = placeholder;
+    this.previewUrl = "";
     await this.generateDownloadUrl(newImg);
   }
 
+  public get isLoading(): boolean {
+    return this.previewUrl === "";
+  }
+
+  public get spinner(): string {
+    return `ratio: ${this.ratio}`;
+  }
+
   public async created(): Promise<void> {
+    this.previewUrl = "";
     await this.generateDownloadUrl(this.image);
   }
 
   private async generateDownloadUrl(img: IImage): Promise<void> {
     try {
       // XXX: Vuexfire が user (ref) を吹き飛ばすから...
+      // FIXME: 他の人の画像表示できない
       const user = await currentUser();
       const ref = storage().refFromURL(
         `gs://storage.atlas.mochizuki.moe/${user.uid}/${img.restrict}/${img.id}/${this.mode}`
@@ -50,3 +69,10 @@ export default class CloudImage extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.full-width {
+  width: 100%;
+  height: 100%;
+}
+</style>
