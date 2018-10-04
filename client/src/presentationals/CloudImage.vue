@@ -66,11 +66,12 @@ export default class CloudImage extends Vue {
 
   private async generateDownloadUrl(img: IImage): Promise<void> {
     try {
-      // XXX: Vuexfire が user (ref) を吹き飛ばすから...
-      // FIXME: 他の人の画像表示できない
-      const user = await currentUser();
+      if (!img.user || !img.user.id) {
+        return;
+      }
+
       const ref = storage().refFromURL(
-        `gs://storage.atlas.mochizuki.moe/${user.uid}/${img.restrict}/${img.id}/${this.mode}`
+        `gs://storage.atlas.mochizuki.moe/${img.user.id}/${img.restrict}/${img.id}/${this.mode}`
       );
       const url = await ref.getDownloadURL();
       if (/&token=/.test(url)) {
