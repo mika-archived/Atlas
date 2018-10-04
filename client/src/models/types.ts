@@ -16,7 +16,7 @@ export interface IState {
 export type Nullable<T> = T | null;
 
 // vuex action
-export type ActionDescriber<T> = (payload: T) => void | Promise<void>;
+export type ActionDescriber<T = void> = (payload?: T) => void | Promise<void>;
 
 // vue-router hooks
 export type Route = VueRouterRoute;

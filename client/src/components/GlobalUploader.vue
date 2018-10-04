@@ -21,10 +21,13 @@ export default class GlobalUploader extends Vue {
 
   @Action("addToWorkingFiles")
   public addToWorkingFiles!: ActionDescriber<IAddToUploadQueueParams>;
+
   @Action("clearWorkingFiles")
-  public clearWorkingFiles!: () => void;
+  public clearWorkingFiles!: ActionDescriber;
+
   @Action("upload")
-  public upload!: () => void;
+  public upload!: ActionDescriber;
+
   @State("isUploading")
   public isUploading!: boolean;
 

@@ -12,10 +12,15 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import { Action } from "vuex-class";
 
+import { ActionDescriber } from "../models/types";
+
 @Component
 export default class Toast extends Vue {
-  @Prop() public visible!: boolean;
-  @Action("hideUploaderToast") public hideUploaderToast!: () => void;
+  @Prop()
+  public visible!: boolean;
+
+  @Action("hideUploaderToast")
+  public hideUploaderToast!: ActionDescriber;
 
   public get classes() {
     return this.visible ? "toast-visible" : "toast-hidden";

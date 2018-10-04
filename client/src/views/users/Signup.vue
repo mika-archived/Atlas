@@ -27,13 +27,15 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Action, Getter } from "vuex-class";
 
+import { ActionDescriber } from "../../models/types";
+
 @Component
 export default class Signup extends Vue {
   @Action("login")
-  public login!: () => Promise<void>;
+  public login!: ActionDescriber;
 
   @Action("verifyCredentials")
-  public verifyCredentials!: () => Promise<void>;
+  public verifyCredentials!: ActionDescriber;
 
   @Getter("isRegisteredUser")
   public isRegisteredUser!: boolean;
