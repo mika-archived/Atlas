@@ -10,33 +10,35 @@
       ul.uk-switcher
         li
           cloud-image.img(:image="image" mode="master" ratio="3")
+        li
+          .uk-container
+            information(:image="image")
+
     // tablet ~
     .container(class="uk-visible@m")
       div(uk-grid)
         div(class="uk-width-2-3@m uk-width-3-4@l uk-width-4-5@xl")
           cloud-image.img(:image="image" mode="master" ratio="3")
 
-        div(class="uk-width-1-3@m uk-width-1-4@l uk-width-1-5@xl")
-          
-          h4 Access Restrict
+        div(class="uk-width-1-3@m uk-width-1-4@l uk-width-1-5@xl")         
+          information(:image="image")
 
-          h4 Tags
-
-          h4 Information
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Action, Getter } from "vuex-class";
 
+import CloudImage from "@/presentationals/CloudImage.vue";
+import Information from "@/presentationals/Images/Information.vue";
 import { IImage } from "../../models/image";
 import { ActionDescriber } from "../../models/types";
-import CloudImage from "../../presentationals/CloudImage.vue";
 import { IGetImageParams } from "../../store/images";
 
 @Component({
   components: {
-    "cloud-image": CloudImage
+    CloudImage,
+    Information
   }
 })
 export default class Show extends Vue {
@@ -45,6 +47,39 @@ export default class Show extends Vue {
 
   @Action("getImage")
   public getImage!: ActionDescriber<IGetImageParams>;
+
+  public get restrict(): string {
+    if (this.image) {
+      switch (this.image.restrict) {
+        default:
+        case "private":
+          return "Private";
+
+        case "limited":
+          return "Limited";
+
+        case "registered":
+          return "Atlas Users";
+
+        case "public":
+          return "World Wide";
+      }
+    } else {
+      return "Loading...";
+    }
+  }
+
+  public get tags(): string[] {
+    return this.image ? this.image.attributes : [];
+  }
+
+  public get timestamp(): string {
+    if (this.image) {
+      return new Date(this.image.timestamp).toLocaleString();
+    } else {
+      return "Loading...";
+    }
+  }
 
   public async created(): Promise<void> {
     if (!this.$route.params.id) {
