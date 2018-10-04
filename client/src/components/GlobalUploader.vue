@@ -13,7 +13,6 @@ import { Action, State } from "vuex-class";
 import { ALLOWED_TYPES } from "../models/constants";
 import { ActionDescriber, IState } from "../models/types";
 import { IAddToUploadQueueParams } from "../store/uploader";
-import { stat } from "fs";
 
 // ref: https://codepen.io/nguernse/pen/JyYdNY
 @Component

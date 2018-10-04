@@ -23,8 +23,8 @@ import { currentUser } from "../models/session";
 
 @Component
 export default class CloudImage extends Vue {
-  private isImgLoaded: boolean = false;
-  private previewUrl: string = "";
+  public isImgLoaded: boolean = false;
+  public previewUrl: string = "";
 
   @Prop()
   public image!: IImage;
