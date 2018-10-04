@@ -60,7 +60,10 @@ const router = new Router({
     },
     {
       path: "*",
-      component: () => import(/* webpackChunkName: "404" */ "./views/404.vue"),
+      component: () => import(/* webpackChunkName: "error" */ "./presentationals/Error.vue"),
+      props: {
+        mode: "NotFound"
+      },
       meta: { auth: "both" } as RouteMeta
     }
   ],

@@ -1,9 +1,9 @@
 import Vue from "vue";
 import { RawLocation, Route as VueRouterRoute } from "vue-router";
 
-import { IImagesState } from "@/store/images";
-import { ISessionState } from "@/store/session";
-import { IUploaderState } from "@/store/uploader";
+import { IImagesState } from "../store/images";
+import { ISessionState } from "../store/session";
+import { IUploaderState } from "../store/uploader";
 
 //
 // Define types
