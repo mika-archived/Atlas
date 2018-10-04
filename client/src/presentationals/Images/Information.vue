@@ -20,6 +20,9 @@
           td タイプ
           td {{format}}
         tr
+          td 大きさ
+          td {{dimensions}}
+        tr
           td サイズ
           td {{size}}
         tr
@@ -73,6 +76,13 @@ export default class Information extends Vue {
   public get format(): string {
     if (this.image && this.image.type) {
       return this.image.type.toLocaleUpperCase();
+    }
+    return "Loading...";
+  }
+
+  public get dimensions(): string {
+    if (this.image && this.image.dimensions) {
+      return `${this.image.dimensions[0]}x${this.image.dimensions[1]}`;
     }
     return "Loading...";
   }
