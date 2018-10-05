@@ -12,7 +12,8 @@
             a(href="#") Info
         ul.uk-switcher
           li
-            cloud-image.img(:image="image" mode="master" ratio="3")
+            lightbox(:image="image")
+              cloud-image.img(:image="image" mode="master" ratio="3")
           li
             .uk-container
               information(:image="image")
