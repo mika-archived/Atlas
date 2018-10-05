@@ -90,9 +90,13 @@ export default class Information extends Vue {
   public get size(): string {
     if (this.image && this.image.size) {
       let bytes = this.image.size;
-      if (bytes <= 1024) return `${bytes} Bytes`;
-      bytes /= 1024;
-      if (bytes <= 1024) return `${bytes.toFixed(2)} KB`;
+      if (bytes <= 1024) {
+        return `${bytes} Bytes`;
+      }
+      // tslint:disable-next-line
+      if ((bytes /= 1024) <= 1024) {
+        return `${bytes.toFixed(2)} KB`;
+      }
       return `${(bytes / 1024).toFixed(2)} MB`;
     }
     return "Loading...";
