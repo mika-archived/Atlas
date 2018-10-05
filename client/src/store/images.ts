@@ -5,7 +5,7 @@ import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper"
 import { firebaseAction } from "vuexfire";
 
 import { currentUser } from "../models/session";
-import { Indexer, Nullable } from "../models/types";
+import { Indexer } from "../models/types";
 import { IImage } from "../shared/types";
 
 // tslint:disable no-shadowed-variable
@@ -62,6 +62,8 @@ const actions: DefineActions<IImagesActions, IImagesState, IImagesMutations, IIm
   },
 
   async bindImage(ctx, payload) {
+    ctx.commit("bindObject", { key: "hasError", initial: false });
+
     firebaseAction<typeof ctx, typeof payload>(async ({ commit }, { id }) => {
       try {
         const snapshot = (await store.collection("images").doc(id).get()).data() as IImage;
