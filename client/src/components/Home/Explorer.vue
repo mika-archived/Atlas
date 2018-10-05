@@ -26,6 +26,7 @@ import GlobalUploader from "@/components/GlobalUploader.vue";
 import CloudImage from "@/presentationals/CloudImage.vue";
 import { ActionDescriber } from "../../models/types";
 import { IImage } from "../../shared/types";
+import { IBindImagesParams } from "../../store/images";
 
 // ref: https://codepen.io/nguernse/pen/JyYdNY
 @Component({
@@ -38,11 +39,11 @@ export default class Explorer extends Vue {
   @Prop()
   public images!: IImage[];
 
-  @Action("getImages")
-  public getImages!: ActionDescriber<{ key: string }>;
+  @Action("bindImages")
+  public bindImages!: ActionDescriber<IBindImagesParams>;
 
   public async created(): Promise<void> {
-    this.getImages({ key: "" });
+    this.bindImages({ key: "all" });
   }
 }
 </script>

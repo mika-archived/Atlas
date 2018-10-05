@@ -21,6 +21,11 @@ export interface IState {
   uploader: IUploaderState;
 }
 
+// indexer
+export interface Indexer<T> {
+  [key: string]: T;
+}
+
 // generic
 export type Nullable<T> = T | null;
 

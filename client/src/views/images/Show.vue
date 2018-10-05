@@ -37,7 +37,7 @@ import Error from "@/presentationals/Error.vue";
 import Information from "@/presentationals/Images/Information.vue";
 import { IImage } from "../../models/image";
 import { ActionDescriber, IState } from "../../models/types";
-import { IGetImageParams } from "../../store/images";
+import { IBindImageParams } from "../../store/images";
 
 @Component({
   components: {
@@ -47,8 +47,8 @@ import { IGetImageParams } from "../../store/images";
   }
 })
 export default class Show extends Vue {
-  @Action("getImage")
-  public getImage!: ActionDescriber<IGetImageParams>;
+  @Action("bindImage")
+  public bindImage!: ActionDescriber<IBindImageParams>;
 
   @Getter("image")
   public image!: IImage;
@@ -61,7 +61,7 @@ export default class Show extends Vue {
       this.$router.push("/404");
       return;
     }
-    this.getImage({ id: this.$route.params.id });
+    this.bindImage({ id: this.$route.params.id });
   }
 }
 </script>
