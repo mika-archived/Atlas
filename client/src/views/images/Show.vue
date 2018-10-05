@@ -35,7 +35,7 @@ import { Action, Getter, State } from "vuex-class";
 import CloudImage from "@/presentationals/CloudImage.vue";
 import Error from "@/presentationals/Error.vue";
 import Information from "@/presentationals/Images/Information.vue";
-import { ActionDescriber, IState } from "../../models/types";
+import { ActionDescriber, Indexer, IState } from "../../models/types";
 import { IImage } from "../../shared/types";
 import { IBindImageParams } from "../../store/images";
 
@@ -50,11 +50,15 @@ export default class Show extends Vue {
   @Action("bindImage")
   public bindImage!: ActionDescriber<IBindImageParams>;
 
-  @Getter("image")
-  public image!: IImage;
+  @State((state: IState) => state.images)
+  public images!: Indexer<IImage>;
 
   @State((state: IState) => state.images.hasError)
   public hasError!: boolean;
+
+  public get image(): IImage {
+    return this.images[this.$route.params.id];
+  }
 
   public async created(): Promise<void> {
     if (!this.$route.params.id) {

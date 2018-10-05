@@ -33,16 +33,11 @@ export default class Navigation extends Vue {
   @Getter("isAnonymousUser")
   public isAnonymousUser!: boolean;
 
-  @State((state: IState) => state.images.images)
+  @State((state: IState) => state.images)
   public images!: Indexer<IImage[]>;
 
   public get imagesAll(): IImage[] {
-    console.log("a");
-    if (this.images && this.images.all) {
-      return this.images.all;
-    } else {
-      return [];
-    }
+    return this.images.all || [];
   }
 }
 </script>

@@ -1,20 +1,20 @@
 <template lang="pug">
   div
     h4 {{title}}
-    | {{caption}}
+    p {{caption}}
 
     h4 所有者
-    | {{owner}}
+    p {{owner}}
 
     h4 アクセス制限
-    | {{restrict}}
+    p {{restrict}}
 
     h4 タグ
     template(v-if="tags.length > 0")
       template(v-for="tag in tags")
         router-link.uk-button.uk-button-default(:to="`/?tag=${tag}`") {{tag}}
     template(v-else)
-      | 登録されていません
+      p 登録されていません
 
     h4 情報
     table.uk-table.uk-table-divider
@@ -54,7 +54,7 @@ export default class Information extends Vue {
     if (this.image && this.image.caption) {
       return this.image.caption;
     }
-    return "";
+    return "No Caption";
   }
 
   public get owner(): string {
@@ -129,6 +129,10 @@ h4 {
 }
 
 * + .uk-table {
+  margin-top: 0;
+}
+
+* + p {
   margin-top: 0;
 }
 </style>

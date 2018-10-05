@@ -1,4 +1,6 @@
 import { firestore } from "firebase";
+import { cloneDeep } from "lodash";
+import Vue from "vue";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 import { firebaseAction } from "vuexfire";
 
@@ -17,105 +19,80 @@ export interface IBindImageParams {
   id: string;
 }
 
-export interface IImagesState {
-  images: Indexer<IImage[]>;
-  image: Nullable<IImage>;
-  hasError: boolean;
-  isBinding: Indexer<boolean>;
+export interface IImagesState extends Indexer<IImage[] | IImage | boolean> {
 }
 
 interface IImagesActions {
   bindImages: IBindImagesParams;
   unbindImages: IBindImagesParams;
   bindImage: IBindImageParams;
-}
-
-interface IImagesGetters {
-  image: Nullable<IImage>;
+  unbindImage: IBindImageParams;
 }
 
 // tslint:disable:no-empty-interface
-interface IImagesMutations {
-  clearImage: {};
-  setImage: { image: IImage };
-  toggleError: { value: boolean };
-  toggleBindingState: { key: string, value: boolean };
+interface IImagesGetters {
 }
 
-const state: IImagesState = {
-  images: {},
-  image: null,
-  hasError: false,
-  isBinding: {},
-};
+interface IImagesMutations {
+  bindObject: { key: string, initial: any };
+  unbintObject: { key: string };
+}
+
+const state: IImagesState = {};
 
 const actions: DefineActions<IImagesActions, IImagesState, IImagesMutations, IImagesGetters> = {
   async bindImages(ctx, payload) {
     firebaseAction<typeof ctx, typeof payload>(async ({ bindFirebaseRef, commit, state }, { key }) => {
-      if (state.isBinding[`images.${key}`]) {
-        return; // If already binded, skip binding
+      if (state[key]) {
+        console.warn(`Key "${key}" is already binded.`);
+        return;
       }
+      commit("bindObject", { key, initial: [] });
 
       const user = await store.collection("users").doc((await currentUser()).uid).get();
       const query = store.collection("images").where("user", "==", user.ref).orderBy("timestamp", "desc").limit(60);
-      await bindFirebaseRef(`images.${key}`, query);
-      commit("toggleBindingState", { key: `images.${key}`, value: true });
+      await bindFirebaseRef(key, query);
     })(ctx, payload);
   },
 
   async unbindImages(ctx, payload) {
     firebaseAction<typeof ctx, typeof payload>(async ({ unbindFirebaseRef }, { key }) => {
-      await unbindFirebaseRef(`imagea.${key}`);
+      await unbindFirebaseRef(key);
     })(ctx, payload);
   },
 
   async bindImage(ctx, payload) {
-    ctx.commit("clearImage", {});
-    ctx.commit("toggleError", { value: false });
-
-    firebaseAction<typeof ctx, typeof payload>(async ({ bindFirebaseRef, commit }, { id }) => {
+    firebaseAction<typeof ctx, typeof payload>(async ({ commit }, { id }) => {
       try {
-        const image = await store.collection("images").doc(id).get();
-        const attrs = image.data() as IImage;
-        commit("setImage", {
-          image: {
-            id: attrs.id,
-            attributes: attrs.attributes,
-            caption: attrs.caption,
-            dimensions: attrs.dimensions,
-            limited: attrs.limited,
-            restrict: attrs.restrict,
-            size: attrs.size,
-            timestamp: attrs.timestamp,
-            type: attrs.type,
-            user: (await (attrs.user as firestore.DocumentReference).get()).data(),
-            version: attrs.version,
-          },
-        });
+        const snapshot = (await store.collection("images").doc(id).get()).data() as IImage;
+        const image = cloneDeep(snapshot);
+        image.user = cloneDeep((await (snapshot.user as firestore.DocumentReference).get()).data());
+
+        commit("bindObject", { key: id, initial: image });
       } catch (err) {
         console.warn(err);
-        commit("toggleError", { value: true });
+        commit("bindObject", { key: "hasError", initial: true });
       }
     })(ctx, payload);
+  },
+
+  async unbindImage({ commit }, { id }) {
+    commit("unbintObject", { key: id });
   }
 };
 
-const getters: DefineGetters<IImagesGetters, IImagesState> = {
-  image: state => state.image,
-};
+const getters: DefineGetters<IImagesGetters, IImagesState> = {};
 
 const mutations: DefineMutations<IImagesMutations, IImagesState> = {
-  clearImage(state) {
-    state.image = null;
+  bindObject(state, { key, initial }) {
+    if (state[key]) {
+      state[key] = initial;
+    } else {
+      Vue.set(state, key, initial);
+    }
   },
-  setImage(state, { image }) {
-    state.image = image;
-  },
-  toggleError(state, { value }) {
-    state.hasError = value;
-  },
-  toggleBindingState(state, { key, value }) {
-    state.isBinding[key] = value;
+  unbintObject(state, { key }) {
+    delete state[key];
   }
 };
 
