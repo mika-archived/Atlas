@@ -21,7 +21,8 @@
       .container(class="uk-visible@m")
         div(uk-grid)
           div(class="uk-width-2-3@m uk-width-3-4@l uk-width-4-5@xl")
-            cloud-image.img(:image="image" mode="master" ratio="3")
+            lightbox(:image="image")
+              cloud-image.img(:image="image" mode="master" ratio="3")
 
           div(class="uk-width-1-3@m uk-width-1-4@l uk-width-1-5@xl")         
             information(:image="image")
@@ -35,6 +36,7 @@ import { Action, Getter, State } from "vuex-class";
 import CloudImage from "@/presentationals/CloudImage.vue";
 import Error from "@/presentationals/Error.vue";
 import Information from "@/presentationals/Images/Information.vue";
+import Lightbox from "@/presentationals/Lightbox.vue";
 import { ActionDescriber, Indexer, IState } from "../../models/types";
 import { IImage } from "../../shared/types";
 import { IBindImageParams } from "../../store/images";
@@ -43,7 +45,8 @@ import { IBindImageParams } from "../../store/images";
   components: {
     CloudImage,
     Error,
-    Information
+    Information,
+    Lightbox
   }
 })
 export default class Show extends Vue {

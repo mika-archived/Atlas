@@ -26,6 +26,7 @@
     "vue-mixin-decorator": "^1.0.0",
     "vue-property-decorator": "^7.0.0",
     "vue-router": "^3.0.1",
+    "vue-silentbox": "^0.1.2",
     "vuelidate": "^0.7.4",
     "vuex": "^3.0.1",
     "vuex-class": "^0.3.1",

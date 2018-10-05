@@ -1,5 +1,7 @@
 import Vue from "vue";
 
+import VueSilentbox from "vue-silentbox";
+
 import "tslib";
 import "uikit";
 
@@ -15,6 +17,7 @@ import "./styles/main.scss";
 
 Vue.config.productionTip = false;
 
+Vue.use(VueSilentbox);
 Vue.mixin(SessionMixin);
 
 new Vue({

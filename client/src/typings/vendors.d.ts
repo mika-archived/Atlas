@@ -48,7 +48,7 @@ declare module 'vuelidate' {
 
   // these are untested, the Vue.use approach to make it a global mixin
   export function Vuelidate(Vue: vue): void
-  export default function (Vue: vue): void
+  export default function(Vue: vue): void
 }
 
 // the individual validators to import
@@ -104,4 +104,9 @@ declare module "prettysize" {
   function func(bytes: number, obj: { places: number }): string;
 
   export default func;
+}
+
+declare module "vue-silentbox" {
+  const exports: any;
+  export default exports;
 }
