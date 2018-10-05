@@ -13,8 +13,8 @@ import { Action, Getter, State } from "vuex-class";
 
 import Explorer from "../components/Home/Explorer.vue";
 import Featured from "../components/Home/Featured.vue";
-import { IImage } from "../models/image";
 import { Indexer, IState } from "../models/types";
+import { IImage } from "../shared/types";
 import { SessionState } from "../store/session";
 
 @Component({

@@ -18,8 +18,8 @@
 import { storage } from "firebase";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { IImage } from "../shared/types";
 import { currentUser } from "../models/session";
+import { IImage } from "../shared/types";
 
 @Component
 export default class CloudImage extends Vue {

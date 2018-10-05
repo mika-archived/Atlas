@@ -35,8 +35,8 @@ import { Action, Getter, State } from "vuex-class";
 import CloudImage from "@/presentationals/CloudImage.vue";
 import Error from "@/presentationals/Error.vue";
 import Information from "@/presentationals/Images/Information.vue";
-import { IImage } from "../../models/image";
 import { ActionDescriber, IState } from "../../models/types";
+import { IImage } from "../../shared/types";
 import { IBindImageParams } from "../../store/images";
 
 @Component({

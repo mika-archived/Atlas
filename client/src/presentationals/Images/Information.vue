@@ -1,5 +1,8 @@
 <template lang="pug">
   div
+    h4 {{title}}
+    | {{caption}}
+
     h4 所有者
     | {{owner}}
 
@@ -40,6 +43,19 @@ import { IImage, IUser } from "../../shared/types";
 export default class Information extends Vue {
   @Prop()
   public image!: IImage;
+
+  public get title(): string {
+    if (this.image && this.image.title) {
+      return this.image.title;
+    }
+    return "No Title";
+  }
+  public get caption(): string {
+    if (this.image && this.image.caption) {
+      return this.image.caption;
+    }
+    return "";
+  }
 
   public get owner(): string {
     if (this.image) {
