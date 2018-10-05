@@ -8,7 +8,9 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class Gravatar extends Vue {
-  @Prop() public email!: boolean;
+  @Prop()
+  public email!: boolean;
+
   @Prop({ default: null })
   public size!: number | null;
 

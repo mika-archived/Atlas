@@ -18,7 +18,7 @@
 import { storage } from "firebase";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
-import { IImage } from "../models/image";
+import { IImage } from "../shared/types";
 import { currentUser } from "../models/session";
 
 @Component

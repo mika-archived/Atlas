@@ -24,8 +24,8 @@ import { Action } from "vuex-class";
 
 import GlobalUploader from "@/components/GlobalUploader.vue";
 import CloudImage from "@/presentationals/CloudImage.vue";
-import { IImage } from "../../models/image";
 import { ActionDescriber } from "../../models/types";
+import { IImage } from "../../shared/types";
 
 // ref: https://codepen.io/nguernse/pen/JyYdNY
 @Component({

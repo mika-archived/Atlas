@@ -1,13 +1,23 @@
-import { firestore } from "firebase";
+export interface IUser {
+  // User ID
+  id: string;
 
-import { IUser } from "@/models/user";
+  // display username (In first, auto filled by SSO provider)
+  username: string;
+
+  // icon url
+  icon: string;
+
+  // schema version
+  version: "1";
+}
 
 export interface IImage {
   // Image ID
   id: string;
 
   // reference to user
-  user: IUser | firestore.DocumentReference;
+  user: IUser | any;
 
   // access restrict
   restrict: "private" | "limited" | "registered" | "public";
@@ -30,8 +40,11 @@ export interface IImage {
   // dimensions (x, y)
   dimensions?: [number, number];
 
+  // title
+  title?: string;
+
   // caption
-  caption: string;
+  caption?: string;
 
   // schema version
   version: "1";

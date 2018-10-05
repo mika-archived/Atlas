@@ -34,8 +34,7 @@
 import prettysize from "prettysize";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
-import { IImage } from "../../models/image";
-import { IUser } from "../../models/user";
+import { IImage, IUser } from "../../shared/types";
 
 @Component
 export default class Information extends Vue {
@@ -54,10 +53,10 @@ export default class Information extends Vue {
       switch (this.image.restrict) {
         default:
         case "private":
-          return "プライベート";
+          return "非公開";
 
         case "limited":
-          return "リミテッド";
+          return "共有ユーザー";
 
         case "registered":
           return "登録ユーザー";

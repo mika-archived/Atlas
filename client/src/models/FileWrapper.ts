@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 
-import { encode } from "@/models/base64";
-import { resizeSquare } from "@/models/utils";
+import { encode } from "./base64";
+import { resizeSquare } from "./utils";
 
 export enum UploadState {
   QUEUED,
@@ -53,7 +53,7 @@ export class FileWrapper {
       const canvas = document.createElement("canvas") as HTMLCanvasElement;
       const context = canvas.getContext("2d") as CanvasRenderingContext2D;
       const image = new Image();
-      image.onload = function(this: HTMLElement, e: Event) {
+      image.onload = function (this: HTMLElement, e: Event) {
         const self = this as HTMLImageElement;
         const size = resizeSquare({ width: self.width, height: self.height }, to);
         canvas.width = size.width;

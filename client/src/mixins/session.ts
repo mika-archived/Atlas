@@ -4,9 +4,9 @@ import Vue from "vue";
 import { Mixin } from "vue-mixin-decorator";
 import { Getter, State } from "vuex-class";
 
-import { ISession } from "@/models/session";
-import { IState, Nullable } from "@/models/types";
-import { SessionState } from "@/store/session";
+import { ISession } from "../models/session";
+import { IState, Nullable } from "../models/types";
+import { SessionState } from "../store/session";
 
 export interface ICurrentUser {
   isLoading: boolean;

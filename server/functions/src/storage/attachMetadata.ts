@@ -3,8 +3,8 @@ import * as functions from "firebase-functions";
 
 import "../bootstrap/initializeFirebase";
 
-import { BUCKET_NAME } from "../shared/constants";
-import { skip } from "../shared/logger";
+import { BUCKET_NAME } from "../constants";
+import { skip } from "../utils/logger";
 
 export const attachMetadata = functions.storage.bucket(BUCKET_NAME).object().onFinalize(async obj => {
   if (!obj.name) {

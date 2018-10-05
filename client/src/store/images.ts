@@ -2,9 +2,9 @@ import { firestore } from "firebase";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 import { firebaseAction } from "vuexfire";
 
-import { IImage } from "@/models/image";
+import { IImage } from "../shared/types";
 import { currentUser } from "@/models/session";
-import { Nullable } from "@/models/types";
+import { Nullable } from "../models/types";
 
 // tslint:disable no-shadowed-variable
 const store = firestore();

@@ -1,4 +1,4 @@
-import { ISize } from "@/models/size";
+import { ISize } from "./types";
 
 // 入力サイズからアスペクト比を保持したまま、長い方が指定されたサイズになるようにする
 export function resizeSquare(orig: ISize, to: number): ISize {

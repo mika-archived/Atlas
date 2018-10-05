@@ -9,6 +9,11 @@ import { IUploaderState } from "../store/uploader";
 // Define types
 //
 
+export interface ISize {
+  width: number;
+  height: number;
+}
+
 // store's state
 export interface IState {
   images: IImagesState;

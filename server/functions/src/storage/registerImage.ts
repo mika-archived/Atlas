@@ -6,10 +6,10 @@ import path from "path";
 
 import "../bootstrap/initializeFirebase";
 
-import { BUCKET_NAME } from "../shared/constants";
-import { skip } from "../shared/logger";
+import { BUCKET_NAME } from "../constants";
 import { IImage } from "../shared/types";
-import { retrieveImageIdFromBucket, retrieveUserIdFromBucket } from "../shared/utils";
+import { skip } from "../utils/logger";
+import { retrieveImageIdFromBucket, retrieveUserIdFromBucket } from "../utils/retriever";
 
 export const registerImage = functions.storage.bucket(BUCKET_NAME).object().onFinalize(async obj => {
   // Validate
