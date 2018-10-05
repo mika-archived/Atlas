@@ -16,6 +16,7 @@
     "lodash": "^4.17.11",
     "md5": "^2.2.1",
     "nprogress": "^0.2.0",
+    "prettysize": "^1.1.0",
     "register-service-worker": "^1.0.0",
     "tslib": "^1.9.3",
     "uikit": "^3.0.0-rc.17",
