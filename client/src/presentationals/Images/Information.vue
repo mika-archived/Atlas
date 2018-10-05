@@ -78,7 +78,7 @@ export default class Information extends Vue {
           return "登録ユーザー";
 
         case "public":
-          return "ワールドワイド";
+          return "公開";
       }
     } else {
       return "Loading...";

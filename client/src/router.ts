@@ -67,6 +67,9 @@ const router = new Router({
       meta: { auth: "both" } as RouteMeta
     }
   ],
+  scrollBehavior: () => {
+    return { x: 0, y: 0 };
+  }
 });
 
 router.beforeEach(async (to: Route, from: Route, next: (to?: RawLocation | false | ((vm: Vue) => any) | void) => void) => {
