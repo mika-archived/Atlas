@@ -11,7 +11,7 @@
     "rules": "storage.rules"
   },
   "hosting": {
-    "public": "public",
+    "public": "hosting",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -19,8 +19,8 @@
     ],
     "rewrites": [
       {
-        "source": "/helloworld",
-        "function": "helloWorld"
+        "source": "/media/**",
+        "function": "https-imgDeliver"
       }
     ]
   }
