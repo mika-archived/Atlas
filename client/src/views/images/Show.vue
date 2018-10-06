@@ -82,6 +82,10 @@ export default class Show extends Vue {
     width: calc(100% - 60px);
   }
 
+  .container {
+    padding-bottom: 30px;
+  }
+
   .img {
     max-height: calc(100vh - 132px);
 
