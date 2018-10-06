@@ -1,8 +1,38 @@
 import { auth, storage } from "firebase";
 import Vue from "vue";
-import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
+import { Commit, DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 
 import { FileWrapper, UploadState } from "../models/FileWrapper";
+import { fromSizeToName } from "../models/thumbnails";
+
+interface IUploaderRef {
+  uid: string;
+  file: FileWrapper;
+  size?: number;
+  ref: storage.Reference;
+  commit: Commit<IUploaderMutations>;
+  progress: {
+    min: number;
+    max: number;
+  };
+}
+
+async function uploadImageWithProgress(config: IUploaderRef): Promise<void> {
+  return new Promise<void>(async (resolve, reject) => {
+    const blob = config.size ? await config.file.asSquare(config.size) : config.file.asFile();
+    const ref = config.ref.child(`/${config.uid}/private/${config.file.id}/${config.size ? fromSizeToName(config.size) : "master"}`).put(blob);
+    ref.on("state_changed", (w: any) => {
+      const progress = config.progress.min + (w.bytesTransferred / w.totalBytes) * config.progress.max;
+      config.commit("updateProgress", { progress });
+    }, err => {
+      console.warn(err);
+      reject();
+    }, () => {
+      resolve();
+    });
+    await ref;
+  });
+}
 
 // tslint:disable no-shadowed-variable
 export interface IAddToUploadQueueParams {
@@ -73,21 +103,12 @@ const actions: DefineActions<IUploaderActions, IUploaderState, IUploaderMutation
           throw new Error("current user is null");
         }
 
-        // 一瞬で終わるし、進捗表示しなくても良い
-        await storageRef.child(`/${currentUser.uid}/private/${file.id}/square192`).put(await file.asSquare(192));
+        // TODO: transaction
+        await uploadImageWithProgress({ uid: currentUser.uid, file, ref: storageRef, progress: { min: 0, max: 0 }, size: 192, commit });
+        await uploadImageWithProgress({ uid: currentUser.uid, file, ref: storageRef, progress: { min: 0, max: 30 }, size: 1200, commit });
+        await uploadImageWithProgress({ uid: currentUser.uid, file, ref: storageRef, progress: { min: 30, max: 70 }, commit });
 
-        const ref = storageRef.child(`/${currentUser.uid}/private/${file.id}/master`).put(file.asFile());
-        ref.on("state_changed", (w: any) => {
-          const progress = (w.bytesTransferred / w.totalBytes) * 100;
-          commit("updateProgress", { progress });
-        }, err => {
-          console.warn(err);
-          commit("markAs", { index, sts: UploadState.FAILED });
-        }, () => {
-          commit("markAs", { index, sts: UploadState.UPLOADED });
-        });
-        await ref;
-
+        commit("markAs", { index, sts: UploadState.UPLOADED });
       } catch (err) {
         console.warn(err);
         commit("markAs", { index, sts: UploadState.FAILED });

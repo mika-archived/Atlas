@@ -13,7 +13,7 @@
         ul.uk-switcher
           li
             lightbox(:image="image")
-              cloud-image.img(:image="image" mode="master" ratio="3")
+              cloud-image.img(:image="image" mode="xlarge" ratio="3")
           li
             .uk-container
               information(:image="image")
@@ -23,7 +23,7 @@
         div(uk-grid)
           div(class="uk-width-2-3@m uk-width-3-4@l uk-width-4-5@xl")
             lightbox(:image="image")
-              cloud-image.img(:image="image" mode="master" ratio="3")
+              cloud-image.img(:image="image" mode="xlarge" ratio="3")
 
           div(class="uk-width-1-3@m uk-width-1-4@l uk-width-1-5@xl")         
             information(:image="image")

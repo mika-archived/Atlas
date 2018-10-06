@@ -35,7 +35,7 @@ export default class CloudImage extends Vue {
       }
 
       const ref = storage().refFromURL(
-        `gs://storage.atlas.mochizuki.moe/${img.user.id}/${img.restrict}/${img.id}/master`
+        `gs://storage.atlas.mochizuki.moe/${img.user.id}/${img.restrict}/${img.id}/xlarge`
       );
       const url = await ref.getDownloadURL();
       if (/&token=/.test(url)) {
