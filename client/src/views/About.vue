@@ -37,7 +37,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import Breadcrumb from "@/presentationals/Breadcrumb.vue";
+import Breadcrumb from "@/components/Breadcrumb.vue";
 
 @Component({
   components: {

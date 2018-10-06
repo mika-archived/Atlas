@@ -20,11 +20,11 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 
+import AtlasFooter from "@/components/Footer.vue";
+import Navigation from "@/components/Navigation.vue";
 import Toast from "@/components/Toast.vue";
 import UploaderContent from "@/components/Uploader/Content.vue";
 import UploaderHeader from "@/components/Uploader/Header.vue";
-import AtlasFooter from "@/presentationals/Footer.vue";
-import Navigation from "@/presentationals/Navigation.vue";
 
 @Component({
   components: {

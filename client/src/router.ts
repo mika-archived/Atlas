@@ -60,7 +60,7 @@ const router = new Router({
     },
     {
       path: "*",
-      component: () => import(/* webpackChunkName: "error" */ "./presentationals/Error.vue"),
+      component: () => import(/* webpackChunkName: "error" */ "./components/Error.vue"),
       props: {
         mode: "NotFound"
       },

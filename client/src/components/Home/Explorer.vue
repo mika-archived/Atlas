@@ -22,8 +22,8 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Action } from "vuex-class";
 
+import CloudImage from "@/components/CloudImage.vue";
 import GlobalUploader from "@/components/GlobalUploader.vue";
-import CloudImage from "@/presentationals/CloudImage.vue";
 import { ActionDescriber } from "../../models/types";
 import { IImage } from "../../shared/types";
 import { IBindImagesParams } from "../../store/images";

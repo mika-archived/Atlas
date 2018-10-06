@@ -34,10 +34,10 @@
 import { Component, Vue } from "vue-property-decorator";
 import { Action, Getter, State } from "vuex-class";
 
-import CloudImage from "@/presentationals/CloudImage.vue";
-import Error from "@/presentationals/Error.vue";
-import Information from "@/presentationals/Images/Information.vue";
-import Lightbox from "@/presentationals/Lightbox.vue";
+import CloudImage from "@/components/CloudImage.vue";
+import Error from "@/components/Error.vue";
+import Information from "@/components/Images/Information.vue";
+import Lightbox from "@/components/Lightbox.vue";
 import { ActionDescriber, Indexer, IState } from "../../models/types";
 import { IImage } from "../../shared/types";
 import { IBindImageParams } from "../../store/images";

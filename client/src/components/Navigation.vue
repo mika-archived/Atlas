@@ -11,7 +11,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Getter } from "vuex-class";
 
-import Right from "../presentationals/Navigation/Right.vue";
+import Right from "../components/Navigation/Right.vue";
 
 @Component({
   components: {
