@@ -49,3 +49,17 @@ export interface IImage {
   // schema version
   version: "1";
 }
+
+export interface IApiResponse<T> {
+  code: number;
+  body: T;
+}
+
+export interface IErrorResponse {
+  message: string;
+}
+
+export interface IMediaResponse {
+  signedUrl: string;
+  expiredAt: string;
+}

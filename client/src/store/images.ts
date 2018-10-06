@@ -4,6 +4,8 @@ import Vue from "vue";
 import { DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 import { firebaseAction } from "vuexfire";
 
+import { fetchImageData } from "../models/api";
+import { IImageExtends } from "../models/extends";
 import { currentUser } from "../models/session";
 import { Indexer } from "../models/types";
 import { IImage } from "../shared/types";
@@ -19,13 +21,19 @@ export interface IBindImageParams {
   id: string;
 }
 
-export interface IImagesState extends Indexer<IImage[] | IImage | boolean> {
+export interface IAttachImageParams {
+  id: string;
+  size: string;
+}
+
+export interface IImagesState extends Indexer<IImage[] | IImageExtends | boolean> {
 }
 
 interface IImagesActions {
   bindImages: IBindImagesParams;
   unbindImages: IBindImagesParams;
   bindImage: IBindImageParams;
+  attachImage: IAttachImageParams;
   unbindImage: IBindImageParams;
 }
 
@@ -35,6 +43,7 @@ interface IImagesGetters {
 
 interface IImagesMutations {
   bindObject: { key: string, initial: any };
+  attachObject: { key: string, values: Indexer<any> };
   unbintObject: { key: string };
 }
 
@@ -78,6 +87,22 @@ const actions: DefineActions<IImagesActions, IImagesState, IImagesMutations, IIm
     })(ctx, payload);
   },
 
+  async attachImage({ commit, state }, { id, size }) {
+    if (!state[id]) {
+      console.warn(`${id} does not stored in Vuex`);
+      return;
+    }
+
+    try {
+      const signedUrl = await fetchImageData(id, size);
+      if (signedUrl) {
+        commit("attachObject", { key: id, values: { signedUrl } });
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  },
+
   async unbindImage({ commit }, { id }) {
     commit("unbintObject", { key: id });
   }
@@ -91,6 +116,13 @@ const mutations: DefineMutations<IImagesMutations, IImagesState> = {
       state[key] = initial;
     } else {
       Vue.set(state, key, initial);
+    }
+  },
+  attachObject(state, { key, values }) {
+    if (state[key]) {
+      for (const prop of Object.keys(values)) {
+        Vue.set(state[key] as any, prop, values[prop]);
+      }
     }
   },
   unbintObject(state, { key }) {

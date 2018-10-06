@@ -7,45 +7,26 @@
 import { storage } from "firebase";
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
+import { IImageExtends } from "../models/extends";
 import { currentUser } from "../models/session";
-import { IImage } from "../shared/types";
 
 @Component
 export default class CloudImage extends Vue {
   public previewUrl: string = "https://fakeimg.mochizuki.moe/100x100/";
 
   @Prop()
-  public image!: IImage;
+  public image!: IImageExtends;
 
   @Watch("image", { deep: true })
-  public async onImageChanged(newImg: IImage, oldImg: IImage): Promise<void> {
-    this.previewUrl = "#";
-    await this.generateDownloadUrl(newImg);
+  public async onImageChanged(newImg: IImageExtends, oldImg: IImageExtends): Promise<void> {
+    if (newImg.signedUrl) {
+      // キャッシュが効いているはず...
+      this.previewUrl = newImg.signedUrl as string;
+    }
   }
 
   public async created(): Promise<void> {
     this.previewUrl = "";
-    await this.generateDownloadUrl(this.image);
-  }
-
-  private async generateDownloadUrl(img: IImage): Promise<void> {
-    try {
-      if (!img.user || !img.user.id) {
-        return;
-      }
-
-      const ref = storage().refFromURL(
-        `gs://storage.atlas.mochizuki.moe/${img.user.id}/${img.restrict}/${img.id}/master`
-      );
-      const url = await ref.getDownloadURL();
-      if (/&token=/.test(url)) {
-        this.previewUrl = url;
-      } else {
-        console.warn(`Failed to create a download url, retry...`);
-      }
-    } catch (err) {
-      console.warn(err);
-    }
   }
 }
 </script>
