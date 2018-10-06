@@ -15,8 +15,6 @@
               i.fal.fa-upload.fa-fw(class="uk-visible@s")
               | アップロード
           li
-            router-link(to="/users/my") マイページ
-          li
             router-link(to="/users/logout") ログアウト
 </template>
 
