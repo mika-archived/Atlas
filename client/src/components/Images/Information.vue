@@ -1,7 +1,7 @@
 <template lang="pug">
   div
-    h4 {{title}}
-    p {{caption}}
+    label-edit(:text="title" as="h4" @submit="onTitleChanged")
+    label-edit(:text="caption" as="p" @submit="onCaptionChanged")
 
     h4 所有者
     p {{owner}}
@@ -36,11 +36,23 @@
 <script lang="ts">
 import prettysize from "prettysize";
 import { Component, Prop, Vue } from "vue-property-decorator";
+import { Action } from "vuex-class";
+
+import LabelEdit from "../LabelEdit.vue";
 
 import { IImage, IUser } from "../../shared/types";
+import { IAttachImageParams } from "../../store/images";
+import { ActionDescriber } from "../../models/types";
 
-@Component
+@Component({
+  components: {
+    LabelEdit
+  }
+})
 export default class Information extends Vue {
+  @Action("attachImage")
+  public attachImage!: ActionDescriber<IAttachImageParams>;
+
   @Prop()
   public image!: IImage;
 
@@ -50,6 +62,7 @@ export default class Information extends Vue {
     }
     return "No Title";
   }
+
   public get caption(): string {
     if (this.image && this.image.caption) {
       return this.image.caption;
@@ -116,11 +129,20 @@ export default class Information extends Vue {
     }
     return "Loading...";
   }
+
+  private onTitleChanged(newTitle: string): void {
+    this.attachImage({ id: this.image.id, obj: { title: newTitle } });
+  }
+
+  private onCaptionChanged(newCaption: string): void {
+    this.attachImage({ id: this.image.id, obj: { caption: newCaption } });
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-h4 {
+h4,
+/deep/ h4 {
   margin-bottom: 10px;
 }
 
@@ -132,7 +154,8 @@ h4 {
   margin-top: 0;
 }
 
-* + p {
+* + p,
+/deep/ * + p {
   margin-top: 0;
 }
 </style>

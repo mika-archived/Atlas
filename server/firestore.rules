@@ -30,7 +30,7 @@ service cloud.firestore {
     match /images {
       match /{imageId} {
         allow create: if isAuth() && matchUserRef(request.resource.data.user, request.auth.uid);
-        allow update, delete: if request.auth != null && matchUserRef(resource.data.user, request.auth.uid);
+        allow update, delete: if isAuth() && resource.data.user != null &&  matchUserRef(resource.data.user, request.auth.uid);
 
         allow list: if isAuth() && resource.data.user != null && matchUserRef(resource.data.user, request.auth.uid);
         allow get: if canReadImage(request.auth, resource.data); // Allowed users only

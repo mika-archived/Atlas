@@ -19,6 +19,11 @@ export interface IBindImageParams {
   id: string;
 }
 
+export interface IAttachImageParams {
+  id: string;
+  obj: Indexer<any>;
+}
+
 export interface IImagesState extends Indexer<IImage[] | IImage | boolean> {
 }
 
@@ -26,6 +31,7 @@ interface IImagesActions {
   bindImages: IBindImagesParams;
   unbindImages: IBindImagesParams;
   bindImage: IBindImageParams;
+  attachImage: IAttachImageParams;
   unbindImage: IBindImageParams;
 }
 
@@ -76,6 +82,10 @@ const actions: DefineActions<IImagesActions, IImagesState, IImagesMutations, IIm
         commit("bindObject", { key: "hasError", initial: true });
       }
     })(ctx, payload);
+  },
+
+  async attachImage({ commit }, { id, obj }) {
+    await store.collection("images").doc(id).update(obj);
   },
 
   async unbindImage({ commit }, { id }) {

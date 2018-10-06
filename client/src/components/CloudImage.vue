@@ -66,12 +66,13 @@ export default class CloudImage extends Vue {
 
   private async generateDownloadUrl(img: IImage): Promise<void> {
     try {
-      if (!img.user || !img.user.id) {
+      if (!img.user) {
         return;
       }
+      const userId = img.user.id ? img.user.id : img.user.substring("users/".length);
 
       const ref = storage().refFromURL(
-        `gs://storage.atlas.mochizuki.moe/${img.user.id}/${img.restrict}/${img.id}/${this.mode}`
+        `gs://storage.atlas.mochizuki.moe/${userId}/${img.restrict}/${img.id}/${this.mode}`
       );
       const url = await ref.getDownloadURL();
       if (/&token=/.test(url)) {
