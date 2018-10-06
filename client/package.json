@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@types/nprogress": "^0.0.29",
+    "axios": "^0.18.0",
+    "axios-extensions": "^3.0.3",
     "bulma": "^0.7.1",
     "firebase": "^5.5.1",
     "lodash": "^4.17.11",
