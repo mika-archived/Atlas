@@ -4,6 +4,7 @@
       .uk-navbar-left
         router-link.uk-navbar-item.uk-logo(to="/")
           img(src="../assets/logo.png" height="40px")
+          | &nbsp; Alpha
       right
 </template>
 

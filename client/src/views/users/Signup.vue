@@ -8,6 +8,12 @@
           fieldset.uk-fieldset
             legend.uk-legend 新規登録
 
+            .uk-alert-danger(uk-alert)
+              | Atlas は現在 Alpha バージョンです。
+              br
+              | 予期せぬ不具合などが発生する可能性があります。
+
+
             .uk-margin
               button.uk-button.uk-button-primary.uk-width-1-1(@click.prevent="onClick")
                 i.fab.fa-google.fa-fw
