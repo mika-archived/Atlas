@@ -1,5 +1,5 @@
 <template lang="pug">
-  silentbox-single(:src="previewUrl")
+  silentbox-single(:src="`https://storage.atlas.mochizuki.moe/media/${image.id}/xlarge`")
     slot
 </template>
 
@@ -16,37 +16,6 @@ export default class CloudImage extends Vue {
 
   @Prop()
   public image!: IImage;
-
-  @Watch("image", { deep: true })
-  public async onImageChanged(newImg: IImage, oldImg: IImage): Promise<void> {
-    this.previewUrl = "#";
-    await this.generateDownloadUrl(newImg);
-  }
-
-  public async created(): Promise<void> {
-    this.previewUrl = "";
-    await this.generateDownloadUrl(this.image);
-  }
-
-  private async generateDownloadUrl(img: IImage): Promise<void> {
-    try {
-      if (!img.user || !img.user.id) {
-        return;
-      }
-
-      const ref = storage().refFromURL(
-        `gs://storage.atlas.mochizuki.moe/${img.user.id}/${img.restrict}/${img.id}/xlarge`
-      );
-      const url = await ref.getDownloadURL();
-      if (/&token=/.test(url)) {
-        this.previewUrl = url;
-      } else {
-        console.warn(`Failed to create a download url, retry...`);
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  }
 }
 </script>
 

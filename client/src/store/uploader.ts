@@ -3,7 +3,7 @@ import Vue from "vue";
 import { Commit, DefineActions, DefineGetters, DefineMutations } from "vuex-type-helper";
 
 import { FileWrapper, UploadState } from "../models/FileWrapper";
-import { fromSizeToName } from "../models/thumbnails";
+import { fromSizeToName } from "../shared/size";
 
 interface IUploaderRef {
   uid: string;

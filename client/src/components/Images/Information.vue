@@ -40,9 +40,9 @@ import { Action } from "vuex-class";
 
 import LabelEdit from "../LabelEdit.vue";
 
+import { ActionDescriber } from "../../models/types";
 import { IImage, IUser } from "../../shared/types";
 import { IAttachImageParams } from "../../store/images";
-import { ActionDescriber } from "../../models/types";
 
 @Component({
   components: {

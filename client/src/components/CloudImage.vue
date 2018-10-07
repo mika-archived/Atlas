@@ -1,18 +1,12 @@
 <template lang="pug">
-  .full-width(:class="{'uk-inline': isLoadingUrl || !isLoadingImage}")
-    template(v-if="isLoadingUrl")
-      img(data-src="https://fakeimg.pl/200x200/000000%2C000/000000%2C000/" uk-img)
+  .full-width(:class="{'uk-inline': !isLoadingImage}")
+    img(:src="`https://storage.atlas.mochizuki.moe/media/${image.id}/${mode}`" @load="onLoaded")
+    template(v-if="!isLoadingImage")
+      img(src="https://fakeimg.mochizuki.moe/100x100/000000%2C000/000000%2C000/" uk-img)
       .uk-overlay
         .uk-overlay-default.uk-position-cover
         .uk-overlay.uk-position-center
-          div(:uk-spinner="spinner")
-    template(v-else)
-      img(:src="previewUrl" @load="load")
-      template(v-if="!isLoadingImage")
-        .uk-overlay
-          .uk-overlay-default.uk-position-cover
-          .uk-overlay.uk-position-center
-            div(:uk-spinner="spinner")</template>
+          div(:uk-spinner="spinner")</template>
 
 <script lang="ts">
 import { storage } from "firebase";
@@ -37,13 +31,10 @@ export default class CloudImage extends Vue {
 
   @Watch("image", { deep: true })
   public async onImageChanged(newImg: IImage, oldImg: IImage): Promise<void> {
-    this.previewUrl = "";
+    if (newImg && oldImg && newImg.id === oldImg.id) {
+      return;
+    }
     this.isImgLoaded = false;
-    await this.generateDownloadUrl(newImg);
-  }
-
-  public get isLoadingUrl(): boolean {
-    return this.previewUrl === "";
   }
 
   public get isLoadingImage(): boolean {
@@ -55,34 +46,11 @@ export default class CloudImage extends Vue {
   }
 
   public async created(): Promise<void> {
-    this.previewUrl = "";
     this.isImgLoaded = false;
-    await this.generateDownloadUrl(this.image);
   }
 
-  public load(): void {
+  public onLoaded(): void {
     this.isImgLoaded = true;
-  }
-
-  private async generateDownloadUrl(img: IImage): Promise<void> {
-    try {
-      if (!img.user) {
-        return;
-      }
-      const userId = img.user.id ? img.user.id : img.user.substring("users/".length);
-
-      const ref = storage().refFromURL(
-        `gs://storage.atlas.mochizuki.moe/${userId}/${img.restrict}/${img.id}/${this.mode}`
-      );
-      const url = await ref.getDownloadURL();
-      if (/&token=/.test(url)) {
-        this.previewUrl = url;
-      } else {
-        console.warn(`Failed to create a download url, retry...`);
-      }
-    } catch (err) {
-      console.warn(err);
-    }
   }
 }
 </script>
@@ -90,6 +58,10 @@ export default class CloudImage extends Vue {
 <style lang="scss" scoped>
 .full-width {
   width: 100%;
+  height: 100%;
+}
+
+.loading {
   height: 100%;
 }
 </style>

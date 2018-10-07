@@ -64,6 +64,8 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
     try {
       const r = await auth().getRedirectResult();
       if (r.credential !== null && r.user !== null) {
+        const jwt = await r.user.getIdToken();
+        document.cookie = `__session=${jwt}; domain=.atlas.mochizuki.moe; path=/;`;
         commit("updateCurrentSessionAsRegistered", {
           session: {
             username: (r.user as firebase.User).displayName,
