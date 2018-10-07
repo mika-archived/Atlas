@@ -20,7 +20,7 @@
     "rewrites": [
       {
         "source": "/media/**",
-        "function": "https-imgDeliver"
+        "function": "https-deliver"
       }
     ]
   }
