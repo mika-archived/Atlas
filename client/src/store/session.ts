@@ -43,6 +43,10 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
     try {
       const user = await currentUser();
       if (user !== null) {
+        const jwt = await user.getIdToken();
+        // document.cookie 取れる時点で、 JWT とられているだろうし...というあれで
+        // httpOnly を付けていない (消せなくもなる)
+        document.cookie = `__session=${jwt}; domain=.atlas.mochizuki.moe; path=/;`;
         commit("updateCurrentSessionAsRegistered", {
           session: { username: user.displayName, } as ISession
         });
@@ -64,8 +68,6 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
     try {
       const r = await auth().getRedirectResult();
       if (r.credential !== null && r.user !== null) {
-        const jwt = await r.user.getIdToken();
-        document.cookie = `__session=${jwt}; domain=.atlas.mochizuki.moe; path=/;`;
         commit("updateCurrentSessionAsRegistered", {
           session: {
             username: (r.user as firebase.User).displayName,
@@ -79,7 +81,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
 
   async logout({ commit }) {
     await auth().signOut();
-    console.log("hello");
+    document.cookie = "__session=null; domain=.atlas.mochizuki.moe; path=/; expires=-1";
     commit("updateCurrentSessionAsAnonymous", {});
   },
 };
