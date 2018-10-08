@@ -1,3 +1,5 @@
+export type Restrict = "private" | "limited" | "registered" | "public";
+
 export interface IUser {
   // User ID
   id: string;
@@ -20,7 +22,7 @@ export interface IImage {
   user: IUser | any;
 
   // access restrict
-  restrict: "private" | "limited" | "registered" | "public";
+  restrict: Restrict;
 
   // attributes
   attributes: string[];
