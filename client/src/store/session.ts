@@ -83,6 +83,7 @@ const actions: DefineActions<ISessionActions, ISessionState, ISessionMutations, 
     await auth().signOut();
     document.cookie = "__session=null; domain=.atlas.mochizuki.moe; path=/; expires=-1";
     commit("updateCurrentSessionAsAnonymous", {});
+    location.href = "/";
   },
 };
 
