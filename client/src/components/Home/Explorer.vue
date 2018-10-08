@@ -64,14 +64,14 @@ export default class Explorer extends Vue {
   a {
     transition: transform 0.25s;
 
-    /deep/ div {
-      height: 100%;
+    .img {
+      max-height: 156px;
+    }
 
-      img {
-        height: 156px;
-        width: 100%;
-        object-fit: cover;
-      }
+    /deep/ img {
+      height: 156px;
+      width: 100%;
+      object-fit: cover;
     }
   }
 }
