@@ -1,7 +1,7 @@
 <template lang="pug">
   div
     template(v-if="isEditMode")
-        input.uk-input(v-model="editableText" @blur="onBlur" @keyup.enter="onEnter")
+        input.uk-input(v-model="editableText" ref="input" @blur="onBlur" @keyup.enter="onEnter")
     template(v-else)
       component.border(:is="as" @click="onClick")
         | {{editableText}}
@@ -34,6 +34,9 @@ export default class LabelEdit extends Vue {
 
   private onClick(): void {
     this.isEditMode = true;
+    this.$nextTick(() => {
+      (this.$refs.input as HTMLInputElement).focus();
+    });
   }
 
   private onBlur(): void {
@@ -56,7 +59,6 @@ export default class LabelEdit extends Vue {
 
   private emit(): void {
     throttle(() => {
-      console.log("e");
       this.$emit("submit", this.editableText);
     }, 1000)();
   }
