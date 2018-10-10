@@ -8,6 +8,17 @@ service firebase.storage {
       return request.auth != null && request.auth.uid == userId;
     }
 
+    function isImage() {
+      return request.resource.contentType.matches("image/.*");
+    }
+
+    function isWritable() {
+      // /b/BUCKET/o/USER/RESTRICT/IMAGE/SIZE
+      return request.path[6] == "master"
+        || (request.path[6] == "small" && request.resource.size < 1 * 1024 * 1024)
+        || (request.path[6] == "xlarge" && request.resource.size < 10 * 1024 * 1024);
+    }
+
   	match /index.html {
       allow read;
     }
@@ -16,24 +27,25 @@ service firebase.storage {
       // In public directory, everyone allows to read files
       match /public/{allPaths=**} {
         allow read;
-        allow write: if isUserAuthenticated(userId);
+        allow write: if isUserAuthenticated(userId) && isImage() && isWritable();
       }
 
       // In local directory, registered users allows to read files
       match /local/{allPaths=**} {
         allow read: if isAuthenticated();
-        allow write: if isUserAuthenticated(userId);
+        allow write: if isUserAuthenticated(userId) && isImage() && isWritable();
       }
 
       // In limited directory, limited users (invited) allows to read files
       match /limited/{allPaths=**} {
         allow read: if isAuthenticated();
-        allow write: if isUserAuthenticated(userId);
+        allow write: if isUserAuthenticated(userId) && isImage() && isWritable();
       }
 
       // In private directory, only upload user allows to read files
       match /private/{allPaths=**} {
-        allow read, write: if isUserAuthenticated(userId);
+        allow read: if isUserAuthenticated(userId);
+        allow write: if isUserAuthenticated(userId) && isImage() && isWritable();
       }
     }
   }
