@@ -1,5 +1,5 @@
 <template lang="pug">
-  silentbox-single(:src="`https://storage.atlas.mochizuki.moe/media/${image.id}/xlarge`")
+  silentbox-single(:src="src")
     slot
 </template>
 
@@ -16,6 +16,13 @@ export default class CloudImage extends Vue {
 
   @Prop()
   public image!: IImage;
+
+  public get src(): string {
+    if (this.image) {
+      return `https://storage.atlas.mochizuki.moe/media/${this.image.id}/xlarge`;
+    }
+    return "";
+  }
 }
 </script>
 

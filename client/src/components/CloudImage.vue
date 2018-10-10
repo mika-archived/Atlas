@@ -1,6 +1,6 @@
 <template lang="pug">
   .full-width(:class="{'uk-inline': !isLoadingImage}")
-    img(:src="`https://storage.atlas.mochizuki.moe/media/${image.id}/${mode}`" @load="onLoaded")
+    img(:src="src" @load="onLoaded")
     template(v-if="!isLoadingImage")
       img(src="https://fakeimg.mochizuki.moe/100x100/000000%2C000/000000%2C000/" uk-img)
       .uk-overlay
@@ -39,6 +39,13 @@ export default class CloudImage extends Vue {
 
   public get isLoadingImage(): boolean {
     return this.isImgLoaded;
+  }
+
+  public get src(): string {
+    if (this.image) {
+      return `https://storage.atlas.mochizuki.moe/media/${this.image.id}/${this.mode}`;
+    }
+    return "";
   }
 
   public get spinner(): string {
