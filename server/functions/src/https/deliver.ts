@@ -12,7 +12,7 @@ import moment from "moment";
 
 import "../bootstrap/initializeFirebase";
 
-import { BUCKET_NAME } from "../constants";
+import { BUCKET_NAME, DATE_FORMAT } from "../constants";
 import { sizes } from "../shared/size";
 import { IErrorResponse, IImage } from "../shared/types";
 import { error, skip } from "../utils/logger";
@@ -113,10 +113,32 @@ app.get("/media/:id/:size", cors(corsConfig), cookieParser(), validateAuth, asyn
     const [meta, ..._] = await file.getMetadata();
 
     const expire = moment().add(7, "days");
-    res.status(200)
-      .contentType(meta.contentType as string)
+    res.contentType(meta.contentType as string)
       .header("Cache-Control", `private; max-age=${60 * 60 * 24 * 7}`)
-      .header("Expires", expire.format("ddd, D MMM YYYY HH:mm:ss") + " GMT"); // Mon, 08 Oct 2018 04:23:11
+      .header("Expires", expire.format(DATE_FORMAT) + " GMT"); // Mon, 08 Oct 2018 04:23:11
+
+    // Additional headers for cache
+    if (meta.etag) {
+      if (req.headers["if-none-match"] && req.headers["if-none-match"] === meta.etag) {
+        console.debug("This request has if-none-match header and available browser cache, return 304");
+        res.status(304).send();
+        return;
+      }
+      res.header("ETag", meta.etag);
+    }
+
+    if (meta.updated) {
+      const modifiedAt = moment(meta.updated).format(DATE_FORMAT) + " GMT";
+      if (req.headers["if-modified-since"] && req.headers["if-modified-since"] === modifiedAt) {
+        console.debug("This request has if-modified-since header and available browser cache, return 304");
+        res.status(304).send();
+        return;
+      }
+      res.header("Last-Modified", modifiedAt);
+    }
+
+    console.log("This request cannot available browser cache, return full response with 200");
+    res.status(200);
 
     const stream = file.createReadStream();
     stream.pipe(res);
