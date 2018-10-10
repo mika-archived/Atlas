@@ -21,11 +21,11 @@
       // tablet ~
       .container(class="uk-visible@m")
         div(uk-grid)
-          div(class="uk-width-2-3@m uk-width-3-4@l uk-width-4-5@xl")
+          div(class="uk-width-2-3@m uk-width-3-4@l uk-width-3-4@xl")
             lightbox(:image="image")
               cloud-image.img(:image="image" mode="xlarge" ratio="3")
 
-          div(class="uk-width-1-3@m uk-width-1-4@l uk-width-1-5@xl")         
+          div(class="uk-width-1-3@m uk-width-1-4@l uk-width-1-4@xl")         
             information(:image="image")
 
 </template>
