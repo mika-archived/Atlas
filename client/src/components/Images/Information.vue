@@ -11,7 +11,9 @@
 
     h4 タグ
     vue-tags-input(v-model="tag" :tags="tags" placeholder="タグを追加..." @tags-changed="onTagsChanged" @tag-clicked="onTagClicked")
-      template(slot="tag")
+      template(slot="tagCenter" slot-scope="props")
+        router-link(:to="`/tags/${props.tag.text}`")
+          | {{props.tag.text}}
 
 
     h4 情報
@@ -173,5 +175,10 @@ h4,
 
 /deep/ .content {
   cursor: pointer;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 }
 </style>
