@@ -38,7 +38,7 @@ import CloudImage from "@/components/CloudImage.vue";
 import Error from "@/components/Error.vue";
 import Information from "@/components/Images/Information.vue";
 import Lightbox from "@/components/Lightbox.vue";
-import { ActionDescriber, Indexer, IState } from "../../models/types";
+import { ActionDescriber, Indexer, IState, Nullable } from "../../models/types";
 import { IImage } from "../../shared/types";
 import { IBindImageParams } from "../../store/images";
 

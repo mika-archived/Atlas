@@ -10,11 +10,9 @@
     p {{restrict}}
 
     h4 タグ
-    template(v-if="tags.length > 0")
-      template(v-for="tag in tags")
-        router-link.uk-button.uk-button-default(:to="`/?tag=${tag}`") {{tag}}
-    template(v-else)
-      p 登録されていません
+    vue-tags-input(v-model="tag" :tags="tags" placeholder="タグを追加..." @tags-changed="onTagsChanged" @tag-clicked="onTagClicked")
+      template(slot="tag")
+
 
     h4 情報
     table.uk-table.uk-table-divider
@@ -34,6 +32,7 @@
 </template>
 
 <script lang="ts">
+import { createTags } from "@johmun/vue-tags-input";
 import prettysize from "prettysize";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { Action } from "vuex-class";
@@ -50,6 +49,8 @@ import { IAttachImageParams } from "../../store/images";
   }
 })
 export default class Information extends Vue {
+  public tag: string = "";
+
   @Action("attachImage")
   public attachImage!: ActionDescriber<IAttachImageParams>;
 
@@ -99,7 +100,7 @@ export default class Information extends Vue {
   }
 
   public get tags(): string[] {
-    return this.image ? this.image.attributes : [];
+    return this.image ? createTags(this.image.attributes) : [];
   }
 
   public get format(): string {
@@ -137,6 +138,17 @@ export default class Information extends Vue {
   private onCaptionChanged(newCaption: string): void {
     this.attachImage({ id: this.image.id, obj: { caption: newCaption } });
   }
+
+  private onTagsChanged(newTags: { text: string; tiClasses: string[] }[]): void {
+    const tags = newTags.map(w => w.text);
+    this.attachImage({ id: this.image.id, obj: { attributes: tags } });
+  }
+
+  private onTagClicked({ tag }: { tag: { text: string } }): void {
+    if (tag && tag.text) {
+      // this.$router.push({ path: `/tags/${tag.text}` });
+    }
+  }
 }
 </script>
 
@@ -157,5 +169,9 @@ h4,
 * + p,
 /deep/ * + p {
   margin-top: 0;
+}
+
+/deep/ .content {
+  cursor: pointer;
 }
 </style>

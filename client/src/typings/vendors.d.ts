@@ -110,3 +110,11 @@ declare module "vue-silentbox" {
   const exports: any;
   export default exports;
 }
+
+declare module "@johmun/vue-tags-input" {
+  const exports: any;
+  export default exports;
+
+  function createTags(array: string[]): any;
+  export { createTags };
+}
