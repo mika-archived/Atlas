@@ -41,7 +41,7 @@ interface IImagesGetters {
 
 interface IImagesMutations {
   bindObject: { key: string, initial: any };
-  unbintObject: { key: string };
+  unbindObject: { key: string };
 }
 
 const state: IImagesState = {};
@@ -89,7 +89,7 @@ const actions: DefineActions<IImagesActions, IImagesState, IImagesMutations, IIm
   },
 
   async unbindImage({ commit }, { id }) {
-    commit("unbintObject", { key: id });
+    commit("unbindObject", { key: id });
   }
 };
 
@@ -103,7 +103,7 @@ const mutations: DefineMutations<IImagesMutations, IImagesState> = {
       Vue.set(state, key, initial);
     }
   },
-  unbintObject(state, { key }) {
+  unbindObject(state, { key }) {
     delete state[key];
   }
 };

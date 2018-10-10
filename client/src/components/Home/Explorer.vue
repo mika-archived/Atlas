@@ -2,9 +2,9 @@
   .uk-container
     global-uploader
     .uk-section.uk-flex.uk-flex-center
-      form.uk-search.uk-search-default
-        span(uk-search-icon)
-        input.uk-search-input.width-1-1(type="search" placeholder="イラストを検索...")
+      form.uk-search.uk-search-default(@submit.prevent="onSubmit")
+        button(uk-search-icon)
+        input.uk-search-input.width-1-1(v-model="q" type="search" placeholder="イラストを検索...")
     section(v-if="images.length === 0")
       .uk-placeholder.uk-text-center
         | 画像がまだアップロードされていません。
@@ -36,6 +36,9 @@ import { IBindImagesParams } from "../../store/images";
   }
 })
 export default class Explorer extends Vue {
+  public q: string = "";
+  public key: string = "all";
+
   @Prop()
   public images!: IImage[];
 
@@ -44,6 +47,10 @@ export default class Explorer extends Vue {
 
   public async created(): Promise<void> {
     this.bindImages({ key: "all" });
+  }
+
+  private onSubmit(): void {
+    console.log(this.q);
   }
 }
 </script>
