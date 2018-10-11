@@ -14,6 +14,11 @@ export interface IUser {
   version: "1";
 }
 
+export interface IProgressiveThumbnails {
+  small?: boolean;
+  xlarge?: boolean;
+}
+
 export interface IImage {
   // Image ID
   id: string;
@@ -47,6 +52,9 @@ export interface IImage {
 
   // caption
   caption?: string;
+
+  // progressive thumbnails
+  thumbnails?: IProgressiveThumbnails;
 
   // schema version
   version: "1";

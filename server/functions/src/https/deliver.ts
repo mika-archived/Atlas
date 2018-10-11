@@ -1,7 +1,6 @@
 /*
  * Image Delivery API with User Authentication
  * https://storage.atlas.mochizuki.moe/media/:id/:size
- *
  */
 import cookieParser from "cookie-parser";
 import cors from "cors";
