@@ -36,6 +36,10 @@ export class FileWrapper {
     return this.storageId;
   }
 
+  public get mime(): string {
+    return this.file.type;
+  }
+
   public asBlob(): string {
     return URL.createObjectURL(this.file);
   }
@@ -50,6 +54,7 @@ export class FileWrapper {
 
   public asSquare(to: number): Promise<Blob> {
     return new Promise<Blob>(async (resolve, reject) => {
+      const parent = this;
       const canvas = document.createElement("canvas") as HTMLCanvasElement;
       const context = canvas.getContext("2d") as CanvasRenderingContext2D;
       const image = new Image();
@@ -66,7 +71,7 @@ export class FileWrapper {
           } else {
             resolve(blob);
           }
-        });
+        }, parent.mime);
       };
       image.src = await this.asBase64();
     });
