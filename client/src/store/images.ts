@@ -62,8 +62,9 @@ const actions: DefineActions<IImagesActions, IImagesState, IImagesMutations, IIm
   },
 
   async unbindImages(ctx, payload) {
-    firebaseAction<typeof ctx, typeof payload>(async ({ unbindFirebaseRef }, { key }) => {
+    firebaseAction<typeof ctx, typeof payload>(async ({ commit, unbindFirebaseRef }, { key }) => {
       await unbindFirebaseRef(key);
+      commit("unbindObject", { key });
     })(ctx, payload);
   },
 

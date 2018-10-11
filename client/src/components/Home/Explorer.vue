@@ -45,12 +45,16 @@ export default class Explorer extends Vue {
   @Action("bindImages")
   public bindImages!: ActionDescriber<IBindImagesParams>;
 
+  @Action("unbindImages")
+  public unbindImages!: ActionDescriber<IBindImagesParams>;
+
   public async created(): Promise<void> {
     this.bindImages({ key: "all" });
   }
 
   private onSubmit(): void {
-    console.log(this.q);
+    this.unbindImages({ key: this.key });
+    this.bindImages({ key: this.q });
   }
 }
 </script>

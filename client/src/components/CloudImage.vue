@@ -43,7 +43,11 @@ export default class CloudImage extends Vue {
 
   public get src(): string {
     if (this.image) {
-      return `https://storage.atlas.mochizuki.moe/media/${this.image.id}/${this.mode}`;
+      if (this.image.thumbnails && (this.image.thumbnails as any)[this.mode]) {
+        return `https://storage.atlas.mochizuki.moe/media/${this.image.id}/${this.mode}_pr0`;
+      } else {
+        return `https://storage.atlas.mochizuki.moe/media/${this.image.id}/${this.mode}`;
+      }
     }
     return "";
   }
