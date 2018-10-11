@@ -60,10 +60,14 @@ export class FileWrapper {
       const image = new Image();
       image.onload = function(this: HTMLElement, e: Event) {
         const self = this as HTMLImageElement;
-        const size = resizeSquare({ width: self.width, height: self.height }, to);
-        canvas.width = size.width;
-        canvas.height = size.height;
-        context.drawImage(self, 0, 0, self.width, self.height, 0, 0, size.width, size.height);
+        const { width, height } = resizeSquare({ width: self.width, height: self.height }, to);
+        if (width >= self.width && height >= self.height) {
+          // When resized image's size equals or greater than original size, don't encoding
+          return resolve(parent.asFile() as Blob);
+        }
+        canvas.width = width;
+        canvas.height = height;
+        context.drawImage(self, 0, 0, self.width, self.height, 0, 0, width, height);
 
         canvas.toBlob(blob => {
           if (blob == null) {
