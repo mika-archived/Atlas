@@ -13,6 +13,11 @@ Atlas は Google Firebase 上で動作します。
 * Netlify
 
 
+## Browsers
+
+* Google Chrome (latest 2 major versions)
+
+
 ## Requirements
 
 * Node.js >= 10.x and 8.x
