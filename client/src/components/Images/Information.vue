@@ -141,7 +141,7 @@ export default class Information extends Vue {
     this.attachImage({ id: this.image.id, obj: { caption: newCaption } });
   }
 
-  private onTagsChanged(newTags: { text: string; tiClasses: string[] }[]): void {
+  private onTagsChanged(newTags: Array<{ text: string; tiClasses: string[] }>): void {
     const tags = newTags.map(w => w.text);
     this.attachImage({ id: this.image.id, obj: { attributes: tags } });
   }
