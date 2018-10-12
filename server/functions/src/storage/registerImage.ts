@@ -3,6 +3,7 @@ import * as functions from "firebase-functions";
 import sizeof from "image-size";
 import mkdirp from "mkdirp-promise";
 import path from "path";
+import sharp from "sharp";
 
 import "../bootstrap/initializeFirebase";
 
@@ -57,4 +58,8 @@ export const registerImage = functions.storage.bucket(BUCKET_NAME).object().onFi
     size: bytes,
     dimensions: [dimensions.width, dimensions.height],
   } as IImage);
+
+  // TODO なんかがんばる
+  const thumbnailBuffer = await sharp(buffer[0]).resize(1200, 1200, {fit: 'inside'} as any).webp().toBuffer()
+  await storage().bucket(BUCKET_NAME).file('ファイル名なんだっけ…').save(thumbnailBuffer);
 });
