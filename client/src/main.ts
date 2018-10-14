@@ -1,9 +1,11 @@
 import Vue from "vue";
 
 import VueTagsInput from "@johmun/vue-tags-input";
+import VueLazyLoad from "vue-lazyload";
 import VueSilentbox from "vue-silentbox";
 
 Vue.use(VueTagsInput);
+Vue.use(VueLazyLoad, { preLoad: 1.3, attempt: 1 });
 Vue.use(VueSilentbox);
 
 import "tslib";

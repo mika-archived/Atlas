@@ -1,6 +1,6 @@
 <template lang="pug">
   .full-width(:class="{'uk-inline': !isLoadingImage}")
-    img(:src="src" @load="onLoaded")
+    img(v-lazy="src" @load="onLoaded")
     template(v-if="!isLoadingImage")
       img(src="https://fakeimg.mochizuki.moe/100x100/000000%2C000/000000%2C000/" uk-img)
       .uk-overlay
@@ -60,7 +60,12 @@ export default class CloudImage extends Vue {
     this.isImgLoaded = false;
   }
 
-  public onLoaded(): void {
+  public onLoaded(ev: Event): void {
+    const target = ev.target as HTMLImageElement;
+    if (target && target.src.startsWith("data:image")) {
+      return;
+    }
+
     this.isImgLoaded = true;
   }
 }
